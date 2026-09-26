@@ -113,3 +113,6 @@ InitTestScene*.unity*
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# PDF files
+*.pdf
