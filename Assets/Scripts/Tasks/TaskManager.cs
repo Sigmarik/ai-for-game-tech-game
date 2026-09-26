@@ -14,6 +14,7 @@ public class TaskManager : MonoBehaviour
     public void AddTask(TaskDefinition taskDef)
     {
         GameObject taskObject = new GameObject(taskDef.taskName);
+        taskObject.transform.SetParent(transform);
         TaskInstance taskInstance = taskObject.AddComponent<TaskInstance>();
 
         taskInstance.Initialize(taskDef);

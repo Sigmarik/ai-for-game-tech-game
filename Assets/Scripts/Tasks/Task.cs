@@ -40,4 +40,3 @@ public class TaskInstance : MonoBehaviour
         else return null;
     }
 }
-
