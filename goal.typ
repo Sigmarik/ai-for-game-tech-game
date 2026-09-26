@@ -23,7 +23,7 @@
     #set align(center)
 
     #heading()[
-      Project Description:\
+      Project Description\
       Group 1
     ]
 
