@@ -6,24 +6,28 @@ public class TaskManager : MonoBehaviour
 {
     public static TaskManager instance;
     private List<TaskInstance> tasks = new List<TaskInstance>();
-    private Dictionary<TaskStep, TaskInstance> activeTasks = new Dictionary<TaskStep, TaskInstance>(); 
+    private Dictionary<TaskStep, TaskInstance> activeTasks = new Dictionary<TaskStep, TaskInstance>();
 
-    public TaskManager()
-    {
-        if (instance == null)
-            instance = new TaskManager();
-    }
+    [SerializeField]
+    public TaskDefinition testTask;
 
     public void AddTask(TaskDefinition taskDef)
     {
-        tasks.Add(new TaskInstance(taskDef));
+        GameObject taskObject = new GameObject(taskDef.taskName);
+        TaskInstance taskInstance = taskObject.AddComponent<TaskInstance>();
+
+        taskInstance.Initialize(taskDef);
+
+        tasks.Add(taskInstance);
     }
 
     public void ActivateTaskStep(TaskInstance task)
     {
         TaskStep step = task.InitiateCurrentTaskStep();
         if (step != null)
+        {
             activeTasks[step] = task;
+        }
     }
 
     public void StepComplete(TaskStep step)
@@ -34,10 +38,21 @@ public class TaskManager : MonoBehaviour
         activeTasks[step].IncrementStepIndex();
     }
 
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        AddTask(testTask);
+        ActivateTaskStep(tasks[0]);
     }
 
     // Update is called once per frame

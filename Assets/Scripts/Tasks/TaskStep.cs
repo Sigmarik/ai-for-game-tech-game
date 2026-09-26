@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +23,7 @@ public class TaskStep : ScriptableObject
             // TODO: Turn off player that initated step movement
         }
         yield return new WaitForSeconds(duration);
+        Debug.Log("Step completed");
         TaskManager.instance.StepComplete(this);
     }
 }

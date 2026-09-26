@@ -15,7 +15,7 @@ public class TaskInstance : MonoBehaviour
     public int stepIndex;
     public TaskDefinition task;
 
-    public TaskInstance(TaskDefinition taskDef)
+    public void Initialize(TaskDefinition taskDef)
     {
         stepIndex = 0;
         task = taskDef; 
@@ -32,7 +32,7 @@ public class TaskInstance : MonoBehaviour
             return null;
 
         TaskStep taskStep = task.taskSteps[stepIndex];
-        if (!taskStep.IsInitiated && !taskStep.requirements.All((TaskStepRequirement req) => req.RequirementMet()))
+        if (!taskStep.IsInitiated && taskStep.requirements.All((TaskStepRequirement req) => req.RequirementMet()))
         {
             StartCoroutine(taskStep.StartStep());
             return taskStep;
