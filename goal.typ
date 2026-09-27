@@ -42,8 +42,6 @@
     )
 
     #align(left)[
-      
-
       *Authors:*
       - Ilia Kudriashov
       - Imbert Dam
