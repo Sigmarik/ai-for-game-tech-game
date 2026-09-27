@@ -5,38 +5,13 @@ using UnityEngine;
 public class TaskManager : MonoBehaviour
 {
     public static TaskManager instance;
-    private List<TaskInstance> tasks = new List<TaskInstance>();
-    private Dictionary<TaskStep, TaskInstance> activeTasks = new Dictionary<TaskStep, TaskInstance>();
 
     [SerializeField]
     public TaskDefinition testTask;
 
-    public void AddTask(TaskDefinition taskDef)
-    {
-        GameObject taskObject = new GameObject(taskDef.taskName);
-        taskObject.transform.SetParent(transform);
-        TaskInstance taskInstance = taskObject.AddComponent<TaskInstance>();
-
-        taskInstance.Initialize(taskDef);
-
-        tasks.Add(taskInstance);
-    }
-
     public void ActivateTaskStep(TaskInstance task)
     {
-        TaskStep step = task.InitiateCurrentTaskStep();
-        if (step != null)
-        {
-            activeTasks[step] = task;
-        }
-    }
-
-    public void StepComplete(TaskStep step)
-    {
-        if (!activeTasks.ContainsKey(step))
-            return;
-
-        activeTasks[step].IncrementStepIndex();
+        task.InitiateCurrentTaskStep();
     }
 
     private void Awake()
@@ -52,8 +27,6 @@ public class TaskManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AddTask(testTask);
-        ActivateTaskStep(tasks[0]);
     }
 
     // Update is called once per frame
