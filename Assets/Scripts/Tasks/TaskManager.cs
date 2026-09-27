@@ -6,14 +6,6 @@ public class TaskManager : MonoBehaviour
 {
     public static TaskManager instance;
 
-    [SerializeField]
-    public TaskDefinition testTask;
-
-    public void ActivateTaskStep(TaskInstance task)
-    {
-        task.InitiateCurrentTaskStep();
-    }
-
     private void Awake()
     {
         if (instance != null && instance != this)

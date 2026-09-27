@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac51c094d4e7c844b8609c846943f3f, type: 3}
   m_Name: TestTaskStep
   m_EditorClassIdentifier: 
-  requirements:
-  - {fileID: 11400000, guid: 133fbed064f342149946634388cecd0d, type: 2}
+  requirements: []
   autonomous: 0
-  duration: 10
+  duration: 2
+  requiredInteractableType: 0

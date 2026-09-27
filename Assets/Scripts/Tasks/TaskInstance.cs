@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class TaskInstance : MonoBehaviour
 {
@@ -15,13 +16,20 @@ public class TaskInstance : MonoBehaviour
     {
         get { return taskSteps[stepIndex]; }
     }
+    private bool isComplete = false;
+    private Coroutine stepCoroutine;
 
-    public void Initialize()
+    public void Start()
     {
         stepIndex = 0;
         foreach (TaskStepDefinition step in taskDef.taskSteps)
         {
             taskSteps.Add(step.Instatiate(this));
+        }
+        foreach (TaskInteractable interactable in interactables)
+        {
+            Debug.Log("We are setting the task");
+            interactable.Task = this;
         }
     }
 
@@ -37,23 +45,37 @@ public class TaskInstance : MonoBehaviour
         stepIndex++;
         if (stepIndex >= taskDef.taskSteps.Count)
         {
+            isComplete = true;
             // TODO: Completion Logic
         }
     }
     
+    public void InteractionStarted(InteractableType interactableType)
+    {
+        Debug.Log(isComplete);
+        if (isComplete) return;
+        if (CurrentStep.CheckInteractable(interactableType))
+            InitiateCurrentTaskStep();
+    }
+
+    public void InteractionStopped()
+    {
+        if (isComplete) return;
+        if (CurrentStep.IsInitiated)
+        {
+            // TODO: If the step should be stopped has to made dependant on if the step is autonomous or not
+            Debug.Log("Step Stopped");
+            StopCoroutine(stepCoroutine);
+            CurrentStep.StopStep();
+        }
+    }
+
     public void InitiateCurrentTaskStep()
     {
         if (!(0 <= stepIndex && stepIndex < taskDef.taskSteps.Count))
             return;
 
-        TaskStepInstance taskStep = taskSteps[stepIndex];
-        if (!taskStep.IsInitiated && taskStep.requirements.All((TaskStepRequirement req) => req.RequirementMet()))
-            StartCoroutine(taskStep.StartStep());
-    }
-
-    public void InteractionStarted(InteractableType interactableType)
-    {
-        if (CurrentStep.CheckInteractable(interactableType))
-            InitiateCurrentTaskStep();
+        if (!CurrentStep.IsInitiated && CurrentStep.requirements.All((TaskStepRequirement req) => req.RequirementMet()))
+            stepCoroutine = StartCoroutine(CurrentStep.StartStep());
     }
 }

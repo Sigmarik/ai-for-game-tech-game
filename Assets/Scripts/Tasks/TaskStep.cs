@@ -48,12 +48,20 @@ public class TaskStepInstance : MonoBehaviour
 
     public IEnumerator StartStep()
     {
+        Debug.Log("Step Started");
+        isInitiated = true;
         if (!stepDefinition.autonomous)
         {
             // TODO: Turn off player that initated step movement
         }
         yield return new WaitForSeconds(stepDefinition.duration);
         Debug.Log("Step completed");
+        isInitiated = false;
         parentTask.CompleteStep(this);
+    }
+
+    public void StopStep()
+    {
+        isInitiated = false;
     }
 }
