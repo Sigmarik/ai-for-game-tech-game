@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 5162545958876146246}
   - component: {fileID: 6364596879166624691}
   - component: {fileID: 1648902628991106676}
+  - component: {fileID: 1678835459346613537}
   m_Layer: 0
   m_Name: 010-car-repair-garage-and-mot-workshop-inspection-pit-edge/1
   m_TagString: Untagged
@@ -166,6 +167,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1678835459346613537
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4319971278143096046}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7238008100714701128, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}
 --- !u!1 &4486789980652606351
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,6 +200,8 @@ GameObject:
   - component: {fileID: 3223739309202720453}
   - component: {fileID: 5303070072444989557}
   - component: {fileID: 847169107952475011}
+  - component: {fileID: 3734046779909823525}
+  - component: {fileID: 2230056749311693468}
   m_Layer: 0
   m_Name: 010-car-repair-garage-and-mot-workshop-inspection-pit-edge/0
   m_TagString: Untagged
@@ -249,6 +274,50 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3734046779909823525
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4486789980652606351}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2156321894141791873, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}
+--- !u!64 &2230056749311693468
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4486789980652606351}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2156321894141791873, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}
 --- !u!1 &6003396169140033863
 GameObject:
   m_ObjectHideFlags: 0

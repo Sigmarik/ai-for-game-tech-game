@@ -211,6 +211,7 @@ GameObject:
   - component: {fileID: 1332343134545576849}
   - component: {fileID: 2349172618878956552}
   - component: {fileID: 1235933812903570303}
+  - component: {fileID: 1067693417095561404}
   m_Layer: 0
   m_Name: 022-car-repair-garage-and-mot-workshop-workshop-wall-panel/1
   m_TagString: Untagged
@@ -283,3 +284,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1067693417095561404
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7397831325980404572}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 5536978540950946653, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}
