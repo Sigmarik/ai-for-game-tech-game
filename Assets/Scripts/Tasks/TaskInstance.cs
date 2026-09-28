@@ -50,12 +50,12 @@ public class TaskInstance : MonoBehaviour
         }
     }
     
-    public void InteractionStarted(InteractableType interactableType)
+    public void InteractionStarted(TaskInteractable interactable)
     {
         Debug.Log(isComplete);
         if (isComplete) return;
-        if (CurrentStep.CheckInteractable(interactableType))
-            InitiateCurrentTaskStep();
+        if (CurrentStep.CheckInteractable(interactable.interactableType))
+            InitiateCurrentTaskStep(interactable);
     }
 
     public void InteractionStopped()
@@ -70,12 +70,12 @@ public class TaskInstance : MonoBehaviour
         }
     }
 
-    public void InitiateCurrentTaskStep()
+    public void InitiateCurrentTaskStep(TaskInteractable interactable)
     {
         if (!(0 <= stepIndex && stepIndex < taskDef.taskSteps.Count))
             return;
 
         if (!CurrentStep.IsInitiated && CurrentStep.requirements.All((TaskStepRequirement req) => req.RequirementMet()))
-            stepCoroutine = StartCoroutine(CurrentStep.StartStep());
+            stepCoroutine = StartCoroutine(CurrentStep.StartStep(interactable));
     }
 }

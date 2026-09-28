@@ -18,9 +18,26 @@ public class TaskInteractable : MonoBehaviour
         set { if (task == null) { task = value; } }
     }
 
+    private ProgressBar progressBar;
+
     // TESTING VARIABLES
     // TODO: REMOVE THESE
     bool wasPressed = false;
+
+    public void Start()
+    {
+        progressBar = GetComponentInChildren<ProgressBar>();
+    }
+
+    public void StartProgressBar(float time)
+    {
+        progressBar.StartProgressBar(time);
+    }
+    
+    public void StopProgressBar()
+    {
+        progressBar.StopProgressBar();
+    }
 
     public void Update()
     {
@@ -38,11 +55,18 @@ public class TaskInteractable : MonoBehaviour
 
     public void StartInteraction()
     {
-        task.InteractionStarted(interactableType);
+        task.InteractionStarted(this);
     }
 
     public void StopInteraction()
     {
         task.InteractionStopped();
+    }
+
+    public void NextState()
+    {
+        // TODO: make this an actual state machine
+        MeshRenderer renderer = GetComponent<MeshRenderer>();
+        renderer.enabled = !renderer.enabled;
     }
 }

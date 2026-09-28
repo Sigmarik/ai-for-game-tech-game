@@ -21,9 +21,14 @@ public class TaskStepDefinition : ScriptableObject
 
 public class TaskStepInstance : MonoBehaviour 
 {
-    public GameObject interactable; // TODO: Make interactable class or something
     private TaskInstance parentTask;
-    TaskStepDefinition stepDefinition;
+    private TaskStepDefinition stepDefinition;
+    private TaskInteractable initiatedInteractable;   
+    public TaskInteractable InitiatedInteractable
+    {
+        get { return initiatedInteractable;  }
+        private set { initiatedInteractable = value; }
+    }
     private bool isInitiated = false;
     public bool IsInitiated
     {
@@ -46,10 +51,12 @@ public class TaskStepInstance : MonoBehaviour
         return interactableType == stepDefinition.requiredInteractableType;
     }
 
-    public IEnumerator StartStep()
+    public IEnumerator StartStep(TaskInteractable initiatedInteractable)
     {
         Debug.Log("Step Started");
         isInitiated = true;
+        initiatedInteractable.StartProgressBar(stepDefinition.duration);
+        this.initiatedInteractable = initiatedInteractable;
         if (!stepDefinition.autonomous)
         {
             // TODO: Turn off player that initated step movement
@@ -58,10 +65,14 @@ public class TaskStepInstance : MonoBehaviour
         Debug.Log("Step completed");
         isInitiated = false;
         parentTask.CompleteStep(this);
+        initiatedInteractable.NextState();
+        initiatedInteractable.StopProgressBar();
     }
 
     public void StopStep()
     {
         isInitiated = false;
+        initiatedInteractable.StopProgressBar();
+        initiatedInteractable = null;
     }
 }
