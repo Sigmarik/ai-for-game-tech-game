@@ -212,6 +212,7 @@ GameObject:
   - component: {fileID: 3527087522234414466}
   - component: {fileID: 5665507904787882786}
   - component: {fileID: 4359592751115862581}
+  - component: {fileID: 8084147279250056101}
   m_Layer: 0
   m_Name: 045-car-repair-garage-and-mot-workshop-workbench-with-vice/0
   m_TagString: Untagged
@@ -284,6 +285,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8084147279250056101
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8297725979646522142}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7570786141720757961, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}
 --- !u!1 &9143558627423800173
 GameObject:
   m_ObjectHideFlags: 0

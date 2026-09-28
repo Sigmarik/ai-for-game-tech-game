@@ -426,6 +426,7 @@ GameObject:
   - component: {fileID: 7639662903401601222}
   - component: {fileID: 7117795286249685433}
   - component: {fileID: 2474850306792832728}
+  - component: {fileID: 2497940217891788334}
   m_Layer: 0
   m_Name: 044-car-repair-garage-and-mot-workshop-two-post-vehicle-lift-raised/1
   m_TagString: Untagged
@@ -498,6 +499,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &2497940217891788334
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028233940158616901}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8762336480956259858, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}
 --- !u!1 &5347883191990302117
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,6 +615,7 @@ GameObject:
   - component: {fileID: 7173766375304148387}
   - component: {fileID: 4758128712419903798}
   - component: {fileID: 2507207150476935753}
+  - component: {fileID: 2858781474188421489}
   m_Layer: 0
   m_Name: 044-car-repair-garage-and-mot-workshop-two-post-vehicle-lift-raised/3
   m_TagString: Untagged
@@ -664,6 +688,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &2858781474188421489
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6210526921285846241}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4544049068477556082, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}
 --- !u!1 &7161515325123884645
 GameObject:
   m_ObjectHideFlags: 0
@@ -841,6 +887,7 @@ GameObject:
   - component: {fileID: 4258901446524068174}
   - component: {fileID: 53195259236154070}
   - component: {fileID: 2069382088581251650}
+  - component: {fileID: 1573048579346386923}
   m_Layer: 0
   m_Name: 044-car-repair-garage-and-mot-workshop-two-post-vehicle-lift-raised/lift-carriage.002
   m_TagString: Untagged
@@ -913,6 +960,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1573048579346386923
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7700297150449969494}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4039399913398871657, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}
 --- !u!1 &8352506323429916489
 GameObject:
   m_ObjectHideFlags: 0

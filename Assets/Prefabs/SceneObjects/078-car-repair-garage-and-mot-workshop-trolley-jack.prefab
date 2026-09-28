@@ -343,6 +343,7 @@ GameObject:
   - component: {fileID: 4125521273231349363}
   - component: {fileID: 3036709097366593848}
   - component: {fileID: 403504214006259775}
+  - component: {fileID: 2102629836525564063}
   m_Layer: 0
   m_Name: 078-car-repair-garage-and-mot-workshop-trolley-jack/jack-handle/steel
   m_TagString: Untagged
@@ -415,6 +416,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &2102629836525564063
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7401403236686710156}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8679967299723985945, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}
 --- !u!1 &7749792192823757990
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,6 +449,7 @@ GameObject:
   - component: {fileID: 38329811715066290}
   - component: {fileID: 3946014717823486776}
   - component: {fileID: 6916062334028157016}
+  - component: {fileID: 7098964852243108096}
   m_Layer: 0
   m_Name: 078-car-repair-garage-and-mot-workshop-trolley-jack/0
   m_TagString: Untagged
@@ -498,6 +522,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7098964852243108096
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7749792192823757990}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.9999996, y: 0.51155126, z: 0.77913743}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7926218773437437676
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,6 +554,7 @@ GameObject:
   - component: {fileID: 1985769395152260000}
   - component: {fileID: 8837631899649169645}
   - component: {fileID: 9163029991286354676}
+  - component: {fileID: 3870344728694087393}
   m_Layer: 0
   m_Name: 078-car-repair-garage-and-mot-workshop-trolley-jack/jack-handle/rubber
   m_TagString: Untagged
@@ -581,6 +627,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3870344728694087393
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7926218773437437676}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -657716251871675876, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}
 --- !u!1 &9014132977263777712
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,6 +699,7 @@ GameObject:
   - component: {fileID: 7457596079834412812}
   - component: {fileID: 1150985648389151586}
   - component: {fileID: 5440983904808555555}
+  - component: {fileID: 3097880030407757912}
   m_Layer: 0
   m_Name: 078-car-repair-garage-and-mot-workshop-trolley-jack/jack-handle/charcoal
   m_TagString: Untagged
@@ -703,3 +772,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3097880030407757912
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9196925053693244656}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7287891372676749528, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}

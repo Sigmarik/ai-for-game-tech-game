@@ -129,6 +129,7 @@ GameObject:
   - component: {fileID: 8640588630716099623}
   - component: {fileID: 4749999960908969910}
   - component: {fileID: 8829222582880261579}
+  - component: {fileID: 4242434981363845917}
   m_Layer: 0
   m_Name: 055-car-repair-garage-and-mot-workshop-tool-trolley/2
   m_TagString: Untagged
@@ -201,6 +202,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4242434981363845917
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6826893464781846137}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4024537139889314200, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}
 --- !u!1 &8430948414621782904
 GameObject:
   m_ObjectHideFlags: 0

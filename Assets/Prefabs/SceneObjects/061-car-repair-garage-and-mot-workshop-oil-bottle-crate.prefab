@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 6850588365887030208}
   - component: {fileID: 4033571239457112981}
   - component: {fileID: 2747230926792935487}
+  - component: {fileID: 5863518010875752671}
   m_Layer: 0
   m_Name: 061-car-repair-garage-and-mot-workshop-oil-bottle-crate/0
   m_TagString: Untagged
@@ -332,6 +333,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5863518010875752671
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4446522536391249196}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 1.0983001, z: 1.4308298}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9064830505236981605
 GameObject:
   m_ObjectHideFlags: 0

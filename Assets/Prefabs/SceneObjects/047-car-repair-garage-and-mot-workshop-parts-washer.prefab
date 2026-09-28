@@ -507,6 +507,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1973669211331132880}
+  - component: {fileID: 1593373412724110645}
   m_Layer: 0
   m_Name: 047-car-repair-garage-and-mot-workshop-parts-washer
   m_TagString: Untagged
@@ -536,6 +537,27 @@ Transform:
   - {fileID: 4742443411554227990}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1593373412724110645
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7034581482515917519}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.9759468, z: 0.61040115}
+  m_Center: {x: 0, y: 0.5377111, z: -0.013140678}
 --- !u!1 &7339299604654345089
 GameObject:
   m_ObjectHideFlags: 0

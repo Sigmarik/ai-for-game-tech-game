@@ -215,6 +215,7 @@ GameObject:
   - component: {fileID: 5744131142889756932}
   - component: {fileID: 4291486750625488560}
   - component: {fileID: 1483825806916033498}
+  - component: {fileID: 309562906059882932}
   m_Layer: 0
   m_Name: 114-car-repair-garage-and-mot-workshop-key-board/0
   m_TagString: Untagged
@@ -287,6 +288,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &309562906059882932
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3316293214852553349}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 1.823481, z: 0.088137455}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6615325464305615848
 GameObject:
   m_ObjectHideFlags: 0

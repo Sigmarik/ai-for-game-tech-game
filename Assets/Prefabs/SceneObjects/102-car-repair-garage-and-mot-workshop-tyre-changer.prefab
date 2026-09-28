@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 7868459417035430691}
   - component: {fileID: 3085217840768951271}
   - component: {fileID: 6045597772834225720}
+  - component: {fileID: 5798538526465513982}
   m_Layer: 0
   m_Name: 102-car-repair-garage-and-mot-workshop-tyre-changer/0
   m_TagString: Untagged
@@ -120,6 +121,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5798538526465513982
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090029796312909781}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.39494, y: 2, z: 0.86410105}
+  m_Center: {x: 0.00000047683716, y: 0, z: 0}
 --- !u!1 &1449589610935926898
 GameObject:
   m_ObjectHideFlags: 0

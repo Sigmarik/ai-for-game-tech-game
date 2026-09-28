@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5614605565461506471}
+  - component: {fileID: 1438596906868237962}
   m_Layer: 0
   m_Name: 046-car-repair-garage-and-mot-workshop-parts-shelving-stocked
   m_TagString: Untagged
@@ -36,6 +37,27 @@ Transform:
   - {fileID: 4190452397176974480}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1438596906868237962
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653908552813264205}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.9129171, y: 2.0087612, z: 0.7053504}
+  m_Center: {x: -0.0033057928, y: 1.0798064, z: 0.003978014}
 --- !u!1 &1971698089037147544
 GameObject:
   m_ObjectHideFlags: 0

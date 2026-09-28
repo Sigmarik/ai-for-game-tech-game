@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 4719645323841049553}
   - component: {fileID: 3031339333078322384}
   - component: {fileID: 3525278231341707144}
+  - component: {fileID: 853210174304292568}
   m_Layer: 0
   m_Name: 051-car-repair-garage-and-mot-workshop-engine-hoist/0
   m_TagString: Untagged
@@ -166,6 +167,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &853210174304292568
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1568890789062459675}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.7919856, y: 2, z: 1.3180332}
+  m_Center: {x: 0, y: 0, z: -0.00000047683716}
 --- !u!1 &2335954654725914833
 GameObject:
   m_ObjectHideFlags: 0

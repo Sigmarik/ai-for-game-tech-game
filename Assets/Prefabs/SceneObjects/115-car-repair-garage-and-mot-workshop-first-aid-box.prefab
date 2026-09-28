@@ -128,6 +128,7 @@ GameObject:
   - component: {fileID: 7581054564291569518}
   - component: {fileID: 7285990775646412785}
   - component: {fileID: 3520701764360520315}
+  - component: {fileID: 9021474919190386014}
   m_Layer: 0
   m_Name: 115-car-repair-garage-and-mot-workshop-first-aid-box/0
   m_TagString: Untagged
@@ -200,6 +201,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &9021474919190386014
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3243147776600285100}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.9999999, y: 1.6699116, z: 0.7183446}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7281353448070027750
 GameObject:
   m_ObjectHideFlags: 0

@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 7913745223304891349}
   - component: {fileID: 9111142172790337531}
   - component: {fileID: 8372705536636578019}
+  - component: {fileID: 8261277682347431225}
   m_Layer: 0
   m_Name: 050-car-repair-garage-and-mot-workshop-engine-stand/0
   m_TagString: Untagged
@@ -118,6 +119,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8261277682347431225
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2174610353769684201}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.6606344, y: 2.0000002, z: 1.6071659}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4491004432054723030
 GameObject:
   m_ObjectHideFlags: 0
