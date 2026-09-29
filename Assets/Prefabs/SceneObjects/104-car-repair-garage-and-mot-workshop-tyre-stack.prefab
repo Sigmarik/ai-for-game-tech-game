@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 7838210420998869523}
   - component: {fileID: 3018590786586739442}
   - component: {fileID: 2273940203887122169}
+  - component: {fileID: 6014897623209209812}
   m_Layer: 0
   m_Name: 104-car-repair-garage-and-mot-workshop-tyre-stack/0
   m_TagString: Untagged
@@ -166,6 +167,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6014897623209209812
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800163747236666358}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2739819921418087380, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}
 --- !u!1 &4672628167769726118
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,6 +234,7 @@ GameObject:
   - component: {fileID: 4853656578795252861}
   - component: {fileID: 4427398976046780809}
   - component: {fileID: 5818679924902753073}
+  - component: {fileID: 683828356930810105}
   m_Layer: 0
   m_Name: 104-car-repair-garage-and-mot-workshop-tyre-stack/1
   m_TagString: Untagged
@@ -283,3 +307,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &683828356930810105
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5027443968690571647}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 5742188743892697549, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}
