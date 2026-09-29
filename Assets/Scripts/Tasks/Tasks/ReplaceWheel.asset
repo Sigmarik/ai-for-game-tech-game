@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: ReplaceWheel
   m_EditorClassIdentifier: 
   taskName: 
-  taskSteps: []
+  taskSteps:
+  - {fileID: 11400000, guid: e119881cab4b5284c94db1573adc872f, type: 2}
+  - {fileID: 11400000, guid: a956852336349fe4ba1d405eab3a966c, type: 2}

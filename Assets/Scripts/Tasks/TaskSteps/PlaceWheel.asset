@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   requirements: []
   autonomous: 0
-  duration: 0
+  duration: 2
   requiredInteractableType: 0
