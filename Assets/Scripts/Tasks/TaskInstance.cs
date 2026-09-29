@@ -19,6 +19,8 @@ public class TaskInstance : MonoBehaviour
     private bool isComplete = false;
     private Coroutine stepCoroutine;
 
+    public bool Complete { get { return isComplete; } }
+
     public void Start()
     {
         stepIndex = 0;

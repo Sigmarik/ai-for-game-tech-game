@@ -18,16 +18,17 @@ public class TaskInteractable : MonoBehaviour
         set { if (task == null) { task = value; } }
     }
 
-    private ProgressBar progressBar;
+    [SerializeField] private ProgressBar progressBar;
+    [SerializeField] private GameObject uiCanvas;
 
-    // TESTING VARIABLES
-    // TODO: REMOVE THESE
-    bool wasPressed = false;
-
-    public void Start()
+    public void Update()
     {
-        progressBar = GetComponentInChildren<ProgressBar>();
+       if(task.Complete)
+        {
+            uiCanvas.SetActive(false);
+        }
     }
+
 
     public void StartProgressBar(float time)
     {
@@ -38,19 +39,17 @@ public class TaskInteractable : MonoBehaviour
     {
         progressBar.StopProgressBar();
     }
-
-    public void Update()
+    public void ShowUI()
     {
-        if (Input.GetKeyDown("space") && !wasPressed)
+        if (!task.Complete)
         {
-            wasPressed = true;
-            StartInteraction();
+            uiCanvas.SetActive(true);
         }
-        else if (Input.GetKeyUp("space") && wasPressed)
-        {
-            wasPressed = false;
-            StopInteraction();
-        }
+    }
+
+    public void HideUI()
+    {
+        uiCanvas.SetActive(false);
     }
 
     public void StartInteraction()
