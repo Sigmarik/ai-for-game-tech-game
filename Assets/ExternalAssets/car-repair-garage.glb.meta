@@ -11,7 +11,7 @@ ScriptedImporter:
   editorImportSettings:
     generateSecondaryUVSet: 0
   importSettings:
-    nodeNameMethod: 1
+    nodeNameMethod: 0
     animationMethod: 2
     generateMipMaps: 1
     texturesReadable: 0
@@ -27,5 +27,5 @@ ScriptedImporter:
   assetDependencies: []
   reportItems:
   - type: 2
-    code: 30
+    code: 31
     messages: []
