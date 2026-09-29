@@ -837,7 +837,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8807723255014170102, guid: 2a56de827ef75214f963e10bdd1b5b6d, type: 3}
       propertyPath: m_Name
-      value: hatchback-sports
+      value: car with wheel interactable
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -901,9 +901,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.35
-  m_Height: 0.7
+  m_Height: 0.99
   m_Direction: 1
-  m_Center: {x: 0.1, y: 0, z: 0}
+  m_Center: {x: 0.16, y: 0.09, z: 0}
 --- !u!1001 &350825570
 PrefabInstance:
   m_ObjectHideFlags: 0
