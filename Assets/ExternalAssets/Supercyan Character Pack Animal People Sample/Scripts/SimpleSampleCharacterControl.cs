@@ -108,10 +108,6 @@ namespace Supercyan.AnimalPeopleSample
 
         private void Update()
         {
-            if (!m_jumpInput && Input.GetKey(KeyCode.Space))
-            {
-                m_jumpInput = true;
-            }
         }
 
         private void FixedUpdate()
@@ -171,12 +167,6 @@ namespace Supercyan.AnimalPeopleSample
             float h = Input.GetAxis("Horizontal");
 
             Transform camera = Camera.main.transform;
-
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                v *= m_walkScale;
-                h *= m_walkScale;
-            }
 
             m_currentV = Mathf.Lerp(m_currentV, v, Time.deltaTime * m_interpolation);
             m_currentH = Mathf.Lerp(m_currentH, h, Time.deltaTime * m_interpolation);

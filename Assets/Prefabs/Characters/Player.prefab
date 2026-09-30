@@ -1147,7 +1147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moveSpeed: 2
-  m_turnSpeed: 200
+  m_turnSpeed: 400
   m_jumpForce: 4
   m_animator: {fileID: 2820111579209204923}
   m_rigidBody: {fileID: 612837125865520455}
