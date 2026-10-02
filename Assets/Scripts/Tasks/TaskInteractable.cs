@@ -45,11 +45,13 @@ public class TaskInteractable : MonoBehaviour
         {
             uiCanvas.SetActive(true);
         }
+        gameObject.SetHighlight(true);
     }
 
     public void HideUI()
     {
         uiCanvas.SetActive(false);
+        gameObject.SetHighlight(false);
     }
 
     public void StartInteraction()
