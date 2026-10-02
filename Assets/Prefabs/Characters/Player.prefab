@@ -1146,12 +1146,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e292e05258fa8f9488f1321cb014a57c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSpeed: 2
-  m_turnSpeed: 200
-  m_jumpForce: 4
   m_animator: {fileID: 2820111579209204923}
-  m_rigidBody: {fileID: 612837125865520455}
-  m_controlMode: 1
+  m_cameraTransform: {fileID: 0}
+  m_visual: {fileID: 8011454918990573107}
+  m_moveSpeed: 2
+  m_acceleration: 60
+  m_deceleration: 80
+  m_turnSpeed: 200
+  m_gravity: 25
+  m_fallMultiplier: 1.7
+  m_groundLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_moveSpeedParameter: MoveSpeed
+  m_groundedParameter: Grounded
 --- !u!1 &8207450802671876872
 GameObject:
   m_ObjectHideFlags: 0
