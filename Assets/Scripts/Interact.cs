@@ -1,14 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class Interact : MonoBehaviour
 {
     [SerializeField] private GameObject rayOrigin;
     [SerializeField] private float distance;
-    private bool hitting = false;
-    private bool oldHitting = false;
     private TaskInteractable interactable;
     private TaskInteractable oldInteractable;
     private bool started = false;
@@ -16,66 +11,74 @@ public class Interact : MonoBehaviour
 
     void Update()
     {
-        RaycastHit hit;
-        Ray ray = new Ray(rayOrigin.transform.position, rayOrigin.transform.forward);
+        TaskInteractable closestInteractable = FindClosestInteractable();
 
-        Debug.DrawRay(rayOrigin.transform.position, rayOrigin.transform.forward * distance, Color.black);
-
-        if(Physics.Raycast(ray, out hit, distance, (1 << 3)))
+        if (closestInteractable != interactable)
         {
-            if (!hitting) 
+            oldInteractable = interactable;
+            interactable = closestInteractable;
+
+            if (uiOpen && oldInteractable != null)
             {
-                hitting = !hitting;
-                oldHitting = !oldHitting;
-                interactable = hit.collider.GetComponent<TaskInteractable>();
+                oldInteractable.HideUI();
+                uiOpen = false;
             }
-            else if (hitting && interactable != hit.collider.GetComponent<TaskInteractable>())
+
+            if (started && oldInteractable != null)
             {
-                oldInteractable = interactable;
-                interactable = hit.collider.GetComponent<TaskInteractable>();
-            }
-        }
-        else {
-            if(hitting)
-            {
-                oldInteractable = interactable;
-                interactable = null;
-                oldHitting = hitting;
-                hitting = !hitting;
-            }
-            else if(oldHitting)
-            {
-                oldHitting = hitting;
-                oldInteractable = null;
+                oldInteractable.StopInteraction();
+                started = false;
             }
         }
-        if(hitting && !uiOpen)
+
+        if (interactable != null && !uiOpen)
         {
             interactable.ShowUI();
             uiOpen = true;
         }
-        if(!hitting && oldHitting && uiOpen)
-        {
-            oldInteractable.HideUI();
-            uiOpen = false;
-        }
 
-        // Handle actual interactions based on raycast
-        if (hitting && Input.GetKey(KeyCode.F) && !started)
+        if (interactable != null && Input.GetKey(KeyCode.F) && !started)
         {
             interactable.StartInteraction();
             started = true;
         }
-        else if (!hitting && oldHitting && started)
+        else if (interactable == null && started)
         {
-            oldInteractable.StopInteraction();
+            if (oldInteractable != null)
+            {
+                oldInteractable.StopInteraction();
+            }
             started = false;
         }
-        else if (hitting && !Input.GetKey(KeyCode.F) && started)
+        else if (interactable != null && !Input.GetKey(KeyCode.F) && started)
         {
             interactable.StopInteraction();
             started = false;
         }
+    }
 
+    private TaskInteractable FindClosestInteractable()
+    {
+        TaskInteractable[] allInteractables = FindObjectsOfType<TaskInteractable>();
+        TaskInteractable bestInteractable = null;
+        float bestDistance = distance;
+        Vector3 originPosition = rayOrigin.transform.position;
+
+        foreach (TaskInteractable currentInteractable in allInteractables)
+        {
+            if (currentInteractable == null)
+            {
+                continue;
+            }
+
+            float currentDistance = Vector3.Distance(originPosition, currentInteractable.transform.position);
+            if (currentDistance <= bestDistance)
+            {
+                bestDistance = currentDistance;
+                bestInteractable = currentInteractable;
+            }
+        }
+
+        return bestInteractable;
     }
 }
