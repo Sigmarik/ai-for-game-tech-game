@@ -55,7 +55,8 @@
 
 == Goal
 
-There is some research going into agentic AI behavior in collaborative real-time task-based games such as Overcooked @trust-and-collaboration-in-human-autonomy-teams.
+There is some research going into agentic AI behavior in collaborative real-time task-based games such as Overcooked @trust-and-collaboration-in-human-autonomy-teams,
+as well as some interest into which game mechanics and interaction points affect human player closeness @cooperation-and-interdependence.
 Our team is interested in exploring how different degrees of AI "closeness" to the human player affect perceived likability of the AI agent.
 In particular, we want to explore how two different adaptive task scheduling algorithms illustrated in @fig:distant-close-ai affect AI likability and perceived competence when implemented into an autonomous agent in a collaborative game.
 
