@@ -7656,6 +7656,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5203011787057790995, guid: c9c77f98fb337094c93dc14e99da6343, type: 3}
+      propertyPath: m_camera
+      value: 
+      objectReference: {fileID: 1906023389}
+    - target: {fileID: 5203011787057790995, guid: c9c77f98fb337094c93dc14e99da6343, type: 3}
+      propertyPath: m_moveSpeed
+      value: 2.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203011787057790995, guid: c9c77f98fb337094c93dc14e99da6343, type: 3}
+      propertyPath: m_turnSpeed
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203011787057790995, guid: c9c77f98fb337094c93dc14e99da6343, type: 3}
+      propertyPath: m_acceleration
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203011787057790995, guid: c9c77f98fb337094c93dc14e99da6343, type: 3}
+      propertyPath: m_deceleration
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8190365695394829258, guid: c9c77f98fb337094c93dc14e99da6343, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -3,212 +3,185 @@ using UnityEngine;
 
 namespace Supercyan.AnimalPeopleSample
 {
-    public class SimpleSampleCharacterControl : MonoBehaviour
+    [RequireComponent(typeof(Rigidbody))]
+    public class TopDownCharacterController : MonoBehaviour
     {
-        private enum ControlMode
-        {
-            /// <summary>
-            /// Up moves the character forward, left and right turn the character gradually and down moves the character backwards
-            /// </summary>
-            Tank,
-            /// <summary>
-            /// Character freely moves in the chosen direction from the perspective of the camera
-            /// </summary>
-            Direct
-        }
+        [Header("References")]
+        [SerializeField] private Animator m_animator;
+        [SerializeField] private Camera m_camera;
+        [Tooltip("Child transform holding the character model. It is rotated to face the velocity.")]
+        [SerializeField] private Transform m_visual;
 
-        [SerializeField] private float m_moveSpeed = 2;
-        [SerializeField] private float m_turnSpeed = 200;
-        [SerializeField] private float m_jumpForce = 4;
+        [Header("Movement")]
+        [SerializeField] private float m_moveSpeed = 6f;
+        [SerializeField] private float m_acceleration = 60f;
+        [SerializeField] private float m_deceleration = 80f;
+        [SerializeField] private float m_turnSpeed = 900f;
 
-        [SerializeField] private Animator m_animator = null;
-        [SerializeField] private Rigidbody m_rigidBody = null;
+        [Header("Gravity")]
+        [SerializeField] private float m_gravity = 25f;
+        [SerializeField] private float m_fallMultiplier = 1.7f;
 
-        [SerializeField] private ControlMode m_controlMode = ControlMode.Direct;
+        [Header("Ground")]
+        [SerializeField] private LayerMask m_groundLayers = ~0;
 
-        private float m_currentV = 0;
-        private float m_currentH = 0;
+        [Header("Animation")]
+        [SerializeField] private string m_moveSpeedParameter = "MoveSpeed";
+        [SerializeField] private string m_groundedParameter = "Grounded";
 
-        private readonly float m_interpolation = 10;
-        private readonly float m_walkScale = 0.33f;
-        private readonly float m_backwardsWalkScale = 0.16f;
-        private readonly float m_backwardRunScale = 0.66f;
+        private Rigidbody m_rigidBody;
+        private int m_moveSpeedHash;
+        private int m_groundedHash;
 
-        private bool m_wasGrounded;
-        private Vector3 m_currentDirection = Vector3.zero;
+        private readonly List<Vector3> m_wallNormals = new List<Vector3>(8);
 
-        private float m_jumpTimeStamp = 0;
-        private float m_minJumpInterval = 0.25f;
-        private bool m_jumpInput = false;
-
+        private Vector3 m_moveInput;
         private bool m_isGrounded;
-
-        private List<Collider> m_collisions = new List<Collider>();
+        private bool m_groundContactThisStep;
 
         private void Awake()
         {
-            if (!m_animator) { gameObject.GetComponent<Animator>(); }
-            if (!m_rigidBody) { gameObject.GetComponent<Animator>(); }
-        }
+            m_rigidBody = GetComponent<Rigidbody>();
 
-        private void OnCollisionEnter(Collision collision)
-        {
-            ContactPoint[] contactPoints = collision.contacts;
-            for (int i = 0; i < contactPoints.Length; i++)
-            {
-                if (Vector3.Dot(contactPoints[i].normal, Vector3.up) > 0.5f)
-                {
-                    if (!m_collisions.Contains(collision.collider))
-                    {
-                        m_collisions.Add(collision.collider);
-                    }
-                    m_isGrounded = true;
-                }
-            }
-        }
+            if (m_animator == null) m_animator = GetComponentInChildren<Animator>();
+            if (m_camera == null) m_camera = Camera.main;
 
-        private void OnCollisionStay(Collision collision)
-        {
-            ContactPoint[] contactPoints = collision.contacts;
-            bool validSurfaceNormal = false;
-            for (int i = 0; i < contactPoints.Length; i++)
-            {
-                if (Vector3.Dot(contactPoints[i].normal, Vector3.up) > 0.5f)
-                {
-                    validSurfaceNormal = true; break;
-                }
-            }
+            if (m_visual == null) Debug.LogWarning($"{nameof(TopDownCharacterController)} on '{name}' has no visual assigned; the character will not turn.", this);
 
-            if (validSurfaceNormal)
-            {
-                m_isGrounded = true;
-                if (!m_collisions.Contains(collision.collider))
-                {
-                    m_collisions.Add(collision.collider);
-                }
-            }
-            else
-            {
-                if (m_collisions.Contains(collision.collider))
-                {
-                    m_collisions.Remove(collision.collider);
-                }
-                if (m_collisions.Count == 0) { m_isGrounded = false; }
-            }
-        }
+            m_rigidBody.isKinematic = false;
+            m_rigidBody.useGravity = false;
+            m_rigidBody.interpolation = RigidbodyInterpolation.Interpolate;
+            m_rigidBody.sleepThreshold = 0f;
+            m_rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
 
-        private void OnCollisionExit(Collision collision)
-        {
-            if (m_collisions.Contains(collision.collider))
-            {
-                m_collisions.Remove(collision.collider);
-            }
-            if (m_collisions.Count == 0) { m_isGrounded = false; }
+            m_moveSpeedHash = Animator.StringToHash(m_moveSpeedParameter);
+            m_groundedHash = Animator.StringToHash(m_groundedParameter);
         }
 
         private void Update()
         {
-            if (!m_jumpInput && Input.GetKey(KeyCode.Space))
+            Vector2 rawInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            m_moveInput = ToCameraRelative(rawInput);
+        }
+
+        private void OnCollisionStay(Collision collision)
+        {
+            bool isGroundLayer = ((1 << collision.gameObject.layer) & m_groundLayers.value) != 0;
+            int contactCount = collision.contactCount;
+
+            for (int contactIndex = 0; contactIndex < contactCount; contactIndex++)
             {
-                m_jumpInput = true;
+                Vector3 contactNormal = collision.GetContact(contactIndex).normal;
+
+                if (contactNormal.y > 0.5f)
+                {
+                    if (isGroundLayer) m_groundContactThisStep = true;
+                }
+                else if (contactNormal.y > -0.5f)
+                {
+                    m_wallNormals.Add(contactNormal);
+                }
             }
         }
 
         private void FixedUpdate()
         {
-            m_animator.SetBool("Grounded", m_isGrounded);
+            float deltaTime = Time.fixedDeltaTime;
 
-            switch (m_controlMode)
-            {
-                case ControlMode.Direct:
-                    DirectUpdate();
-                    break;
+            m_isGrounded = m_groundContactThisStep;
+            m_groundContactThisStep = false;
 
-                case ControlMode.Tank:
-                    TankUpdate();
-                    break;
+            Move(deltaTime);
+            FaceVelocity(deltaTime);
+            ApplyGravity(deltaTime);
+            UpdateAnimator();
 
-                default:
-                    Debug.LogError("Unsupported state");
-                    break;
-            }
-
-            m_wasGrounded = m_isGrounded;
-            m_jumpInput = false;
+            m_wallNormals.Clear();
         }
 
-        private void TankUpdate()
+        private Vector3 ToCameraRelative(Vector2 rawInput)
         {
-            float v = Input.GetAxis("Vertical");
-            float h = Input.GetAxis("Horizontal");
+            if (rawInput.sqrMagnitude < 0.01f) return Vector3.zero;
 
-            bool walk = Input.GetKey(KeyCode.LeftShift);
+            Vector3 cameraForward = Vector3.forward;
+            Vector3 cameraRight = Vector3.right;
 
-            if (v < 0)
+            if (m_camera != null)
             {
-                if (walk) { v *= m_backwardsWalkScale; }
-                else { v *= m_backwardRunScale; }
+                cameraForward = m_camera.transform.forward;
+                cameraRight = m_camera.transform.right;
+                cameraForward.y = 0f;
+                cameraRight.y = 0f;
+
+                cameraForward = cameraForward.sqrMagnitude < 0.001f ? Vector3.forward : cameraForward.normalized;
+                cameraRight = cameraRight.sqrMagnitude < 0.001f ? Vector3.right : cameraRight.normalized;
             }
-            else if (walk)
-            {
-                v *= m_walkScale;
-            }
 
-            m_currentV = Mathf.Lerp(m_currentV, v, Time.deltaTime * m_interpolation);
-            m_currentH = Mathf.Lerp(m_currentH, h, Time.deltaTime * m_interpolation);
+            Vector3 worldDirection = cameraForward * rawInput.y + cameraRight * rawInput.x;
 
-            transform.position += transform.forward * m_currentV * m_moveSpeed * Time.deltaTime;
-            transform.Rotate(0, m_currentH * m_turnSpeed * Time.deltaTime, 0);
-
-            m_animator.SetFloat("MoveSpeed", m_currentV);
-
-            JumpingAndLanding();
+            return worldDirection.normalized * Mathf.Clamp01(rawInput.magnitude);
         }
 
-        private void DirectUpdate()
+        private void Move(float deltaTime)
         {
-            float v = Input.GetAxis("Vertical");
-            float h = Input.GetAxis("Horizontal");
+            Vector3 currentVelocity = m_rigidBody.velocity;
+            Vector3 horizontalVelocity = new Vector3(currentVelocity.x, 0f, currentVelocity.z);
 
-            Transform camera = Camera.main.transform;
+            Vector3 targetVelocity = m_moveInput * m_moveSpeed;
 
-            if (Input.GetKey(KeyCode.LeftShift))
+            int wallCount = m_wallNormals.Count;
+            for (int wallIndex = 0; wallIndex < wallCount; wallIndex++)
             {
-                v *= m_walkScale;
-                h *= m_walkScale;
+                Vector3 wallNormal = m_wallNormals[wallIndex];
+
+                if (Vector3.Dot(targetVelocity, wallNormal) < 0f)
+                {
+                    targetVelocity = Vector3.ProjectOnPlane(targetVelocity, wallNormal);
+                }
             }
 
-            m_currentV = Mathf.Lerp(m_currentV, v, Time.deltaTime * m_interpolation);
-            m_currentH = Mathf.Lerp(m_currentH, h, Time.deltaTime * m_interpolation);
+            float accelerationRate = m_moveInput.sqrMagnitude > 0.01f ? m_acceleration : m_deceleration;
 
-            Vector3 direction = camera.forward * m_currentV + camera.right * m_currentH;
+            horizontalVelocity = Vector3.MoveTowards(horizontalVelocity, targetVelocity, accelerationRate * deltaTime);
 
-            float directionLength = direction.magnitude;
-            direction.y = 0;
-            direction = direction.normalized * directionLength;
-
-            if (direction != Vector3.zero)
-            {
-                m_currentDirection = Vector3.Slerp(m_currentDirection, direction, Time.deltaTime * m_interpolation);
-
-                transform.rotation = Quaternion.LookRotation(m_currentDirection);
-                transform.position += m_currentDirection * m_moveSpeed * Time.deltaTime;
-
-                m_animator.SetFloat("MoveSpeed", direction.magnitude);
-            }
-
-            JumpingAndLanding();
+            m_rigidBody.velocity = new Vector3(horizontalVelocity.x, currentVelocity.y, horizontalVelocity.z);
         }
 
-        private void JumpingAndLanding()
+        private void FaceVelocity(float deltaTime)
         {
-            bool jumpCooldownOver = (Time.time - m_jumpTimeStamp) >= m_minJumpInterval;
+            if (m_visual == null) return;
 
-            if (jumpCooldownOver && m_isGrounded && m_jumpInput)
-            {
-                m_jumpTimeStamp = Time.time;
-                m_rigidBody.AddForce(Vector3.up * m_jumpForce, ForceMode.Impulse);
-            }
+            Vector3 currentVelocity = m_rigidBody.velocity;
+            Vector3 horizontalVelocity = new Vector3(currentVelocity.x, 0f, currentVelocity.z);
+
+            if (horizontalVelocity.sqrMagnitude < 0.01f) return;
+
+            Quaternion targetRotation = Quaternion.LookRotation(horizontalVelocity, Vector3.up);
+            m_visual.rotation = Quaternion.RotateTowards(m_visual.rotation, targetRotation, m_turnSpeed * deltaTime);
+        }
+
+        private void ApplyGravity(float deltaTime)
+        {
+            Vector3 currentVelocity = m_rigidBody.velocity;
+
+            float activeGravity = currentVelocity.y < 0f ? m_gravity * m_fallMultiplier : m_gravity;
+            currentVelocity.y -= activeGravity * deltaTime;
+
+            if (m_isGrounded && currentVelocity.y < 0f) currentVelocity.y = 0f;
+
+            m_rigidBody.velocity = currentVelocity;
+        }
+
+        private void UpdateAnimator()
+        {
+            if (m_animator == null) return;
+
+            Vector3 currentVelocity = m_rigidBody.velocity;
+            float planarSpeed = new Vector2(currentVelocity.x, currentVelocity.z).magnitude;
+            float normalizedSpeed = planarSpeed / Mathf.Max(m_moveSpeed, 0.0001f);
+
+            m_animator.SetFloat(m_moveSpeedHash, Mathf.Clamp01(normalizedSpeed));
+            m_animator.SetBool(m_groundedHash, m_isGrounded);
         }
     }
 }
