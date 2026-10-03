@@ -44,8 +44,8 @@ public class TaskInteractable : MonoBehaviour
         if (!task.Complete)
         {
             uiCanvas.SetActive(true);
+            gameObject.SetHighlight(true);
         }
-        gameObject.SetHighlight(true);
     }
 
     public void HideUI()
