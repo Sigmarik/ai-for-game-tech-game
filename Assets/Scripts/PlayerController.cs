@@ -2,36 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : GenericController
 {
     [SerializeField] private Camera m_camera;
     [Tooltip("Child transform holding the character model. It is rotated to face the velocity.")]
-
-    private CharacterMovement m_characterMovement;
-    private Interact m_interact;
 
     private void Awake()
     {
         if (m_camera == null) m_camera = Camera.main;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        m_characterMovement = GetComponent<CharacterMovement>();
-        m_interact = GetComponent<Interact>();
-
-        if (m_characterMovement == null) Debug.LogError($"{nameof(PlayerController)} on '{name}' has no {nameof(CharacterMovement)} component.", this);
-        if (m_interact == null) Debug.LogError($"{nameof(PlayerController)} on '{name}' has no {nameof(Interact)} component.", this);
-    }
-
     // Update is called once per frame
     void Update()
     {
         Vector2 rawInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        m_characterMovement.Move(ToCameraRelative(rawInput));
+        Move(ToCameraRelative(rawInput));
 
-        m_interact.SetInteracting(Input.GetKey(KeyCode.F));
+        SetInteracting(Input.GetKey(KeyCode.F));
     }
 
     private Vector3 ToCameraRelative(Vector2 rawInput)
