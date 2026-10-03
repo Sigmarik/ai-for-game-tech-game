@@ -1148,12 +1148,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_animator: {fileID: 2820111579209204923}
-  m_cameraTransform: {fileID: 0}
+  m_camera: {fileID: 0}
   m_visual: {fileID: 8011454918990573107}
-  m_moveSpeed: 2
-  m_acceleration: 60
-  m_deceleration: 80
-  m_turnSpeed: 200
+  m_moveSpeed: 2.6
+  m_acceleration: 12
+  m_deceleration: 15
+  m_turnSpeed: 430
   m_gravity: 25
   m_fallMultiplier: 1.7
   m_groundLayers:
