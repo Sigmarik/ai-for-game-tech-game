@@ -6,8 +6,6 @@ public class CharacterMovement : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Animator m_animator;
-    [SerializeField] private Camera m_camera;
-    [Tooltip("Child transform holding the character model. It is rotated to face the velocity.")]
     [SerializeField] private Transform m_visual;
 
     [Header("Movement")]
@@ -42,7 +40,6 @@ public class CharacterMovement : MonoBehaviour
         m_rigidBody = GetComponent<Rigidbody>();
 
         if (m_animator == null) m_animator = GetComponentInChildren<Animator>();
-        if (m_camera == null) m_camera = Camera.main;
 
         if (m_visual == null) Debug.LogWarning($"{nameof(CharacterMovement)} on '{name}' has no visual assigned; the character will not turn.", this);
 
@@ -56,10 +53,14 @@ public class CharacterMovement : MonoBehaviour
         m_groundedHash = Animator.StringToHash(m_groundedParameter);
     }
 
+    public void Move(Vector3 direction)
+    {
+        m_moveInput = direction;
+    }
+
     private void Update()
     {
-        Vector2 rawInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        m_moveInput = ToCameraRelative(rawInput);
+        // Do nothing, send movement inputs from other components such as player/AI controllers.
     }
 
     private void OnCollisionStay(Collision collision)
@@ -89,7 +90,7 @@ public class CharacterMovement : MonoBehaviour
         m_isGrounded = m_groundContactThisStep;
         m_groundContactThisStep = false;
 
-        Move(deltaTime);
+        ApplyMovement(deltaTime);
         FaceVelocity(deltaTime);
         ApplyGravity(deltaTime);
         UpdateAnimator();
@@ -97,30 +98,7 @@ public class CharacterMovement : MonoBehaviour
         m_wallNormals.Clear();
     }
 
-    private Vector3 ToCameraRelative(Vector2 rawInput)
-    {
-        if (rawInput.sqrMagnitude < 0.01f) return Vector3.zero;
-
-        Vector3 cameraForward = Vector3.forward;
-        Vector3 cameraRight = Vector3.right;
-
-        if (m_camera != null)
-        {
-            cameraForward = m_camera.transform.forward;
-            cameraRight = m_camera.transform.right;
-            cameraForward.y = 0f;
-            cameraRight.y = 0f;
-
-            cameraForward = cameraForward.sqrMagnitude < 0.001f ? Vector3.forward : cameraForward.normalized;
-            cameraRight = cameraRight.sqrMagnitude < 0.001f ? Vector3.right : cameraRight.normalized;
-        }
-
-        Vector3 worldDirection = cameraForward * rawInput.y + cameraRight * rawInput.x;
-
-        return worldDirection.normalized * Mathf.Clamp01(rawInput.magnitude);
-    }
-
-    private void Move(float deltaTime)
+    private void ApplyMovement(float deltaTime)
     {
         Vector3 currentVelocity = m_rigidBody.velocity;
         Vector3 horizontalVelocity = new Vector3(currentVelocity.x, 0f, currentVelocity.z);
