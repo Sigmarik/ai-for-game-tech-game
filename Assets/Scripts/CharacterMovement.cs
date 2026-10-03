@@ -44,7 +44,7 @@ public class CharacterMovement : MonoBehaviour
         if (m_animator == null) m_animator = GetComponentInChildren<Animator>();
         if (m_camera == null) m_camera = Camera.main;
 
-        if (m_visual == null) Debug.LogWarning($"{nameof(TopDownCharacterController)} on '{name}' has no visual assigned; the character will not turn.", this);
+        if (m_visual == null) Debug.LogWarning($"{nameof(CharacterMovement)} on '{name}' has no visual assigned; the character will not turn.", this);
 
         m_rigidBody.isKinematic = false;
         m_rigidBody.useGravity = false;
