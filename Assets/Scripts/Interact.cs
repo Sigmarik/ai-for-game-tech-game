@@ -6,8 +6,8 @@ public class Interact : MonoBehaviour
 {
     [SerializeField] private GameObject rayOrigin;
     [SerializeField] private float distance;
-    private TaskInteractable interactable;
-    private TaskInteractable oldInteractable;
+    private Interactable interactable;
+    private Interactable oldInteractable;
     private bool started = false;
     private bool uiOpen = false;
 
@@ -22,7 +22,7 @@ public class Interact : MonoBehaviour
 
     void Update()
     {
-        TaskInteractable closestInteractable = FindClosestInteractable();
+        Interactable closestInteractable = FindClosestInteractable();
 
         if (closestInteractable != interactable)
         {
@@ -68,14 +68,14 @@ public class Interact : MonoBehaviour
         }
     }
 
-    public List<TaskInteractable> FindAllInteractables()
+    public List<Interactable> FindAllInteractables()
     {
-        TaskInteractable[] allInteractables = FindObjectsByType<TaskInteractable>(FindObjectsSortMode.None);
-        List<TaskInteractable> interactablesInRange = new List<TaskInteractable>();
+        Interactable[] allInteractables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
+        List<Interactable> interactablesInRange = new List<Interactable>();
 
         Vector3 originPosition = rayOrigin.transform.position;
 
-        foreach (TaskInteractable currentInteractable in allInteractables)
+        foreach (Interactable currentInteractable in allInteractables)
         {
             if (currentInteractable == null)
             {
@@ -92,14 +92,14 @@ public class Interact : MonoBehaviour
         return interactablesInRange;
     }
 
-    public TaskInteractable FindClosestInteractable()
+    public Interactable FindClosestInteractable()
     {
-        TaskInteractable[] allInteractables = FindObjectsOfType<TaskInteractable>();
-        TaskInteractable bestInteractable = null;
+        Interactable[] allInteractables = FindObjectsOfType<Interactable>();
+        Interactable bestInteractable = null;
         float bestDistance = distance;
         Vector3 originPosition = rayOrigin.transform.position;
 
-        foreach (TaskInteractable currentInteractable in allInteractables)
+        foreach (Interactable currentInteractable in allInteractables)
         {
             if (currentInteractable == null)
             {
