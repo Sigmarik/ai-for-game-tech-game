@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour
@@ -12,6 +13,8 @@ public class Interactable : MonoBehaviour
     [SerializeField] private ProgressBar progressBar;
     [SerializeField] private GameObject uiCanvas;
 
+    private int taskCount = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,17 +24,32 @@ public class Interactable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (taskCount <= 0)
+            uiCanvas.SetActive(false);
+    }
+
+    public void TaskSubscribed()
+    {
+        taskCount++;
+    }
+
+    public void TaskUnsubscribed()
+    {
+        taskCount--;
+        if (taskCount <= 0)
+            uiCanvas.SetActive(false);
     }
 
     public void StartInteraction()
     {
-        OnInteractionStart.Invoke();
+        if (OnInteractionStart != null)
+            OnInteractionStart.Invoke();
     }
 
     public void StopInteraction()
     {
-        OnInteractionEnd.Invoke();
+        if (OnInteractionEnd != null)
+            OnInteractionEnd.Invoke();
     }
 
     public void NextState()

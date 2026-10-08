@@ -24,6 +24,7 @@ public class Task : MonoBehaviour
         }
         interactable.OnInteractionStart += Activate;
         interactable.OnInteractionEnd += Deactivate;
+        interactable.TaskSubscribed();
     }
 
     // Update is called once per frame
@@ -55,6 +56,9 @@ public class Task : MonoBehaviour
         yield return new WaitForSeconds(interactDuration);
         interactable.StopProgressBar();
         interactable.NextState();
+        interactable.OnInteractionStart -= Activate;
+        interactable.OnInteractionEnd -= Deactivate;
+        interactable.TaskUnsubscribed();
         isComplete = true;
     }
 }
