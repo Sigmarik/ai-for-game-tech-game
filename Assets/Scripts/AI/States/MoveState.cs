@@ -15,7 +15,7 @@ public class MoveState : AIState
     {
         if (AI.HasReachedDestination())
         {
-            StateMachine.ChangeState(AI.IdleState);
+            AI.Brain.OnMoveComplete();
         }
     }
 

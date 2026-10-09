@@ -15,10 +15,12 @@ public class AIPlayerController : MonoBehaviour
 
     public Animator animator;
     private static readonly int speedHash = Animator.StringToHash("MoveSpeed");
-    private AIStateMachine stateMachine;
+    public AIStateMachine StateMachine { get; private set; }
 
     public IdleState IdleState { get; private set; }
     public MoveState MoveState { get; private set; }
+    public InteractState InteractState { get; private set; }
+    public AIBrain Brain { get; private set; }
 
 
     // Nav
@@ -28,7 +30,7 @@ public class AIPlayerController : MonoBehaviour
     //Debug
     [SerializeField] private string currentStateName;
 
-    [SerializeField] private Transform testTarget;
+    [SerializeField] public Transform testTarget;
 
     private void Awake()
     {
@@ -37,32 +39,33 @@ public class AIPlayerController : MonoBehaviour
         
         agent.speed = moveSpeed;
 
-        stateMachine = new AIStateMachine();
+        StateMachine = new AIStateMachine();
 
-        IdleState = new IdleState(this, stateMachine);
-        MoveState = new MoveState(this, stateMachine);
+        IdleState = new IdleState(this, StateMachine);
+        MoveState = new MoveState(this, StateMachine);
+        InteractState = new InteractState(this, StateMachine);
+
+        Brain = new AIBrain(this);
     }
 
     private void Start()
     {
-        stateMachine.Initialize(IdleState);
-        
-        moveTarget = testTarget.position;
-        stateMachine.ChangeState(MoveState);
+        StateMachine.Initialize(IdleState);
+        Brain.RequestWork();
     }
 
     private void Update()
     {
-        stateMachine.Update();
+        StateMachine.Update();
 
         UpdateAnimator();
 
-        currentStateName = stateMachine.CurrentState?.GetType().Name;
+        currentStateName = StateMachine.CurrentState?.GetType().Name;
     }
 
     private void FixedUpdate()
     {
-        stateMachine.FixedUpdate();
+        StateMachine.FixedUpdate();
     }
 
     public void StopMoving()

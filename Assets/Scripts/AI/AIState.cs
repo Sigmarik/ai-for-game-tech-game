@@ -3,9 +3,7 @@ public abstract class AIState
     protected AIPlayerController AI;
     protected AIStateMachine StateMachine;
 
-    protected AIState(
-        AIPlayerController ai,
-        AIStateMachine stateMachine)
+    protected AIState(AIPlayerController ai, AIStateMachine stateMachine)
     {
         AI = ai;
         StateMachine = stateMachine;
