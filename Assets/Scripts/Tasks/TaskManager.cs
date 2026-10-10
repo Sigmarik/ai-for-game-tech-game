@@ -19,11 +19,7 @@ public class TaskManager : MonoBehaviour
             return;
         }
         instance = this;
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
         foreach (Transform child in transform)
         {
             Task childTask = child.GetComponent<Task>();
@@ -34,6 +30,21 @@ public class TaskManager : MonoBehaviour
             }
         }
         GetCompletableTasks();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        // foreach (Transform child in transform)
+        // {
+        //     Task childTask = child.GetComponent<Task>();
+        //     if (childTask != null)
+        //     {
+        //         endTasks.Add(childTask);
+        //         SubToTaskCompletion(childTask);
+        //     }
+        // }
+        // GetCompletableTasks();
     }
 
     // Update is called once per frame
