@@ -104,7 +104,7 @@ NavMeshSettings:
     serializedVersion: 3
     agentTypeID: 0
     agentRadius: 0.3
-    agentHeight: 1.6
+    agentHeight: 1
     agentSlope: 45
     agentClimb: 0.4
     ledgeDropHeight: 0
@@ -5436,10 +5436,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6402585335920576541, guid: 71ebd3f051365a748a09051399f18fed, type: 3}
-      propertyPath: m_StoppingDistance
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8332609979645933158, guid: 71ebd3f051365a748a09051399f18fed, type: 3}
       propertyPath: m_Name
       value: AIPlayer
@@ -5447,10 +5443,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8332609979645933158, guid: 71ebd3f051365a748a09051399f18fed, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2128351239}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71ebd3f051365a748a09051399f18fed, type: 3}
 --- !u!1 &1974672054
 GameObject:
@@ -5980,29 +5973,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2a64b73018a9b14b92d3ae2b73e083b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2128351238 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8332609979645933158, guid: 71ebd3f051365a748a09051399f18fed, type: 3}
-  m_PrefabInstance: {fileID: 1972868065}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2128351239
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2128351238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 2
-  outlineColor: {r: 0.41568625, g: 0.6986243, b: 1, a: 1}
-  outlineWidth: 4
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!1001 &29372194881080350
 PrefabInstance:
   m_ObjectHideFlags: 0
