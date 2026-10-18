@@ -954,7 +954,7 @@ GameObject:
   - component: {fileID: 831742151}
   - component: {fileID: 831742150}
   m_Layer: 0
-  m_Name: EntranceGate (1)
+  m_Name: ExitGate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1028,13 +1028,13 @@ MonoBehaviour:
   cameraRig: {fileID: 1975605199}
   carPrefabs:
   - {fileID: 420623664966357701, guid: faedcd643d4f0314bafc0aa8a17b8c28, type: 3}
-  - {fileID: 420623664966357701, guid: faedcd643d4f0314bafc0aa8a17b8c28, type: 3}
-  - {fileID: 420623664966357701, guid: faedcd643d4f0314bafc0aa8a17b8c28, type: 3}
-  - {fileID: 420623664966357701, guid: faedcd643d4f0314bafc0aa8a17b8c28, type: 3}
   carQueueOrigin: {fileID: 2122230439}
   workshopPosition: {fileID: 1045860292}
   exitPosition: {fileID: 1118620499}
   distanceBetweenCars: 5
+  confettiPrefabs:
+  - {fileID: 4938095755617958529, guid: 2e79f16be10fbd14f8d5ef191f8db4aa, type: 3}
+  - {fileID: 5700784828077083704, guid: ed962e35f7fa6f34f8d27aa6d19ea293, type: 3}
 --- !u!4 &848882263
 Transform:
   m_ObjectHideFlags: 0

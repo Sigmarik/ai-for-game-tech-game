@@ -11,6 +11,8 @@ public class LevelSequencer : MonoBehaviour
     [SerializeField] private Transform exitPosition;
     [SerializeField] private float distanceBetweenCars = 5f;
 
+    [SerializeField] private List<GameObject> confettiPrefabs;
+
     private List<GameObject> m_carsToFix = new List<GameObject>();
     private int m_currentCarIndex = 0;
     private GameObject m_currentCar = null;
@@ -34,13 +36,16 @@ public class LevelSequencer : MonoBehaviour
         yield return new WaitForSeconds(2f);
         ShowMessage("Instruction", "");
 
-        while (m_currentCarIndex <= m_carsToFix.Count)
+        while (m_currentCarIndex < m_carsToFix.Count)
         {
-            yield return RemoveCurrentCar();
             yield return AdvanceQueue();
             yield return new WaitUntil(() => m_currentCar != null && IsCarFixed(m_currentCar));
             yield return WaitForInput("space", 0.5f);
+            yield return RemoveCurrentCar();
         }
+
+        ShowMessage("Instruction", "Congratulations! You fixed all the cars!");
+        yield return SpawnConfetti();
     }
 
     IEnumerator PreviewCars()
@@ -89,6 +94,40 @@ public class LevelSequencer : MonoBehaviour
             Vector3 targetPosition = carQueueOrigin.position - carQueueOrigin.forward * distanceBetweenCars * (i - nextCarIndex + 0.5f);
             StartCoroutine(LerpObjectToPosition(car, targetPosition, 1f));
             yield return new WaitForSeconds(0.2f);
+        }
+    }
+
+    IEnumerator SpawnConfetti()
+    {
+        if (confettiPrefabs.Count == 0)
+        {
+            Debug.LogWarning("No confetti prefabs assigned to LevelSequencer.");
+            yield break;
+        }
+
+        Camera mainCamera = Camera.main;
+
+        while (true)
+        {
+            GameObject confettiPrefab = confettiPrefabs[Random.Range(0, confettiPrefabs.Count)];
+            if (confettiPrefab != null)
+            {
+                Vector3 spawnPosition = workshopPosition.position
+                    + new Vector3(Random.Range(-2f, 2f), Random.Range(0.3f, 2.5f), Random.Range(-2f, 2f));
+
+                Quaternion spawnRotation = Quaternion.identity;
+                if (mainCamera != null)
+                {
+                    Vector3 toCamera = mainCamera.transform.position - spawnPosition;
+                    if (toCamera.sqrMagnitude > 0.0001f)
+                        spawnRotation = Quaternion.LookRotation(toCamera);
+                }
+
+                GameObject confetti = Instantiate(confettiPrefab, spawnPosition, spawnRotation);
+                confetti.transform.localScale = Vector3.one * Random.Range(0.1f, 0.15f);
+                Destroy(confetti, 5f);
+            }
+            yield return new WaitForSeconds(0.15f);
         }
     }
 
