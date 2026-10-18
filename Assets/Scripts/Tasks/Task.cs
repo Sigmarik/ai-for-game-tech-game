@@ -22,6 +22,7 @@ public class Task : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        /*
         foreach (Transform child in transform)
         {
             Task childTask = child.GetComponent<Task>();
@@ -32,12 +33,28 @@ public class Task : MonoBehaviour
         interactable.OnInteractionStart += Activate;
         interactable.OnInteractionEnd += Deactivate;
         interactable.TaskSubscribed();
+        */
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void MakeActive()
+    {
+        foreach (Transform child in transform)
+        {
+            Task childTask = child.GetComponent<Task>();
+            if (childTask != null) reqTasks.Add(childTask);
+        }
+        foreach (Task adoptedTask in adoptedRequiredTasks)
+            reqTasks.Add(adoptedTask);
+        interactable.OnInteractionStart += Activate;
+        interactable.OnInteractionEnd += Deactivate;
+        interactable.TaskSubscribed();
+
     }
 
     public void Activate()

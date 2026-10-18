@@ -6,23 +6,30 @@ using UnityEngine;
 
 public class TaskManager : MonoBehaviour
 {
-    public static TaskManager instance;
     private List<Task> endTasks = new List<Task>();
     private List<Task> completableTasks;
     public List<Task> CompletableTasks { get { return completableTasks; } }
+    private bool finished;
+    public bool Finished { get { return finished; } }
 
     private void Awake()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
+
     }
 
     // Start is called before the first frame update
     void Start()
+    {
+        MakeActive();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    public void MakeActive()
     {
         foreach (Transform child in transform)
         {
@@ -30,28 +37,34 @@ public class TaskManager : MonoBehaviour
             if (childTask != null)
             {
                 endTasks.Add(childTask);
-                SubToTaskCompletion(childTask);
+                MakeTasksActive(childTask);
+                SubToEndTaskCompletion(childTask);
             }
         }
         GetCompletableTasks();
     }
-
-    // Update is called once per frame
-    void Update()
+    public void MakeTasksActive(Task task)
     {
-        
-    }
-
-    public void SubToTaskCompletion(Task task)
-    {
+        task.MakeActive();
         task.OnTaskComplete += TaskCompletes;
         foreach (Task childTask in task.ReqTasks)
-            SubToTaskCompletion(childTask);
+            MakeTasksActive(childTask);
     }
 
     public void TaskCompletes(Task task)
     {
         GetCompletableTasks();
+    }
+
+    public void SubToEndTaskCompletion(Task task)
+    {
+        task.OnTaskComplete += EndTaskCompletes;   
+    }
+
+    public void EndTaskCompletes(Task task)
+    {
+        if (endTasks.All(task => task.IsComplete))
+            finished = true;
     }
 
     public void GetCompletableTasks()
