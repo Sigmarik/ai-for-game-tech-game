@@ -36,9 +36,10 @@ public class LevelSequencer : MonoBehaviour
 
         while (m_currentCarIndex <= m_carsToFix.Count)
         {
-            yield return WaitForInput("space");
             yield return RemoveCurrentCar();
             yield return AdvanceQueue();
+            yield return new WaitUntil(() => m_currentCar != null && IsCarFixed(m_currentCar));
+            yield return WaitForInput("space", 0.5f);
         }
     }
 
@@ -59,6 +60,7 @@ public class LevelSequencer : MonoBehaviour
     {
         if (m_currentCar != null)
         {
+            DisableAllColliders(m_currentCar);
             StartCoroutine(LerpObjectToPosition(m_currentCar, exitPosition.position, 2f));
             m_currentCar = null;
             yield return new WaitForSeconds(0.5f);
@@ -72,6 +74,7 @@ public class LevelSequencer : MonoBehaviour
             m_currentCar = m_carsToFix[m_currentCarIndex];
             StartCoroutine(LerpObjectToPosition(m_currentCar, workshopPosition.position, 1f));
             yield return new WaitForSeconds(0.2f);
+            MakeTaskManagerActive(m_currentCar);
             StartCoroutine(MoveCarsInQueue());
         }
         m_currentCarIndex++;
@@ -95,6 +98,32 @@ public class LevelSequencer : MonoBehaviour
         {
             interactable.gameObject.SetHighlight(highlight);
         }
+    }
+
+    void DisableAllColliders(GameObject car)
+    {
+        foreach (Collider collider in car.GetComponentsInChildren<Collider>(true))
+        {
+            collider.enabled = false;
+        }
+    }
+
+    void MakeTaskManagerActive(GameObject car)
+    {
+        foreach (TaskManager manager in car.GetComponentsInChildren<TaskManager>(true))
+        {
+            manager.MakeActive();
+        }
+    }
+
+    bool IsCarFixed(GameObject car)
+    {
+        foreach (TaskManager manager in car.GetComponentsInChildren<TaskManager>(true))
+        {
+            if (!manager.Finished)
+                return false;
+        }
+        return true;
     }
 
     IEnumerator WaitForInput(string keyName, float promptDelay = 3f)

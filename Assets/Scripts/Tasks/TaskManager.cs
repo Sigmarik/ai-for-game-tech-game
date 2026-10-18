@@ -20,7 +20,7 @@ public class TaskManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MakeActive();
+        
     }
 
     // Update is called once per frame
