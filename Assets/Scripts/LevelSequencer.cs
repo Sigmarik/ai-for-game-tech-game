@@ -19,7 +19,7 @@ public class LevelSequencer : MonoBehaviour
 
     IEnumerator LevelSequence()
     {
-        GenericController.SetFreezeControls(true);
+        SetFreezeControls(true);
         ShowMessage("Instruction", "This game is about fixing cars!");
 
         yield return WaitForInput("space");
@@ -30,7 +30,7 @@ public class LevelSequencer : MonoBehaviour
 
         yield return PreviewCars();
 
-        GenericController.SetFreezeControls(false);
+        SetFreezeControls(false);
         ShowMessage("Instruction", "Good luck!");
 
         yield return new WaitForSeconds(2f);
@@ -128,6 +128,16 @@ public class LevelSequencer : MonoBehaviour
                 Destroy(confetti, 5f);
             }
             yield return new WaitForSeconds(0.15f);
+        }
+    }
+
+    public static void SetFreezeControls(bool freeze)
+    {
+        GenericController[] controllers = FindObjectsByType<GenericController>(FindObjectsSortMode.None);
+
+        foreach (GenericController controller in controllers)
+        {
+            controller.controlsFrozen = freeze;
         }
     }
 

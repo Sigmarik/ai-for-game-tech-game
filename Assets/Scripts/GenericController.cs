@@ -7,17 +7,7 @@ public class GenericController : MonoBehaviour
     protected CharacterMovement m_characterMovement;
     protected Interact m_interact;
 
-    private bool m_controlsFrozen = false;
-
-    public static void SetFreezeControls(bool freeze)
-    {
-        GenericController[] controllers = FindObjectsByType<GenericController>(FindObjectsSortMode.None);
-
-        foreach (GenericController controller in controllers)
-        {
-            controller.m_controlsFrozen = freeze;
-        }
-    }
+    public bool controlsFrozen = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,13 +23,13 @@ public class GenericController : MonoBehaviour
 
     protected void Move(Vector3 direction)
     {
-        if (m_controlsFrozen) return;
+        if (controlsFrozen) return;
         m_characterMovement.Move(direction);
     }
 
     protected void SetInteracting(bool interacting)
     {
-        if (m_controlsFrozen) return;
+        if (controlsFrozen) return;
         m_interact.SetInteracting(interacting);
     }
 
