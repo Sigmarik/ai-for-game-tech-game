@@ -29,18 +29,18 @@ public class GenericController : MonoBehaviour
         m_interact.SetInteracting(interacting);
     }
 
-    protected List<TaskInteractable> FindAllInteractables()
+    protected List<Interactable> FindAllInteractables()
     {
-        TaskInteractable[] interactables = FindObjectsOfType<TaskInteractable>();
-        return new List<TaskInteractable>(interactables);
+        Interactable[] interactables = FindObjectsOfType<Interactable>();
+        return new List<Interactable>(interactables);
     }
 
-    protected List<TaskInteractable> FindAllAvailableInteractables()
+    protected List<Interactable> FindAllAvailableInteractables()
     {
         return m_interact.FindAllInteractables();
     }
 
-    protected TaskInteractable FindSelectedInteractable()
+    protected Interactable FindSelectedInteractable()
     {
         return m_interact.FindClosestInteractable();
     }

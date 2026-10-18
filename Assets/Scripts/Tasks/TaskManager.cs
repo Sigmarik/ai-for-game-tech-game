@@ -1,29 +1,91 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TaskManager : MonoBehaviour
 {
-    public static TaskManager instance;
+    private List<Task> endTasks = new List<Task>();
+    private List<Task> completableTasks;
+    public List<Task> CompletableTasks { get { return completableTasks; } }
+    private bool finished;
+    public bool Finished { get { return finished; } }
 
     private void Awake()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        MakeActive();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public void MakeActive()
+    {
+        foreach (Transform child in transform)
+        {
+            Task childTask = child.GetComponent<Task>();
+            if (childTask != null)
+            {
+                endTasks.Add(childTask);
+                MakeTasksActive(childTask);
+                SubToEndTaskCompletion(childTask);
+            }
+        }
+        GetCompletableTasks();
+    }
+    public void MakeTasksActive(Task task)
+    {
+        task.MakeActive();
+        task.OnTaskComplete += TaskCompletes;
+        foreach (Task childTask in task.ReqTasks)
+            MakeTasksActive(childTask);
+    }
+
+    public void TaskCompletes(Task task)
+    {
+        GetCompletableTasks();
+    }
+
+    public void SubToEndTaskCompletion(Task task)
+    {
+        task.OnTaskComplete += EndTaskCompletes;   
+    }
+
+    public void EndTaskCompletes(Task task)
+    {
+        if (endTasks.All(task => task.IsComplete))
+            finished = true;
+    }
+
+    public void GetCompletableTasks()
+    {
+        List<Task> _completableTasks = new List<Task>();
+        foreach (Task task in endTasks)
+            _completableTasks = _completableTasks.Concat(CompletableOrChildren(task)).ToList();
+        completableTasks = _completableTasks;
+        foreach (Task task in completableTasks)
+            Debug.Log(task.name);
+    }
+
+    public List<Task> CompletableOrChildren(Task task)
+    {
+        if (task.IsComplete)
+            return new List<Task>();
+        if (task.AllRequirements())
+            return new List<Task>() { task };
+        List<Task> completableTasks = new List<Task>();
+        foreach (Task reqTask in task.ReqTasks)
+            completableTasks = completableTasks.Concat(CompletableOrChildren(reqTask)).ToList();
+        return completableTasks;
     }
 }
