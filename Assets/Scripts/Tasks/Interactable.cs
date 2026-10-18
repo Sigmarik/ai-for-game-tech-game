@@ -37,7 +37,10 @@ public class Interactable : MonoBehaviour
     {
         taskCount--;
         if (taskCount <= 0)
+        {
             uiCanvas.SetActive(false);
+            gameObject.SetHighlight(false);
+        }
     }
 
     public void StartInteraction()
@@ -69,6 +72,8 @@ public class Interactable : MonoBehaviour
     }
     public void ShowUI()
     {
+        if (taskCount <= 0)
+            return;
         uiCanvas.SetActive(true);
         gameObject.SetHighlight(true);
     }
