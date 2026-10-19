@@ -48,12 +48,17 @@ public abstract class GenericLevelSequencer : MonoBehaviour
         if (m_currentCarIndex < m_carsToFix.Count)
         {
             m_currentCar = m_carsToFix[m_currentCarIndex];
-            StartCoroutine(LerpObjectToPosition(m_currentCar, workshopPosition.position, 1f));
+            StartCoroutine(MoveAndActivateCar(m_currentCar, workshopPosition.position, 1f));
             yield return new WaitForSeconds(0.2f);
-            MakeTaskManagerActive(m_currentCar);
             StartCoroutine(MoveCarsInQueue());
         }
         m_currentCarIndex++;
+    }
+
+    private IEnumerator MoveAndActivateCar(GameObject car, Vector3 targetPosition, float duration)
+    {
+        yield return LerpObjectToPosition(car, targetPosition, duration);
+        MakeTaskManagerActive(car);
     }
 
     protected IEnumerator MoveCarsInQueue()
