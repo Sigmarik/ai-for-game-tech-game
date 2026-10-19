@@ -7,6 +7,8 @@ public class GenericController : MonoBehaviour
     protected CharacterMovement m_characterMovement;
     protected Interact m_interact;
 
+    public bool controlsFrozen = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,11 +23,13 @@ public class GenericController : MonoBehaviour
 
     protected void Move(Vector3 direction)
     {
+        if (controlsFrozen) return;
         m_characterMovement.Move(direction);
     }
 
     protected void SetInteracting(bool interacting)
     {
+        if (controlsFrozen) return;
         m_interact.SetInteracting(interacting);
     }
 
