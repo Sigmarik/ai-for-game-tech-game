@@ -12,6 +12,8 @@ public class TaskManager : MonoBehaviour
     private bool finished;
     public bool Finished { get { return finished; } }
 
+    [SerializeField] private bool activateOnStart = false;
+
     private void Awake()
     {
 
@@ -20,7 +22,7 @@ public class TaskManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (activateOnStart) MakeActive();
     }
 
     // Update is called once per frame

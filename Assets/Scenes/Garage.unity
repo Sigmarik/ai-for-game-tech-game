@@ -1404,6 +1404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98a77d832400adc41990d8e4bc3b08a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activateOnStart: 1
 --- !u!4 &485861301
 Transform:
   m_ObjectHideFlags: 0
@@ -5270,7 +5271,7 @@ Transform:
   m_GameObject: {fileID: 1906023384}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000008954389, y: 0.8539159, z: -0.52041095, w: -0.0000000146928025}
-  m_LocalPosition: {x: 0, y: 6.829984, z: 3.5249825}
+  m_LocalPosition: {x: 0, y: 6.8699837, z: 3.5249825}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5710,7 +5711,7 @@ Transform:
   m_GameObject: {fileID: 1975605199}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000008954389, y: 0.8539159, z: -0.52041095, w: -0.0000000146928025}
-  m_LocalPosition: {x: 0, y: 6.829984, z: 4.472721}
+  m_LocalPosition: {x: 0, y: 6.8699837, z: 4.4725003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7817,6 +7818,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rayOrigin: {fileID: 3956930610661081930}
   distance: 1
+  showUI: 0
 --- !u!4 &4016890423771278670 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7295227273683288977, guid: 18390a2270fe4104b9ae9f60bdf4428b, type: 3}
