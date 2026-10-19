@@ -11,6 +11,11 @@ public class InteractState : AIState
 
     public override void Enter()
     {
+        if (Vector3.Distance(AI.transform.position, AI.Brain.currentTask.interactable.transform.position) > 2f)
+        {
+            StateMachine.ChangeState(AI.MoveState);
+            return;
+        }
         AI.Brain.StartInteraction();
     }
 

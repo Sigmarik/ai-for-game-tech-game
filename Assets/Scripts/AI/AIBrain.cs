@@ -7,7 +7,7 @@ public class AIBrain
     ///  Tell AI what gonna do next
     /// </summary>
     AIPlayerController controller;
-    Task currentTask;
+    public Task currentTask;
     public AIBrain(AIPlayerController controller)
     {
         this.controller = controller;
@@ -18,8 +18,14 @@ public class AIBrain
         // var target = controller.testTarget.position;
         // controller.SetMoveTarget(target);
         // controller.StateMachine.ChangeState(controller.MoveState);
-        TaskManager.instance.GetCompletableTasks();
-        List<Task> tasks = TaskManager.instance.CompletableTasks;
+
+        List<Task> tasks = new List<Task>();
+        TaskManager[] managers = Object.FindObjectsByType<TaskManager>(FindObjectsSortMode.None);
+        foreach (TaskManager manager in managers)
+        {
+            if (manager.CompletableTasks != null)
+                tasks.AddRange(manager.CompletableTasks);
+        }
         if(tasks.Count == 0)
         {
             //Debug.Log("Null?");

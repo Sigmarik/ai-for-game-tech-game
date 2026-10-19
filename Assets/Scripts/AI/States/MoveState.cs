@@ -8,7 +8,7 @@ public class MoveState : AIState
 
     public override void Enter()
     {
-        AI.MoveTo(AI.moveTarget);
+        AI.MoveTo(AI.Brain.currentTask.interactable.transform.position);
     }
 
     public override void Update()
