@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 
 public class AIBrain
@@ -32,9 +30,32 @@ public class AIBrain
         {
             //Debug.Log("have something to do");
             // default pickup the first one, will optimize it later
-            currentTask = tasks[0];
-            controller.SetMoveTarget(currentTask.interactable.transform.position);
-            controller.StateMachine.ChangeState(controller.MoveState);
+            // currentTask = tasks[0];
+            // controller.SetMoveTarget(currentTask.interactable.transform.position);
+            // controller.StateMachine.ChangeState(controller.MoveState);
+
+            // Sort tasks by distance
+            Vector3 aiPos = controller.transform.position;
+            tasks.Sort((a, b) =>
+            {
+                float da = Vector3.Distance(aiPos, a.interactable.transform.position);
+                float db = Vector3.Distance(aiPos, b.interactable.transform.position);
+                return da.CompareTo(db);
+            });
+            
+            foreach(Task task in tasks)
+            {
+                if (!AITaskCoordinator.IsClaimByOthers(task, this))
+                {
+                    AITaskCoordinator.TryClaimTask(task, this);
+                    currentTask = task;
+                    controller.SetMoveTarget(currentTask.interactable.transform.position);
+                    controller.StateMachine.ChangeState(controller.MoveState);
+                    return;
+                }
+            }
+            controller.StateMachine.ChangeState(controller.IdleState);
+
         }
     }
 
@@ -45,6 +66,11 @@ public class AIBrain
 
     public void OnInteractComplete()
     {
+        if (currentTask != null)
+        {
+            AITaskCoordinator.ReleaseTask(currentTask, this);
+            currentTask = null;
+        }
         RequestWork();
     }
 

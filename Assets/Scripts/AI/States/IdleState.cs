@@ -13,7 +13,7 @@ public class IdleState : AIState
 
     public override void Update()
     {
-        
+        AI.Brain.RequestWork();
     }
 
     public override void Exit()

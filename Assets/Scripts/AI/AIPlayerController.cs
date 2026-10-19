@@ -51,7 +51,6 @@ public class AIPlayerController : MonoBehaviour
     private void Start()
     {
         StateMachine.Initialize(IdleState);
-        Brain.RequestWork();
     }
 
     private void Update()
