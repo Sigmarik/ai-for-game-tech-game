@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AIPlayerController : MonoBehaviour
+public class AIPlayerController : GenericController
 {
     /// <summary>
     /// Define AIPlayer Ability in Controller
@@ -55,6 +55,13 @@ public class AIPlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (controlsFrozen)
+        {
+            StopMoving();
+            UpdateAnimator();
+            return;
+        }
+
         StateMachine.Update();
 
         UpdateAnimator();
