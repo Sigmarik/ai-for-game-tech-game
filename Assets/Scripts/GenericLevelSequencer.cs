@@ -282,6 +282,13 @@ public abstract class GenericLevelSequencer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (cameraRig == null)
+        {
+            Cinemachine.CinemachineVirtualCamera virtualCamera = FindFirstObjectByType<Cinemachine.CinemachineVirtualCamera>();
+            if (virtualCamera != null)
+                cameraRig = virtualCamera.gameObject;
+        }
+
         SpawnCarsInQueue();
 
         StartCoroutine(LevelSequence());

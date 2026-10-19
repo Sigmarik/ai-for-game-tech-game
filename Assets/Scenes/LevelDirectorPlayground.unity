@@ -2797,10 +2797,6 @@ PrefabInstance:
       value: StandardLevelSequence
       objectReference: {fileID: 0}
     - target: {fileID: 954306849481248976, guid: 0e3b36ea1ba9c0443a65fb2b98beb23b, type: 3}
-      propertyPath: cameraRig
-      value: 
-      objectReference: {fileID: 1975605199}
-    - target: {fileID: 954306849481248976, guid: 0e3b36ea1ba9c0443a65fb2b98beb23b, type: 3}
       propertyPath: carPrefabs.Array.size
       value: 3
       objectReference: {fileID: 0}
