@@ -19,6 +19,20 @@ public abstract class GenericLevelSequencer : MonoBehaviour
 
     abstract protected IEnumerator LevelSequence();
 
+    protected List<AISpawner> GetSpawnersAtChannel(int channel)
+    {
+        List<AISpawner> spawnersAtChannel = new List<AISpawner>();
+        AISpawner[] spawners = FindObjectsByType<AISpawner>(FindObjectsSortMode.None);
+        foreach (AISpawner spawner in spawners)
+        {
+            if (spawner.spawnChannel == channel)
+            {
+                spawnersAtChannel.Add(spawner);
+            }
+        }
+        return spawnersAtChannel;
+    }
+
     protected IEnumerator PreviewCars()
     {
         for (int i = 0; i < m_carsToFix.Count; i++)
@@ -155,14 +169,18 @@ public abstract class GenericLevelSequencer : MonoBehaviour
     {
         Debug.Log($"Waiting for input: {keyName}");
 
+        bool prevKeyState = Input.GetKeyDown(keyName);
+
         float elapsed = 0f;
         while (elapsed < promptDelay)
         {
-            if (Input.GetKeyDown(keyName))
+            bool keyState = Input.GetKeyDown(keyName);
+            if (keyState && !prevKeyState)
             {
                 ShowMessage("ActionPrompt", "", false);
                 yield break;
             }
+            prevKeyState = keyState;
             elapsed += Time.unscaledDeltaTime;
             yield return null;
         }
