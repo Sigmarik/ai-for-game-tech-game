@@ -94,4 +94,19 @@ public class AIBrain
         }
         return false;
     }
+    public bool IsCurrentTaskClaimedByPlayer()
+    {
+        return currentTask != null && AITaskCoordinator.IsClaimByOthers(currentTask, this);
+    }
+
+    public void AbandonCurrentTask() // Check the task was taken by the player
+    {
+        if(currentTask != null)
+        {
+            AITaskCoordinator.ReleaseTask(currentTask, this);
+            currentTask = null;
+        }
+        RequestWork();
+    }
+    
 }

@@ -61,6 +61,7 @@ public class Task : MonoBehaviour
     {
         if (isComplete || !AllRequirements())
             return;
+        interactable.SetActiveTask(this);
         activeTask = StartCoroutine(this.ActivateTask());
     }
 
@@ -68,6 +69,7 @@ public class Task : MonoBehaviour
     {
         if (activeTask != null)
         {
+            interactable.ClearActiveTask(this);
             StopCoroutine(activeTask);
             interactable.StopProgressBar();
             activeTask = null;
@@ -90,8 +92,11 @@ public class Task : MonoBehaviour
         interactable.OnInteractionStart -= Activate;
         interactable.OnInteractionEnd -= Deactivate;
         interactable.TaskUnsubscribed();
+        interactable.ClearActiveTask(this);
         isComplete = true;
         if (OnTaskComplete != null)
             OnTaskComplete.Invoke(this);
     }
+
+
 }

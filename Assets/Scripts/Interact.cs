@@ -7,8 +7,10 @@ public class Interact : MonoBehaviour
     [SerializeField] private GameObject rayOrigin;
     [SerializeField] private float distance;
     private Interactable interactable;
+    public Interactable CurrentInteractable => interactable;
     private Interactable oldInteractable;
     private bool started = false;
+    public bool IsInteracting => started;
     private bool uiOpen = false;
 
     [SerializeField] private bool showUI = false;
@@ -120,5 +122,11 @@ public class Interact : MonoBehaviour
         }
 
         return bestInteractable;
+    }
+    public Task GetCurrentTask()
+    {
+        if (interactable == null)
+            return null;
+        return interactable.ActiveTask;
     }
 }

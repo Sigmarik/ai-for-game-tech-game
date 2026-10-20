@@ -15,6 +15,10 @@ public class Interactable : MonoBehaviour
 
     private int taskCount = 0;
 
+    public Task ActiveTask {get; private set;} // add this so Interactable will know which task is active
+    public void SetActiveTask(Task task) {ActiveTask = task;}
+    public void ClearActiveTask(Task task) {if(ActiveTask == task) ActiveTask  = null; }
+
     // Start is called before the first frame update
     void Start()
     {
