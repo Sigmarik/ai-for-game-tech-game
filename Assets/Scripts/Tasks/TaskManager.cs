@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class TaskManager : MonoBehaviour
 {
+    [SerializeField] Canvas taskGraph;
+
     private List<Task> endTasks = new List<Task>();
     private List<Task> completableTasks;
     public List<Task> CompletableTasks { get { return completableTasks; } }
@@ -22,6 +25,7 @@ public class TaskManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        taskGraph.gameObject.SetActive(false);
         if (activateOnStart) MakeActive();
     }
 
@@ -44,6 +48,7 @@ public class TaskManager : MonoBehaviour
             }
         }
         GetCompletableTasks();
+        taskGraph.gameObject.SetActive(true);
     }
     public void MakeTasksActive(Task task)
     {
@@ -66,7 +71,10 @@ public class TaskManager : MonoBehaviour
     public void EndTaskCompletes(Task task)
     {
         if (endTasks.All(task => task.IsComplete))
+        {
             finished = true;
+            taskGraph.gameObject.SetActive(false);
+        }
     }
 
     public void GetCompletableTasks()

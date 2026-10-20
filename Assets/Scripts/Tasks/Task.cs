@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class Task : MonoBehaviour
 {
@@ -10,6 +11,10 @@ public class Task : MonoBehaviour
     [SerializeField] public GameObject returnItem;
     [SerializeField] public float interactDuration;
     [SerializeField] public List<Task> adoptedRequiredTasks = new List<Task>(); // Tasks that cannot come from the prefab tree because they are children of another branch.
+
+    [SerializeField] public Image label;
+    [SerializeField] public Image labelCheck;
+    [SerializeField] public Image labelProgress;
 
     private List<Task> reqTasks = new List<Task>();
     public List<Task> ReqTasks { get { return reqTasks; } }
@@ -42,6 +47,14 @@ public class Task : MonoBehaviour
         
     }
 
+    public void SetLabel(Image labelToActivate)
+    {
+        label.gameObject.SetActive(false);
+        labelCheck.gameObject.SetActive(false);
+        labelProgress.gameObject.SetActive(false);
+        labelToActivate.gameObject.SetActive(true);
+    }
+
     public void MakeActive()
     {
         foreach (Transform child in transform)
@@ -55,6 +68,9 @@ public class Task : MonoBehaviour
         interactable.OnInteractionEnd += Deactivate;
         interactable.TaskSubscribed();
 
+        label.gameObject.SetActive(true);
+        labelCheck.gameObject.SetActive(false);
+        labelProgress.gameObject.SetActive(false);
     }
 
     public void Activate()
@@ -62,6 +78,7 @@ public class Task : MonoBehaviour
         if (isComplete || !AllRequirements())
             return;
         activeTask = StartCoroutine(this.ActivateTask());
+        SetLabel(labelProgress);
     }
 
     public void Deactivate()
@@ -71,6 +88,7 @@ public class Task : MonoBehaviour
             StopCoroutine(activeTask);
             interactable.StopProgressBar();
             activeTask = null;
+            SetLabel(label);
         }
     }
 
@@ -91,6 +109,7 @@ public class Task : MonoBehaviour
         interactable.OnInteractionEnd -= Deactivate;
         interactable.TaskUnsubscribed();
         isComplete = true;
+        SetLabel(labelCheck);
         if (OnTaskComplete != null)
             OnTaskComplete.Invoke(this);
     }
