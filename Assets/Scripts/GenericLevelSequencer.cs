@@ -121,7 +121,7 @@ public abstract class GenericLevelSequencer : MonoBehaviour
     {
         foreach (Interactable interactable in car.GetComponentsInChildren<Interactable>(true))
         {
-            interactable.gameObject.SetHighlight(highlight);
+            interactable.SetHighlight(highlight);
         }
     }
 
