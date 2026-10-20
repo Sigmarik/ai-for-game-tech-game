@@ -55,6 +55,7 @@ public class TaskManager : MonoBehaviour
 
     public void TaskCompletes(Task task)
     {
+        task.interactable.SetHighlight(false);
         GetCompletableTasks();
     }
 
@@ -65,6 +66,7 @@ public class TaskManager : MonoBehaviour
 
     public void EndTaskCompletes(Task task)
     {
+        task.interactable.SetActive(false);
         if (endTasks.All(task => task.IsComplete))
             finished = true;
     }
@@ -76,7 +78,10 @@ public class TaskManager : MonoBehaviour
             _completableTasks = _completableTasks.Concat(CompletableOrChildren(task)).ToList();
         completableTasks = _completableTasks;
         foreach (Task task in completableTasks)
+        {
             Debug.Log(task.name);
+            task.interactable.ForceUpdate();
+        }
     }
 
     public List<Task> CompletableOrChildren(Task task)

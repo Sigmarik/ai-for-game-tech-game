@@ -5,7 +5,7 @@ using UnityEngine;
 public class GenericController : MonoBehaviour
 {
     protected CharacterMovement m_characterMovement;
-    protected Interact m_interact;
+    public Interact m_interact;
 
     public bool controlsFrozen = false;
 
