@@ -23,13 +23,13 @@ public class GenericController : MonoBehaviour
 
     protected void Move(Vector3 direction)
     {
-        if (controlsFrozen) return;
+        if (controlsFrozen) direction = Vector3.zero;
         m_characterMovement.Move(direction);
     }
 
     protected void SetInteracting(bool interacting)
     {
-        if (controlsFrozen) return;
+        if (controlsFrozen) interacting = false;
         m_interact.SetInteracting(interacting);
     }
 
