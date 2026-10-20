@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using UnityEngine.Playables;
 
 public static class AITaskCoordinator
 {
@@ -8,11 +9,11 @@ public static class AITaskCoordinator
     /// </summary>
     /// 
     
-    static Dictionary<Task, AIBrain> claims = new Dictionary<Task, AIBrain>();
+    static Dictionary<Task, object> claims = new Dictionary<Task, object>();
 
-    public static bool TryClaimTask(Task task, AIBrain owner)
+    public static bool TryClaimTask(Task task, object owner)// this method is for AI
     {
-        AIBrain currentTaskOwner;
+        object currentTaskOwner;
         if(claims.TryGetValue(task, out currentTaskOwner)) // task is occupied
         {
             if(currentTaskOwner != owner) // task is occupied by others
@@ -22,9 +23,14 @@ public static class AITaskCoordinator
         return true;
     }
 
-    public static bool IsClaimByOthers(Task task, AIBrain owner)
+    public static void ForceClaimTask(Task task, object owner) // this method is for player
     {
-        AIBrain currentTaskOwner;
+        claims[task] = owner;
+    }
+
+    public static bool IsClaimByOthers(Task task, object owner)
+    {
+        object currentTaskOwner;
         if(claims.TryGetValue(task, out currentTaskOwner)) // task is occupied
         {
             if(currentTaskOwner != owner) // task is occupied by others
@@ -34,9 +40,9 @@ public static class AITaskCoordinator
 
     }
     
-    public static void ReleaseTask(Task task, AIBrain owner)
+    public static void ReleaseTask(Task task, object owner)
     {
-        AIBrain currentTaskOwner;
+        object currentTaskOwner;
         if (claims.TryGetValue(task, out currentTaskOwner) && currentTaskOwner == owner)
             claims.Remove(task);
     }

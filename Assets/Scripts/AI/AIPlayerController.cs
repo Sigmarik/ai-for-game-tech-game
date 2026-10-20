@@ -46,11 +46,15 @@ public class AIPlayerController : GenericController
         InteractState = new InteractState(this, StateMachine);
 
         Brain = new AIBrain(this);
+
+        
     }
 
     private void Start()
     {
         StateMachine.Initialize(IdleState);
+
+        m_interact = GetComponent<Interact>(); // Do this for adapting the GenericController
     }
 
     private void Update()

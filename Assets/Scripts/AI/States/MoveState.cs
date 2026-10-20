@@ -13,6 +13,12 @@ public class MoveState : AIState
 
     public override void Update()
     {
+        if (AI.Brain.IsCurrentTaskClaimedByPlayer())
+        {
+            AI.Brain.AbandonCurrentTask();
+            return;
+        }
+
         if (AI.HasReachedDestination())
         {
             AI.Brain.OnMoveComplete();
