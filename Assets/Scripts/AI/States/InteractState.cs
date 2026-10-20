@@ -22,6 +22,12 @@ public class InteractState : AIState
 
     public override void Update()
     {
+        if (AI.Brain.IsCurrentTaskClaimedByPlayer())
+        {
+            AI.Brain.AbandonCurrentTask();
+            return;
+        }
+
         if (AI.Brain.IsStepDone())
         {
             StateMachine.ChangeState(AI.IdleState);

@@ -15,125 +15,103 @@ public class Interactable : MonoBehaviour
 
     private int taskCount = 0;
 
-    private MeshRenderer outline;
+    public Task ActiveTask {get; private set;} // add this so Interactable will know which task is active
+    public void SetActiveTask(Task task) {ActiveTask = task;}
+    public void ClearActiveTask(Task task) {if(ActiveTask == task) ActiveTask  = null; }
 
-    private Interact interacter = null;
+    public object ActiveOwner {get; private set;}
 
-    private bool active = true;
-
-    private void Start()
+    // Start is called before the first frame update
+    void Start()
     {
-        GameObject obj = new GameObject("outline");
-        outline = obj.AddComponent<MeshRenderer>();
-        outline.SetMaterials(new List<Material>());
-        MeshFilter filter = obj.AddComponent<MeshFilter>();
-        filter.mesh = GetComponent<MeshFilter>().mesh;
-        obj.transform.SetParent(transform, false);
-        obj.transform.localRotation = Quaternion.Euler(0, 0, 0); 
-        obj.transform.localPosition = Vector3.zero;
-        obj.transform.localScale = Vector3.one;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!active) return;
         if (taskCount <= 0)
             uiCanvas.SetActive(false);
     }
 
     public void TaskSubscribed()
     {
-        if (!active) return;
         taskCount++;
     }
 
     public void TaskUnsubscribed()
     {
-        if (!active) return;
         taskCount--;
         if (taskCount <= 0)
         {
             uiCanvas.SetActive(false);
-            SetHighlight(false);
+            gameObject.SetHighlight(false);
         }
     }
 
-    public void StartInteraction(Interact p_interacter)
+    private void StartInteraction()
     {
-        if (!active || interacter != null) return;
-        interacter = p_interacter;
         if (OnInteractionStart != null)
             OnInteractionStart.Invoke();
     }
 
-    public void StopInteraction()
+    private void StopInteraction()
     {
-        if (!active) return;
-        interacter = null;
         if (OnInteractionEnd != null)
             OnInteractionEnd.Invoke();
     }
 
+    public bool TryStartInteraction(object owner) // AI funtion
+    {
+        if (ActiveOwner != null && ActiveOwner != owner)
+            return false;
+        ActiveOwner = owner;
+        StartInteraction();
+        return true;
+    }
+
+    public void ForceStartInteraction(object owner) // Player Function
+    {
+        if (ActiveOwner != null && ActiveOwner != owner)
+            StopInteraction(); 
+        ActiveOwner = owner;
+        StartInteraction();
+        
+    }
+
+    public void StopInteraction(object owner) // Player Function
+    {
+        if (ActiveOwner != owner)
+            return;
+        ActiveOwner = null;
+        StopInteraction();
+    }
+
     public void NextState()
     {
-        if (!active)
-            return;
         // TODO: make this an actual state machine
         MeshRenderer renderer = GetComponent<MeshRenderer>();
         renderer.enabled = !renderer.enabled;
     }
 
-    static Color HINT_COLOR = new Color(251f / 255f, 126f / 255f, 43f / 255f);
-
-    public void ForceUpdate()
-    {
-        if (!active)
-            return;
-        if (interacter != null && interacter.IsInteractable(this))
-        {
-            SetHighlight(true, Color.white, 5f);
-        }
-        else
-        {
-            SetHighlight(true, HINT_COLOR, 3f);
-        }
-    }
-
     public void StartProgressBar(float time)
     {
-        if (!active) return;
         progressBar.StartProgressBar(time);
     }
     public void StopProgressBar()
     {
-        if (!active) return;
         progressBar.StopProgressBar();
     }
     public void ShowUI()
     {
-        if (!active) return;
         if (taskCount <= 0)
             return;
         uiCanvas.SetActive(true);
-        SetHighlight(true, Color.white, 5f);
+        gameObject.SetHighlight(true);
     }
     public void HideUI()
     {
-        if (!active) return;
         uiCanvas.SetActive(false);
-        SetHighlight(true, HINT_COLOR, 3f);
-    }
-
-    public void SetHighlight(bool on,  Color? color = null, float? thickness = null)
-    {
-        if (!active) return;
-        outline.gameObject.SetHighlight(on, color, thickness);
-    }
-
-    public void SetActive(bool p_active)
-    {
-        active = p_active;
-        if(!active) outline.gameObject.SetActive(false);
+        gameObject.SetHighlight(false);
     }
 }

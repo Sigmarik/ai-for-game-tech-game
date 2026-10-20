@@ -7,8 +7,10 @@ public class Interact : MonoBehaviour
     [SerializeField] private GameObject rayOrigin;
     [SerializeField] private float distance;
     private Interactable interactable;
+    public Interactable CurrentInteractable => interactable;
     private Interactable oldInteractable;
     private bool started = false;
+    public bool IsInteracting => started;
     private bool uiOpen = false;
 
     [SerializeField] private bool showUI = false;
@@ -19,11 +21,6 @@ public class Interact : MonoBehaviour
     {
         wantsToInteract = interacting;
     }
-    
-    public bool IsInteractable(Interactable other)
-    {
-        return interactable = other;
-    } 
 
     void Update()
     {
@@ -33,6 +30,7 @@ public class Interact : MonoBehaviour
         {
             oldInteractable = interactable;
             interactable = closestInteractable;
+
             if (uiOpen && oldInteractable != null)
             {
                 oldInteractable.HideUI();
@@ -41,7 +39,7 @@ public class Interact : MonoBehaviour
 
             if (started && oldInteractable != null)
             {
-                oldInteractable.StopInteraction();
+                oldInteractable.StopInteraction(this);
                 started = false;
             }
         }
@@ -54,20 +52,20 @@ public class Interact : MonoBehaviour
 
         if (interactable != null && wantsToInteract && !started)
         {
-            interactable.StartInteraction(this);
+            interactable.ForceStartInteraction(this);
             started = true;
         }
         else if (interactable == null && started)
         {
             if (oldInteractable != null)
             {
-                oldInteractable.StopInteraction();
+                oldInteractable.StopInteraction(this);
             }
             started = false;
         }
         else if (interactable != null && !wantsToInteract && started)
         {
-            interactable.StopInteraction();
+            interactable.StopInteraction(this);
             started = false;
         }
     }
@@ -124,5 +122,11 @@ public class Interact : MonoBehaviour
         }
 
         return bestInteractable;
+    }
+    public Task GetCurrentTask()
+    {
+        if (interactable == null)
+            return null;
+        return interactable.ActiveTask;
     }
 }

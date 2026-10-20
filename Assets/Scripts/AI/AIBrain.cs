@@ -83,7 +83,7 @@ public class AIBrain
     public void StartInteraction()
     {
         currentTask.interactable.ShowUI(); 
-        currentTask.interactable.StartInteraction(controller.m_interact);
+        currentTask.interactable.TryStartInteraction(this);
     }
 
     public bool IsStepDone()
@@ -94,4 +94,19 @@ public class AIBrain
         }
         return false;
     }
+    public bool IsCurrentTaskClaimedByPlayer()
+    {
+        return currentTask != null && AITaskCoordinator.IsClaimByOthers(currentTask, this);
+    }
+
+    public void AbandonCurrentTask() // Check the task was taken by the player
+    {
+        if(currentTask != null)
+        {
+            AITaskCoordinator.ReleaseTask(currentTask, this);
+            currentTask = null;
+        }
+        RequestWork();
+    }
+
 }
