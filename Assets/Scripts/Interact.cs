@@ -19,6 +19,11 @@ public class Interact : MonoBehaviour
     {
         wantsToInteract = interacting;
     }
+    
+    public bool IsInteractable(Interactable other)
+    {
+        return interactable = other;
+    } 
 
     void Update()
     {
@@ -28,7 +33,6 @@ public class Interact : MonoBehaviour
         {
             oldInteractable = interactable;
             interactable = closestInteractable;
-
             if (uiOpen && oldInteractable != null)
             {
                 oldInteractable.HideUI();
@@ -50,7 +54,7 @@ public class Interact : MonoBehaviour
 
         if (interactable != null && wantsToInteract && !started)
         {
-            interactable.StartInteraction();
+            interactable.StartInteraction(this);
             started = true;
         }
         else if (interactable == null && started)
