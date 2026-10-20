@@ -61,7 +61,7 @@ public class Interactable : MonoBehaviour
 
     public void StartInteraction(Interact p_interacter)
     {
-        if (!active) return;
+        if (!active || interacter != null) return;
         interacter = p_interacter;
         if (OnInteractionStart != null)
             OnInteractionStart.Invoke();
