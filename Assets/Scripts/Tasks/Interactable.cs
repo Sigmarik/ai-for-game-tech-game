@@ -134,5 +134,6 @@ public class Interactable : MonoBehaviour
     public void SetActive(bool p_active)
     {
         active = p_active;
+        if(!active) outline.gameObject.SetActive(false);
     }
 }

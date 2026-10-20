@@ -66,11 +66,9 @@ public class TaskManager : MonoBehaviour
 
     public void EndTaskCompletes(Task task)
     {
+        task.interactable.SetActive(false);
         if (endTasks.All(task => task.IsComplete))
-        {
             finished = true;
-            task.interactable.SetActive(false);
-        }
     }
 
     public void GetCompletableTasks()
