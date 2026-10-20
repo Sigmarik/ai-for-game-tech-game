@@ -90,11 +90,11 @@ public class Interactable : MonoBehaviour
             return;
         if (interacter != null && interacter.IsInteractable(this))
         {
-            SetHighlight(true, Color.white);
+            SetHighlight(true, Color.white, 5f);
         }
         else
         {
-            SetHighlight(true, Color.yellow);
+            SetHighlight(true, Color.yellow, 3f);
         }
     }
 
@@ -114,19 +114,19 @@ public class Interactable : MonoBehaviour
         if (taskCount <= 0)
             return;
         uiCanvas.SetActive(true);
-        SetHighlight(true, Color.white);
+        SetHighlight(true, Color.white, 5f);
     }
     public void HideUI()
     {
         if (!active) return;
         uiCanvas.SetActive(false);
-        SetHighlight(true, Color.yellow);
+        SetHighlight(true, Color.yellow, 3f);
     }
 
-    public void SetHighlight(bool on,  Color? color = null)
+    public void SetHighlight(bool on,  Color? color = null, float? thickness = null)
     {
         if (!active) return;
-        outline.gameObject.SetHighlight(on, color);
+        outline.gameObject.SetHighlight(on, color, thickness);
     }
 
     public void SetActive(bool p_active)
