@@ -93,6 +93,7 @@ public class Task : MonoBehaviour
         interactable.OnInteractionEnd -= Deactivate;
         interactable.TaskUnsubscribed();
         interactable.ClearActiveTask(this);
+        interactable.StopInteraction();
         isComplete = true;
         if (OnTaskComplete != null)
             OnTaskComplete.Invoke(this);

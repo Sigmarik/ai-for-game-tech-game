@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2754568045929152213}
   - component: {fileID: 6402585335920576541}
   - component: {fileID: 766107806845645065}
+  - component: {fileID: 7100406565600175601}
   m_Layer: 0
   m_Name: AIPlayer
   m_TagString: Untagged
@@ -50,6 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99289314d2d1945429212d10b306432d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_interact: {fileID: 0}
+  controlsFrozen: 0
   moveSpeed: 3
   animator: {fileID: 1318028004985122504}
   currentStateName: 
@@ -166,6 +169,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &7100406565600175601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8332609979645933158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5adacbf4d9b5de046aada530ddb420d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rayOrigin: {fileID: 1371320700363595537}
+  distance: 4
+  showUI: 0
 --- !u!1001 &6958102116155104313
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -252,6 +270,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d95d52a902b293b4e8fa4878884ee922, type: 3}
+--- !u!1 &1371320700363595537 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8329352445081568040, guid: d95d52a902b293b4e8fa4878884ee922, type: 3}
+  m_PrefabInstance: {fileID: 6958102116155104313}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3574237618534498975 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5839509755982765734, guid: d95d52a902b293b4e8fa4878884ee922, type: 3}

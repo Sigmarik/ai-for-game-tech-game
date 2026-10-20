@@ -101,8 +101,11 @@ public class AIBrain
 
     public void AbandonCurrentTask() // Check the task was taken by the player
     {
-        if(currentTask != null)
+        if (currentTask != null)
         {
+            if (currentTask.interactable.ActiveTask == currentTask)
+                currentTask.interactable.StopInteraction();
+
             AITaskCoordinator.ReleaseTask(currentTask, this);
             currentTask = null;
         }

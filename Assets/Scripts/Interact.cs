@@ -24,7 +24,7 @@ public class Interact : MonoBehaviour
     
     public bool IsInteractable(Interactable other)
     {
-        return interactable = other;
+        return interactable == other;
     } 
 
     void Update()
@@ -56,8 +56,7 @@ public class Interact : MonoBehaviour
 
         if (interactable != null && wantsToInteract && !started)
         {
-            interactable.StartInteraction(this);
-            started = true;
+            started = interactable.StartInteraction(this);
         }
         else if (interactable == null && started)
         {

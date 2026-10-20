@@ -441,6 +441,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7100406565600175601, guid: 71ebd3f051365a748a09051399f18fed, type: 3}
+      propertyPath: showUI
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7100406565600175601, guid: 71ebd3f051365a748a09051399f18fed, type: 3}
+      propertyPath: distance
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8332609979645933158, guid: 71ebd3f051365a748a09051399f18fed, type: 3}
       propertyPath: m_Name
       value: AIPlayer

@@ -63,12 +63,17 @@ public class Interactable : MonoBehaviour
         }
     }
 
-    public void StartInteraction(Interact p_interacter)
+    public bool StartInteraction(Interact p_interacter)
     {
-        if (!active || interacter != null) return;
+        if (!active || interacter != null) return false;
         interacter = p_interacter;
-        if (OnInteractionStart != null)
-            OnInteractionStart.Invoke();
+        OnInteractionStart?.Invoke();
+        if (ActiveTask == null)
+        {
+            interacter = null;
+            return false;
+        }
+        return true;
     }
 
     public void StopInteraction()
