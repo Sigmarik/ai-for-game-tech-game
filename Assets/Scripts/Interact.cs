@@ -39,7 +39,7 @@ public class Interact : MonoBehaviour
 
             if (started && oldInteractable != null)
             {
-                oldInteractable.StopInteraction();
+                oldInteractable.StopInteraction(this);
                 started = false;
             }
         }
@@ -52,20 +52,20 @@ public class Interact : MonoBehaviour
 
         if (interactable != null && wantsToInteract && !started)
         {
-            interactable.StartInteraction();
+            interactable.ForceStartInteraction(this);
             started = true;
         }
         else if (interactable == null && started)
         {
             if (oldInteractable != null)
             {
-                oldInteractable.StopInteraction();
+                oldInteractable.StopInteraction(this);
             }
             started = false;
         }
         else if (interactable != null && !wantsToInteract && started)
         {
-            interactable.StopInteraction();
+            interactable.StopInteraction(this);
             started = false;
         }
     }

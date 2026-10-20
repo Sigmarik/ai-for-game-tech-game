@@ -19,6 +19,8 @@ public class Interactable : MonoBehaviour
     public void SetActiveTask(Task task) {ActiveTask = task;}
     public void ClearActiveTask(Task task) {if(ActiveTask == task) ActiveTask  = null; }
 
+    public object ActiveOwner {get; private set;}
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,16 +49,42 @@ public class Interactable : MonoBehaviour
         }
     }
 
-    public void StartInteraction()
+    private void StartInteraction()
     {
         if (OnInteractionStart != null)
             OnInteractionStart.Invoke();
     }
 
-    public void StopInteraction()
+    private void StopInteraction()
     {
         if (OnInteractionEnd != null)
             OnInteractionEnd.Invoke();
+    }
+
+    public bool TryStartInteraction(object owner) // AI funtion
+    {
+        if (ActiveOwner != null && ActiveOwner != owner)
+            return false;
+        ActiveOwner = owner;
+        StartInteraction();
+        return true;
+    }
+
+    public void ForceStartInteraction(object owner) // Player Function
+    {
+        if (ActiveOwner != null && ActiveOwner != owner)
+            StopInteraction(); 
+        ActiveOwner = owner;
+        StartInteraction();
+        
+    }
+
+    public void StopInteraction(object owner) // Player Function
+    {
+        if (ActiveOwner != owner)
+            return;
+        ActiveOwner = null;
+        StopInteraction();
     }
 
     public void NextState()

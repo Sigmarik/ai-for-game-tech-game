@@ -83,7 +83,7 @@ public class AIBrain
     public void StartInteraction()
     {
         currentTask.interactable.ShowUI(); 
-        currentTask.interactable.StartInteraction();
+        currentTask.interactable.TryStartInteraction(this);
     }
 
     public bool IsStepDone()
@@ -108,5 +108,5 @@ public class AIBrain
         }
         RequestWork();
     }
-    
+
 }
