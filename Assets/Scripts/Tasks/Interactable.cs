@@ -84,6 +84,8 @@ public class Interactable : MonoBehaviour
         renderer.enabled = !renderer.enabled;
     }
 
+    static Color HINT_COLOR = new Color(251f / 255f, 126f / 255f, 43f / 255f);
+
     public void ForceUpdate()
     {
         if (!active)
@@ -94,7 +96,7 @@ public class Interactable : MonoBehaviour
         }
         else
         {
-            SetHighlight(true, Color.yellow, 3f);
+            SetHighlight(true, HINT_COLOR, 3f);
         }
     }
 
@@ -120,7 +122,7 @@ public class Interactable : MonoBehaviour
     {
         if (!active) return;
         uiCanvas.SetActive(false);
-        SetHighlight(true, Color.yellow, 3f);
+        SetHighlight(true, HINT_COLOR, 3f);
     }
 
     public void SetHighlight(bool on,  Color? color = null, float? thickness = null)
