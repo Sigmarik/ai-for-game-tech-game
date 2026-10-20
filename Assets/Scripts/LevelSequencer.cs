@@ -59,7 +59,7 @@ public class LevelSequencer : GenericLevelSequencer
                 spawner.SetParticlesActive(false);
                 yield return new WaitForSeconds(0.5f);
             }
-            ShowMessage("Instruction", "Say hi to Anna! She is a mechanic like you!");
+            ShowMessage("Instruction", "Say hi to Riley! She is a mechanic like you!");
             yield return WaitForInput("space");
             ShowMessage("Instruction", "Pretty sure she likes roses and engine oil.");
             yield return WaitForInput("space");
