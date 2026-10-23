@@ -1188,6 +1188,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37c070cf000ee542ae4694983e7e72a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_interact: {fileID: 0}
+  controlsFrozen: 0
   m_camera: {fileID: 0}
 --- !u!1 &8207450802671876872
 GameObject:

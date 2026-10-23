@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3607190969995216712}
   - component: {fileID: 5114513418165662649}
   m_Layer: 0
-  m_Name: RemoveWheelTask
+  m_Name: RemoveEngineTask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,4 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactable: {fileID: 0}
   returnItem: {fileID: 0}
-  interactDuration: 3
+  interactDuration: 4
+  adoptedRequiredTasks: []
