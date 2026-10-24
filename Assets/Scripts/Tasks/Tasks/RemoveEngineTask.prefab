@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3607190969995216712}
-  - component: {fileID: 5114513418165662649}
+  - component: {fileID: 5416942122904273308}
   m_Layer: 0
   m_Name: RemoveEngineTask
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5114513418165662649
+--- !u!114 &5416942122904273308
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,10 +41,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 9078416449981240023}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f75b570c492a35c42aa0bdbb51bc16f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 002e0757ebef8694eb1cafd1f4647652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: {fileID: 0}
   returnItem: {fileID: 0}
-  interactDuration: 4
+  interactDuration: 3
   adoptedRequiredTasks: []

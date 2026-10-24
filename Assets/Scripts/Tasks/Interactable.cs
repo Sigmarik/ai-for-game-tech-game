@@ -22,22 +22,32 @@ public class Interactable : MonoBehaviour
 
     private Interact interacter = null;
 
-    private bool active = true;
+    private bool active = false;
+
+    [SerializeField] private bool tryCombineChildMeshes = false;
+    [SerializeField] private bool splitOutline = false;
 
     private void Start()
     {
         gameObject.layer = LayerMask.NameToLayer("Interactable");
-        if (!GetComponent<MeshFilter>())
+        if (!GetComponent<MeshFilter>() && tryCombineChildMeshes)
             Combine();
-        GameObject obj = new GameObject("outline");
-        outline = obj.AddComponent<MeshRenderer>();
-        outline.SetMaterials(GetComponent<MeshRenderer>().materials.ToList<Material>());
-        MeshFilter filter = obj.AddComponent<MeshFilter>();
-        filter.mesh = GetComponent<MeshFilter>().mesh;
-        obj.transform.SetParent(transform, false);
-        obj.transform.localRotation = Quaternion.Euler(0, 0, 0); 
-        obj.transform.localPosition = Vector3.zero;
-        obj.transform.localScale = Vector3.one;
+        if(splitOutline)
+        {
+            GameObject obj = new GameObject("outline");
+            outline = obj.AddComponent<MeshRenderer>();
+            outline.materials = GetComponent<MeshRenderer>().materials;
+            MeshFilter filter = obj.AddComponent<MeshFilter>();
+            filter.mesh = Instantiate(GetComponent<MeshFilter>().sharedMesh);
+            obj.transform.SetParent(transform, false);
+            obj.transform.localRotation = Quaternion.Euler(0, 0, 0); 
+            obj.transform.localPosition = Vector3.zero;
+            obj.transform.localScale = Vector3.one;
+        }
+        else
+        {
+            outline = GetComponent<MeshRenderer>();
+        }
     }
 
     // Update is called once per frame
@@ -50,7 +60,6 @@ public class Interactable : MonoBehaviour
 
     public void TaskSubscribed()
     {
-        if (!active) return;
         taskCount++;
     }
 
@@ -96,10 +105,12 @@ public class Interactable : MonoBehaviour
         if (interacter != null && interacter.IsInteractable(this))
         {
             SetHighlight(true, Color.white, 5f);
+            ShowUI();
         }
         else
         {
             SetHighlight(true, HINT_COLOR, 3f);
+            HideUI();
         }
     }
 
@@ -116,6 +127,7 @@ public class Interactable : MonoBehaviour
     public void ShowUI()
     {
         if (!active) return;
+        Debug.Log($"{name} showing UI - true");
         if (taskCount <= 0)
             return;
         uiCanvas.SetActive(true);
@@ -124,6 +136,7 @@ public class Interactable : MonoBehaviour
     public void HideUI()
     {
         if (!active) return;
+        Debug.Log($"{name} showing UI - false");
         uiCanvas.SetActive(false);
         SetHighlight(true, HINT_COLOR, 3f);
     }
@@ -131,13 +144,17 @@ public class Interactable : MonoBehaviour
     public void SetHighlight(bool on,  Color? color = null, float? thickness = null)
     {
         if (!active) return;
-        outline.gameObject.SetHighlight(on, color, thickness);
+            outline.gameObject.SetHighlight(on, color, thickness);
+        
     }
 
     public void SetActive(bool p_active)
     {
+        Debug.Log($"Set interactable {name} to: {p_active}");
         active = p_active;
-        if(!active) outline.gameObject.SetActive(false);
+        if(splitOutline)
+            outline.gameObject.SetActive(p_active);
+        SetHighlight(active, HINT_COLOR, 3f);
     }
 
     public void Combine()
@@ -256,9 +273,7 @@ public class Interactable : MonoBehaviour
             MeshRenderer mr = mf.GetComponent<MeshRenderer>();
 
             if (mr != null)
-                DestroyImmediate(mr);
-
-            DestroyImmediate(mf);
+                mr.enabled = false;
         }
 
         Debug.Log(

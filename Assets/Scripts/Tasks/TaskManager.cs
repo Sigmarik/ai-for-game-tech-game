@@ -48,6 +48,7 @@ public class TaskManager : MonoBehaviour
     public void MakeTasksActive(Task task)
     {
         task.MakeActive();
+        task.interactable.SetActive(true);
         task.OnTaskComplete += TaskCompletes;
         foreach (Task childTask in task.ReqTasks)
             MakeTasksActive(childTask);
@@ -56,6 +57,7 @@ public class TaskManager : MonoBehaviour
     public void TaskCompletes(Task task)
     {
         task.interactable.SetHighlight(false);
+        task.interactable.SetActive(false);
         GetCompletableTasks();
     }
 
@@ -80,6 +82,7 @@ public class TaskManager : MonoBehaviour
         foreach (Task task in completableTasks)
         {
             Debug.Log(task.name);
+            task.interactable.SetActive(true);
             task.interactable.ForceUpdate();
         }
     }
