@@ -6,7 +6,7 @@ public class GetFilterTask : Task
 {
     public void Start()
     {
-        interactable = GameObject.Find("CoolingFluid").GetComponent<Interactable>();
+        interactable = GameObject.Find("CoolingFluid").GetComponentInChildren<Interactable>();
     }
     public override void OnTaskEnd(Task task)
     {

@@ -84,7 +84,7 @@ public class Task : MonoBehaviour
 
     public bool AllRequirements()
     {
-        if (reqTasks.All(task => task.IsComplete))
+        if (reqTasks.Count == 0 || reqTasks.All(task => task.IsComplete))
             return true;
         return false;
     }
