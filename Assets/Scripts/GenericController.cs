@@ -5,7 +5,9 @@ using UnityEngine;
 public class GenericController : MonoBehaviour
 {
     protected CharacterMovement m_characterMovement;
-    protected Interact m_interact;
+    public Interact m_interact;
+
+    public bool controlsFrozen = false;
 
     // Start is called before the first frame update
     void Start()
@@ -21,11 +23,13 @@ public class GenericController : MonoBehaviour
 
     protected void Move(Vector3 direction)
     {
+        if (controlsFrozen) direction = Vector3.zero;
         m_characterMovement.Move(direction);
     }
 
     protected void SetInteracting(bool interacting)
     {
+        if (controlsFrozen) interacting = false;
         m_interact.SetInteracting(interacting);
     }
 

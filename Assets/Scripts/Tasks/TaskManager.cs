@@ -12,6 +12,8 @@ public class TaskManager : MonoBehaviour
     private bool finished;
     public bool Finished { get { return finished; } }
 
+    [SerializeField] private bool activateOnStart = false;
+
     private void Awake()
     {
 
@@ -20,7 +22,7 @@ public class TaskManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MakeActive();
+        if (activateOnStart) MakeActive();
     }
 
     // Update is called once per frame
@@ -53,6 +55,7 @@ public class TaskManager : MonoBehaviour
 
     public void TaskCompletes(Task task)
     {
+        task.interactable.SetHighlight(false);
         GetCompletableTasks();
     }
 
@@ -63,6 +66,7 @@ public class TaskManager : MonoBehaviour
 
     public void EndTaskCompletes(Task task)
     {
+        task.interactable.SetActive(false);
         if (endTasks.All(task => task.IsComplete))
             finished = true;
     }
@@ -74,7 +78,10 @@ public class TaskManager : MonoBehaviour
             _completableTasks = _completableTasks.Concat(CompletableOrChildren(task)).ToList();
         completableTasks = _completableTasks;
         foreach (Task task in completableTasks)
+        {
             Debug.Log(task.name);
+            task.interactable.ForceUpdate();
+        }
     }
 
     public List<Task> CompletableOrChildren(Task task)
