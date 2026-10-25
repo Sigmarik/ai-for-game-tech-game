@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6854393028005724042}
-  - component: {fileID: 3739308398029870599}
+  - component: {fileID: 3545269682306743728}
   m_Layer: 0
-  m_Name: OpenDoors
+  m_Name: ToggleDoors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3739308398029870599
+--- !u!114 &3545269682306743728
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,10 +41,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3450885315489470241}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f75b570c492a35c42aa0bdbb51bc16f7, type: 3}
+  m_Script: {fileID: 11500000, guid: ff4a7c88e92d0f646a38e184559a29a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: {fileID: 0}
   returnItem: {fileID: 0}
-  interactDuration: 2
+  interactDuration: 0
   adoptedRequiredTasks: []
+  openedDoors: {fileID: 0}
+  closedDoors: {fileID: 0}

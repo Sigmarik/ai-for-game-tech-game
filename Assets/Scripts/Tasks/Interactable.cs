@@ -152,9 +152,8 @@ public class Interactable : MonoBehaviour
 
     public void SetHighlight(bool on,  Color? color = null, float? thickness = null)
     {
-        if (!active) return;
+        if (!active || !gameObject.active) return;
             outline.gameObject.SetHighlight(on, color, thickness);
-        
     }
 
     public void SetActive(bool p_active)
