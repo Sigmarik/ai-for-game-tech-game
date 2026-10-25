@@ -22,6 +22,7 @@ public class Task : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        OnTaskComplete += OnTaskEnd;
         /*
         foreach (Transform child in transform)
         {
@@ -40,6 +41,13 @@ public class Task : MonoBehaviour
     void Update()
     {
         
+    }
+
+
+    // parameter <task> refers to `this`
+    public virtual void OnTaskEnd(Task task)
+    {
+
     }
 
     public void MakeActive()
@@ -78,7 +86,7 @@ public class Task : MonoBehaviour
 
     public bool AllRequirements()
     {
-        if (reqTasks.All(task => task.IsComplete))
+        if (reqTasks.Count == 0 || reqTasks.All(task => task.IsComplete))
             return true;
         return false;
     }

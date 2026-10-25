@@ -99,7 +99,7 @@ public class Interact : MonoBehaviour
 
     public Interactable FindClosestInteractable()
     {
-        Interactable[] allInteractables = FindObjectsOfType<Interactable>();
+        Interactable[] allInteractables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
         Interactable bestInteractable = null;
         float bestDistance = distance;
         Vector3 originPosition = rayOrigin.transform.position;
