@@ -259,6 +259,10 @@ public class Interactable : MonoBehaviour
             false
         );
 
+        Debug.Log($"Combined vertex count: {combinedMesh.vertexCount}");
+        Debug.Log($"Combined submesh count: {combinedMesh.subMeshCount}");
+        Debug.Log($"Combined bounds: {combinedMesh.bounds}");
+
         // Assign the combined mesh and all materials to the parent.
         MeshFilter parentFilter = GetComponent<MeshFilter>();
 
@@ -274,6 +278,7 @@ public class Interactable : MonoBehaviour
         parentRenderer.sharedMaterials = combinedMaterials.ToArray();
 
         // Remove child renderers and mesh filters.
+        /*
         foreach (MeshFilter mf in meshFilters)
         {
             if (mf.gameObject == gameObject)
@@ -284,6 +289,7 @@ public class Interactable : MonoBehaviour
             if (mr != null)
                 mr.enabled = false;
         }
+        */
 
         Debug.Log(
             $"Combined meshes into {combinedMaterials.Count} material submeshes."
