@@ -3049,7 +3049,7 @@ PrefabInstance:
     - target: {fileID: 954306849481248976, guid: 0e3b36ea1ba9c0443a65fb2b98beb23b, type: 3}
       propertyPath: 'carPrefabs.Array.data[0]'
       value: 
-      objectReference: {fileID: 420623664966357701, guid: faedcd643d4f0314bafc0aa8a17b8c28, type: 3}
+      objectReference: {fileID: 420623664966357701, guid: 450fe554d69eb824dbd2188d7f96b04d, type: 3}
     - target: {fileID: 954306849481248976, guid: 0e3b36ea1ba9c0443a65fb2b98beb23b, type: 3}
       propertyPath: 'carPrefabs.Array.data[1]'
       value: 
