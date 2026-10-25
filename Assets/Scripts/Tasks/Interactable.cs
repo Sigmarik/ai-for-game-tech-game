@@ -27,6 +27,7 @@ public class Interactable : MonoBehaviour
     private Interact interacter = null;
 
     private bool active = false;
+    public bool IsActive => active;
 
     [SerializeField] private bool tryCombineChildMeshes = false;
     [SerializeField] private bool splitOutline = false;

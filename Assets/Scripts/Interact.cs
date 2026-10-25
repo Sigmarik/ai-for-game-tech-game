@@ -48,7 +48,7 @@ public class Interact : MonoBehaviour
             }
         }
 
-        if (interactable != null && !uiOpen)
+        if (interactable != null && interactable.IsActive && !uiOpen)
         {
             if (showUI) interactable.ShowUI();
             uiOpen = true;
