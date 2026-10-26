@@ -628,10 +628,10 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.5, y: 0.47500002, z: 1.125}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.47500002, z: 0}
-  m_TimeToStationary: 0.5
+  m_TimeToStationary: 0
 --- !u!4 &6034627944460033051 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6137673799114832543, guid: 2a56de827ef75214f963e10bdd1b5b6d, type: 3}

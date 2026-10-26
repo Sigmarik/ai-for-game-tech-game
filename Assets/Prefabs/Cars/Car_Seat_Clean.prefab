@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7913810383179480563}
   - component: {fileID: 1011495357584098055}
   - component: {fileID: 3803611195541625187}
+  - component: {fileID: 8857945588629910467}
   m_Layer: 0
   m_Name: car-normal-red.003
   m_TagString: Untagged
@@ -86,6 +87,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!208 &8857945588629910467
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74807015108922526}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.003, y: 0.001, z: 0.003}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0.003, y: 0, z: 0.001}
+  m_TimeToStationary: 0
 --- !u!1 &97744801312089658
 GameObject:
   m_ObjectHideFlags: 0
@@ -1214,6 +1231,7 @@ GameObject:
   - component: {fileID: 5924707770857847694}
   - component: {fileID: 826159598982363853}
   - component: {fileID: 425849890215946294}
+  - component: {fileID: 1091516645299724823}
   m_Layer: 0
   m_Name: car-normal-red
   m_TagString: Untagged
@@ -1315,6 +1333,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.018168753, y: 0.008305134, z: 0.011570362}
   m_Center: {x: -0.0008582118, y: -0.0000000013175031, z: 0.0027648215}
+--- !u!208 &1091516645299724823
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3207561909814448895}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.0075, y: 0.0035, z: 0.003}
+  m_MoveThreshold: 0.05
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.001, y: 0, z: 0.0050000004}
+  m_TimeToStationary: 0
 --- !u!1 &3997322748548784350
 GameObject:
   m_ObjectHideFlags: 0
@@ -1361,6 +1395,7 @@ GameObject:
   - component: {fileID: 5285912630368011686}
   - component: {fileID: 1489322489435973539}
   - component: {fileID: 7872115247051122967}
+  - component: {fileID: 785162948554447751}
   m_Layer: 0
   m_Name: car-normal-red.005
   m_TagString: Untagged
@@ -1452,6 +1487,22 @@ MonoBehaviour:
   uiCanvas: {fileID: 6500160652057215520}
   tryCombineChildMeshes: 0
   splitOutline: 0
+--- !u!208 &785162948554447751
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4317023636388261757}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.003, y: 0.001, z: 0.003}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0.003, y: 0, z: 0.001}
+  m_TimeToStationary: 0
 --- !u!1 &4398050975609919800
 GameObject:
   m_ObjectHideFlags: 0
