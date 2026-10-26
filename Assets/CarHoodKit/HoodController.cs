@@ -35,7 +35,7 @@ public class HoodController : MonoBehaviour
     [ContextMenu("Open Hood (Play Mode)")]
     public void OpenHood()
     {
-        if (!Application.isPlaying) return;
+        if(!Application.isPlaying) return;
         if (!Initialize())
         {
             Debug.LogError("Assign HoodPivot in the Inspector.", this);

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -15,6 +16,7 @@ public class Interactable : MonoBehaviour
 
     [SerializeField] private ProgressBar progressBar;
     [SerializeField] private GameObject uiCanvas;
+    private TextMeshProUGUI tmp;
 
     private int taskCount = 0;
 
@@ -22,7 +24,7 @@ public class Interactable : MonoBehaviour
     public void SetActiveTask(Task task) {ActiveTask = task;}
     public void ClearActiveTask(Task task) {if(ActiveTask == task) ActiveTask  = null; }
 
-    private MeshRenderer outline;
+    private GameObject outline;
 
     private Interact interacter = null;
 
@@ -30,27 +32,54 @@ public class Interactable : MonoBehaviour
 
     [SerializeField] private bool tryCombineChildMeshes = false;
     [SerializeField] private bool splitOutline = false;
+    [SerializeField] private bool keepMeshOnSplit = true;
+    [SerializeField] private bool singleChildOutline = false;
+    [SerializeField] private String singleChildName = "";
 
     private void Start()
+    {
+        Init();
+        tmp = uiCanvas.GetComponentInChildren<TextMeshProUGUI>();
+    }
+
+    private void Init()
     {
         gameObject.layer = LayerMask.NameToLayer("Interactable");
         if (!GetComponent<MeshFilter>() && tryCombineChildMeshes)
             Combine();
+        if (GetComponent<Outline>())
+        {
+            outline = gameObject;
+            outline.SetHighlight(false);
+            return;
+        }
         if(splitOutline)
         {
-            GameObject obj = new GameObject("outline");
-            outline = obj.AddComponent<MeshRenderer>();
-            outline.materials = GetComponent<MeshRenderer>().materials;
-            MeshFilter filter = obj.AddComponent<MeshFilter>();
+            outline = new GameObject("outline");
+            outline.AddComponent<MeshRenderer>();
+            MeshFilter filter = outline.AddComponent<MeshFilter>();
+            if (keepMeshOnSplit)
+            {
+                outline.GetComponent<MeshRenderer>().materials = GetComponent<MeshRenderer>().materials;
+            }
+            else
+            {
+                outline.GetComponent<MeshRenderer>().materials = new Material[1]{Resources.Load("Assets/Materials/transparant.mat") as Material};
+            }
             filter.mesh = Instantiate(GetComponent<MeshFilter>().sharedMesh);
-            obj.transform.SetParent(transform, false);
-            obj.transform.localRotation = Quaternion.Euler(0, 0, 0); 
-            obj.transform.localPosition = Vector3.zero;
-            obj.transform.localScale = Vector3.one;
+            outline.transform.SetParent(transform, false);
+            outline.transform.localRotation = Quaternion.Euler(0, 0, 0); 
+            outline.transform.localPosition = Vector3.zero;
+            outline.transform.localScale = Vector3.one;
         }
         else
         {
-            outline = GetComponent<MeshRenderer>();
+            outline = gameObject;
+        }
+        if (singleChildOutline && !tryCombineChildMeshes && !splitOutline)
+        {
+            Transform child = transform.Find(singleChildName);
+            outline = child.gameObject;
         }
     }
 
@@ -99,6 +128,10 @@ public class Interactable : MonoBehaviour
             OnInteractionEnd.Invoke();
     }
 
+    public void SetText(String text)
+    {
+        tmp.text = text;
+    }
     public void NextState()
     {
         if (!active)
@@ -153,7 +186,7 @@ public class Interactable : MonoBehaviour
     public void SetHighlight(bool on,  Color? color = null, float? thickness = null)
     {
         if (!active) return;
-            outline.gameObject.SetHighlight(on, color, thickness);
+            gameObject.SetHighlight(on, color, thickness);
         
     }
 
@@ -161,9 +194,14 @@ public class Interactable : MonoBehaviour
     {
         Debug.Log($"Set interactable {name} to: {p_active}");
         active = p_active;
-        if(splitOutline)
-            outline.gameObject.SetActive(p_active);
+        if(splitOutline && !keepMeshOnSplit)
+            gameObject.SetActive(p_active);
         SetHighlight(active, HINT_COLOR, 3f);
+    }
+
+    public bool Active()
+    {
+        return active;
     }
 
     public void Combine()

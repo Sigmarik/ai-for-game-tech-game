@@ -483,6 +483,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1010283721853398139, guid: 04c1bfb76c8d4224783d9b80f9266576, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6712090718316946783}
+    - targetCorrespondingSourceObject: {fileID: 1010283721853398139, guid: 04c1bfb76c8d4224783d9b80f9266576, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2072886424862946983}
   m_SourcePrefab: {fileID: 100100000, guid: 04c1bfb76c8d4224783d9b80f9266576, type: 3}
 --- !u!4 &3417259003366228317 stripped
 Transform:
@@ -510,6 +513,9 @@ MonoBehaviour:
   uiCanvas: {fileID: 584003358786438896}
   tryCombineChildMeshes: 0
   splitOutline: 0
+  keepMeshOnSplit: 0
+  singleChildOutline: 0
+  singleChildName: 
 --- !u!64 &6712090718316946783
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -532,3 +538,21 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6698455857862511055, guid: 7766b8efc6a4e5340a14f78ca379b940, type: 3}
+--- !u!114 &2072886424862946983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6383128206405554465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

@@ -498,6 +498,9 @@ MonoBehaviour:
   uiCanvas: {fileID: 6294109416452155722}
   tryCombineChildMeshes: 0
   splitOutline: 0
+  keepMeshOnSplit: 0
+  singleChildOutline: 0
+  singleChildName: 
 --- !u!4 &9129552788057742282 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6850588365887030208, guid: 226b630b22e24f84aa819286e6d8f7b0, type: 3}

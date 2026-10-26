@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Interact : MonoBehaviour
@@ -100,11 +101,19 @@ public class Interact : MonoBehaviour
     public Interactable FindClosestInteractable()
     {
         Interactable[] allInteractables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
+        List<Interactable> activeInteractables = new List<Interactable>();
+        foreach(Interactable inter in allInteractables)
+        {
+            if(inter.Active())
+            {
+                activeInteractables.Add(inter);
+            }
+        }
         Interactable bestInteractable = null;
         float bestDistance = distance;
         Vector3 originPosition = rayOrigin.transform.position;
 
-        foreach (Interactable currentInteractable in allInteractables)
+        foreach (Interactable currentInteractable in activeInteractables)
         {
             if (currentInteractable == null)
             {
