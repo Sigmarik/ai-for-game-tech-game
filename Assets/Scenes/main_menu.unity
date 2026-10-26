@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028292, g: 0.22571306, b: 0.30692118, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1707,7 +1707,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 921488921}
         m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: OpenGarage
+        m_MethodName: OpenPlayground
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

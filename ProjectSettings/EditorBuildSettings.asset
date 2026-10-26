@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TaskTestScene.unity
     guid: 2749fa4b280111b4a87db3a7c88e9c79
+  - enabled: 1
+    path: Assets/Scenes/LevelDirectorPlayground.unity
+    guid: e965492188e418d42ae930a516a82162
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

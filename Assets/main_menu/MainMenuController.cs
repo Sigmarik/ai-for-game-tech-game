@@ -11,6 +11,11 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("Garage");
     }
 
+    public void OpenPlayground()
+    {
+        SceneManager.LoadScene("LevelDirectorPlayground");
+    }
+
     public void OpenMainMenu()
     {
         SceneManager.LoadScene("Garage");
