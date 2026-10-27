@@ -48,7 +48,7 @@ public class Interact : MonoBehaviour
             }
         }
 
-        if (interactable != null && interactable.IsActive && !uiOpen)
+        if (interactable != null && interactable.IsActive)
         {
             if (showUI) interactable.ShowUI();
             uiOpen = true;
@@ -131,5 +131,10 @@ public class Interact : MonoBehaviour
         if (interactable == null)
             return null;
         return interactable.ActiveTask;
+    }
+
+    public void OnInteractionStoppedExternally()
+    {
+        started = false;
     }
 }

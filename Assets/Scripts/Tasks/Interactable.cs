@@ -95,9 +95,13 @@ public class Interactable : MonoBehaviour
     public void StopInteraction()
     {
         if (!active) return;
+        Interact oldInteracter = interacter;
         interacter = null;
         if (OnInteractionEnd != null)
             OnInteractionEnd.Invoke();
+        
+        if (oldInteracter != null)
+            oldInteracter.OnInteractionStoppedExternally();
     }
 
     public void NextState()
