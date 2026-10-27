@@ -18,13 +18,14 @@ public class Interactable : MonoBehaviour
 
     private int taskCount = 0;
 
-    public Task ActiveTask {get; private set;} // add this so Interactable will know which task is active
+    public Task ActiveTask {get; private set;} 
     public void SetActiveTask(Task task) {ActiveTask = task;}
     public void ClearActiveTask(Task task) {if(ActiveTask == task) ActiveTask  = null; }
 
     private MeshRenderer outline;
 
     private Interact interacter = null;
+    public Interact CurrentInteracter => interacter;
 
     private bool active = false;
     public bool IsActive => active;
@@ -55,7 +56,6 @@ public class Interactable : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!active) return;
@@ -141,7 +141,6 @@ public class Interactable : MonoBehaviour
     public void ShowUI()
     {
         if (!active) return;
-        Debug.Log($"{name} showing UI - true");
         if (taskCount <= 0)
             return;
         uiCanvas.SetActive(true);
@@ -150,7 +149,6 @@ public class Interactable : MonoBehaviour
     public void HideUI()
     {
         if (!active) return;
-        Debug.Log($"{name} showing UI - false");
         uiCanvas.SetActive(false);
         SetHighlight(true, HINT_COLOR, 3f);
     }
@@ -163,7 +161,6 @@ public class Interactable : MonoBehaviour
 
     public void SetActive(bool p_active)
     {
-        Debug.Log($"Set interactable {name} to: {p_active}");
         active = p_active;
         if(splitOutline)
             outline.gameObject.SetActive(p_active);
@@ -175,7 +172,6 @@ public class Interactable : MonoBehaviour
         MeshFilter[] meshFilters =
             GetComponentsInChildren<MeshFilter>();
 
-        // Group meshes by material.
         Dictionary<Material, List<CombineInstance>> groups =
             new Dictionary<Material, List<CombineInstance>>();
 
@@ -221,11 +217,9 @@ public class Interactable : MonoBehaviour
 
         if (groups.Count == 0)
         {
-            Debug.LogWarning("No valid meshes/materials found.");
             return;
         }
 
-        // Create one combined mesh with one submesh per material.
         Mesh combinedMesh = new Mesh();
         combinedMesh.name = gameObject.name + "_CombinedMesh";
 
@@ -259,15 +253,10 @@ public class Interactable : MonoBehaviour
 
         combinedMesh.CombineMeshes(
             materialMeshes.ToArray(),
-            false, // Keep separate submeshes
+            false,
             false
         );
 
-        Debug.Log($"Combined vertex count: {combinedMesh.vertexCount}");
-        Debug.Log($"Combined submesh count: {combinedMesh.subMeshCount}");
-        Debug.Log($"Combined bounds: {combinedMesh.bounds}");
-
-        // Assign the combined mesh and all materials to the parent.
         MeshFilter parentFilter = GetComponent<MeshFilter>();
 
         if (parentFilter == null)
@@ -280,23 +269,5 @@ public class Interactable : MonoBehaviour
 
         parentFilter.sharedMesh = combinedMesh;
         parentRenderer.sharedMaterials = combinedMaterials.ToArray();
-
-        // Remove child renderers and mesh filters.
-        /*
-        foreach (MeshFilter mf in meshFilters)
-        {
-            if (mf.gameObject == gameObject)
-                continue;
-
-            MeshRenderer mr = mf.GetComponent<MeshRenderer>();
-
-            if (mr != null)
-                mr.enabled = false;
-        }
-        */
-
-        Debug.Log(
-            $"Combined meshes into {combinedMaterials.Count} material submeshes."
-        );
     }
 }

@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum AITaskSchedulingMode
+{
+    Closest,
+    Furthest
+}
+
 public class AIPlayerController : GenericController
 {
-    /// <summary>
-    /// Define AIPlayer Ability in Controller
-    /// Using State to switch
-    /// </summary>
-    
-    // Properties
     [SerializeField] private float moveSpeed = 3f;
 
     public Vector3 moveTarget { get; private set; }
@@ -22,12 +22,10 @@ public class AIPlayerController : GenericController
     public InteractState InteractState { get; private set; }
     public AIBrain Brain { get; private set; }
 
+    public AITaskSchedulingMode TaskSchedulingMode = AITaskSchedulingMode.Closest;
 
-    // Nav
     private NavMeshAgent agent;
 
-
-    //Debug
     [SerializeField] private string currentStateName;
 
     [SerializeField] public Transform testTarget;
@@ -46,15 +44,13 @@ public class AIPlayerController : GenericController
         InteractState = new InteractState(this, StateMachine);
 
         Brain = new AIBrain(this);
-
-        
     }
 
     private void Start()
     {
         StateMachine.Initialize(IdleState);
 
-        m_interact = GetComponent<Interact>(); // Do this for adapting the GenericController
+        m_interact = GetComponent<Interact>();
     }
 
     private void Update()
@@ -98,7 +94,6 @@ public class AIPlayerController : GenericController
     {
         moveTarget = position;
     }
-
 
     private void UpdateAnimator()
     {

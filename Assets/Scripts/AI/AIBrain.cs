@@ -3,11 +3,9 @@ using UnityEngine;
 
 public class AIBrain
 {
-    /// <summary>
-    ///  Tell AI what gonna do next
-    /// </summary>
     AIPlayerController controller;
     public Task currentTask;
+
     public AIBrain(AIPlayerController controller)
     {
         this.controller = controller;
@@ -15,10 +13,6 @@ public class AIBrain
 
     public void RequestWork()
     {
-        // var target = controller.testTarget.position;
-        // controller.SetMoveTarget(target);
-        // controller.StateMachine.ChangeState(controller.MoveState);
-
         List<Task> tasks = new List<Task>();
         TaskManager[] managers = Object.FindObjectsByType<TaskManager>(FindObjectsSortMode.None);
         foreach (TaskManager manager in managers)
@@ -26,21 +20,22 @@ public class AIBrain
             if (manager.CompletableTasks != null)
                 tasks.AddRange(manager.CompletableTasks);
         }
-        if(tasks.Count == 0)
+
+        if (tasks.Count == 0)
         {
-            //Debug.Log("Null?");
             controller.StateMachine.ChangeState(controller.IdleState);
             return;
         }
-        else
-        {
-            //Debug.Log("have something to do");
-            // default pickup the first one, will optimize it later
-            // currentTask = tasks[0];
-            // controller.SetMoveTarget(currentTask.interactable.transform.position);
-            // controller.StateMachine.ChangeState(controller.MoveState);
 
-            // Sort tasks by distance
+        Task playerLastTask = PlayerTaskTracker.LastPlayerTask;
+        if (playerLastTask != null && !IsTaskValid(playerLastTask))
+        {
+            playerLastTask = null;
+            PlayerTaskTracker.LastPlayerTask = null;
+        }
+
+        if (playerLastTask == null)
+        {
             Vector3 aiPos = controller.transform.position;
             tasks.Sort((a, b) =>
             {
@@ -48,21 +43,42 @@ public class AIBrain
                 float db = Vector3.Distance(aiPos, b.interactable.transform.position);
                 return da.CompareTo(db);
             });
-            
-            foreach(Task task in tasks)
-            {
-                if (!AITaskCoordinator.IsClaimByOthers(task, this))
-                {
-                    AITaskCoordinator.TryClaimTask(task, this);
-                    currentTask = task;
-                    controller.SetMoveTarget(currentTask.interactable.transform.position);
-                    controller.StateMachine.ChangeState(controller.MoveState);
-                    return;
-                }
-            }
-            controller.StateMachine.ChangeState(controller.IdleState);
-
         }
+        else
+        {
+            var distances = TaskGraph.GetDistancesFrom(playerLastTask);
+            bool furthest = controller.TaskSchedulingMode == AITaskSchedulingMode.Furthest;
+            tasks.Sort((a, b) =>
+            {
+                int da = distances.TryGetValue(a, out int d1) ? d1 : int.MaxValue;
+                int db = distances.TryGetValue(b, out int d2) ? d2 : int.MaxValue;
+                if (furthest)
+                    return db.CompareTo(da);
+                return da.CompareTo(db);
+            });
+        }
+
+        foreach (Task task in tasks)
+        {
+            if (!AITaskCoordinator.IsClaimByOthers(task, this))
+            {
+                AITaskCoordinator.TryClaimTask(task, this);
+                currentTask = task;
+                controller.SetMoveTarget(currentTask.interactable.transform.position);
+                controller.StateMachine.ChangeState(controller.MoveState);
+                return;
+            }
+        }
+        controller.StateMachine.ChangeState(controller.IdleState);
+    }
+
+    private bool IsTaskValid(Task task)
+    {
+        if (task == null) return false;
+        if (!task.gameObject.activeInHierarchy) return false;
+        var manager = task.GetComponentInParent<TaskManager>();
+        if (manager == null || manager.CompletableTasks == null || manager.Finished) return false;
+        return true;
     }
 
     public void OnMoveComplete()
@@ -99,7 +115,7 @@ public class AIBrain
         return currentTask != null && AITaskCoordinator.IsClaimByOthers(currentTask, this);
     }
 
-    public void AbandonCurrentTask() // Check the task was taken by the player
+    public void AbandonCurrentTask()
     {
         if (currentTask != null)
         {
@@ -111,5 +127,4 @@ public class AIBrain
         }
         RequestWork();
     }
-    
 }

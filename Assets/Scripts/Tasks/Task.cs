@@ -10,7 +10,7 @@ public class Task : MonoBehaviour
     [SerializeField] public Interactable interactable;
     [SerializeField] public GameObject returnItem;
     [SerializeField] public float interactDuration;
-    [SerializeField] public List<Task> adoptedRequiredTasks = new List<Task>(); // Tasks that cannot come from the prefab tree because they are children of another branch.
+    [SerializeField] public List<Task> adoptedRequiredTasks = new List<Task>(); 
     [SerializeField] public TextMeshProUGUI labelToChange;
 
     private List<Task> reqTasks = new List<Task>();
@@ -21,32 +21,11 @@ public class Task : MonoBehaviour
 
     public event Action<Task> OnTaskComplete;
 
-    // Start is called before the first frame update
     void Start()
     {
         OnTaskComplete += OnTaskEnd;
-        /*
-        foreach (Transform child in transform)
-        {
-            Task childTask = child.GetComponent<Task>();
-            if (childTask != null) reqTasks.Add(childTask);
-        }
-        foreach (Task adoptedTask in adoptedRequiredTasks)
-            reqTasks.Add(adoptedTask);
-        interactable.OnInteractionStart += Activate;
-        interactable.OnInteractionEnd += Deactivate;
-        interactable.TaskSubscribed();
-        */
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
-    // parameter <task> refers to `this`
     public virtual void OnTaskEnd(Task task)
     {
 
@@ -64,7 +43,6 @@ public class Task : MonoBehaviour
         interactable.OnInteractionStart += Activate;
         interactable.OnInteractionEnd += Deactivate;
         interactable.TaskSubscribed();
-
     }
 
     public void Activate()
@@ -103,11 +81,20 @@ public class Task : MonoBehaviour
         interactable.OnInteractionEnd -= Deactivate;
         interactable.TaskUnsubscribed();
         interactable.ClearActiveTask(this);
+
+        var interacter = interactable.CurrentInteracter;
+        if (interacter != null)
+        {
+            var aiController = interacter.GetComponent<AIPlayerController>();
+            if (aiController == null)
+            {
+                PlayerTaskTracker.LastPlayerTask = this;
+            }
+        }
+
         interactable.StopInteraction();
         isComplete = true;
         if (OnTaskComplete != null)
             OnTaskComplete.Invoke(this);
     }
-
-
 }
