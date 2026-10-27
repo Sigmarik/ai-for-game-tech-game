@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rayOrigin: {fileID: 1371320700363595537}
-  distance: 4
+  distance: 2
   showUI: 0
 --- !u!1001 &6958102116155104313
 PrefabInstance:
