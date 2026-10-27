@@ -15,5 +15,6 @@ public class CleanSeatTask : Task
                 break;
             }
         }
+        labelToChange.text = "Hold F to put seat back";
     }
 }

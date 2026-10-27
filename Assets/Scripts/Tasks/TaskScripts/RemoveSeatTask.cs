@@ -13,5 +13,6 @@ public class RemoveSeatTask : Task
             childSeat.localPosition = new Vector3(-7f, 0, 7f); 
             childSeat.localRotation = Quaternion.Euler(0, 90, 0);
         }
+        labelToChange.text = "Hold F to clean seat";
     }
 }
