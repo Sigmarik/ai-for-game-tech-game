@@ -353,7 +353,7 @@ namespace AmplifyOcclusion
 			createQuadMesh();
 
 #if UNITY_2017_1_OR_NEWER
-			if ( GraphicsSettings.HasShaderDefine( Graphics.activeTier, BuiltinShaderDefine.SHADER_API_MOBILE ) )
+			if ( UnityEngine.Rendering.GraphicsSettings.HasShaderDefine( Graphics.activeTier, BuiltinShaderDefine.SHADER_API_MOBILE ) )
 			{
 				// using 16376.0 for DepthScale for mobile due to precision issues
 				m_oneOverDepthScale = 1.0f / 16376.0f;
@@ -675,7 +675,7 @@ namespace AmplifyOcclusion
 				}
 #endif
 
-				bool deferredReflections = ( GraphicsSettings.GetShaderMode( BuiltinShaderType.DeferredReflections ) != BuiltinShaderMode.Disabled );
+				bool deferredReflections = ( UnityEngine.Rendering.GraphicsSettings.GetShaderMode( BuiltinShaderType.DeferredReflections ) != BuiltinShaderMode.Disabled );
 
 				if ( ( m_prevPerPixelNormals != PerPixelNormals ) ||
 					( m_prevApplyMethod != ApplyMethod ) ||
