@@ -25,11 +25,12 @@ public class LevelSequencer : GenericLevelSequencer
 
         while (m_currentCarIndex < m_carsToFix.Count)
         {
-            yield return AdvanceQueue();
-            yield return MaybeSpawnHelpers(m_currentCarIndex);
-            yield return new WaitUntil(() => m_currentCar != null && IsCarFixed(m_currentCar));
+            yield return AdvanceQueueToWorkshop();
+            int helperChannel = m_currentCarIndex - m_activeCars.Count + 1;
+            yield return MaybeSpawnHelpers(helperChannel);
+            yield return new WaitUntil(AreAllActiveCarsFixed);
             yield return WaitForInput("space", 0.5f);
-            yield return RemoveCurrentCar();
+            yield return RemoveAllActiveCars();
         }
 
         ShowMessage("Instruction", "Congratulations! You fixed all the cars!");

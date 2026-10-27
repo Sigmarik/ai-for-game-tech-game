@@ -8,14 +8,21 @@ public abstract class GenericLevelSequencer : MonoBehaviour
     [SerializeField] protected List<GameObject> carPrefabs;
     [SerializeField] protected Transform carQueueOrigin;
     [SerializeField] protected Transform workshopPosition;
+    [SerializeField] protected Transform exitGatePosition;
     [SerializeField] protected Transform exitPosition;
     [SerializeField] protected float distanceBetweenCars = 5f;
+    [SerializeField] protected float workshopSpotSeparation = 3f;
+    [SerializeField] protected int maxCarsInWorkshop = 2;
 
     [SerializeField] protected List<GameObject> confettiPrefabs;
 
     protected List<GameObject> m_carsToFix = new List<GameObject>();
+    protected List<GameObject> m_activeCars = new List<GameObject>();
     protected int m_currentCarIndex = 0;
     protected GameObject m_currentCar = null;
+
+    protected Vector3 WorkshopForwardDirection => (workshopPosition.position - carQueueOrigin.position).normalized;
+    protected Vector3 WorkshopRightDirection => Vector3.Cross(Vector3.up, WorkshopForwardDirection).normalized;
 
     abstract protected IEnumerator LevelSequence();
 
@@ -35,9 +42,9 @@ public abstract class GenericLevelSequencer : MonoBehaviour
 
     protected IEnumerator PreviewCars()
     {
-        for (int i = 0; i < m_carsToFix.Count; i++)
+        for (int carIndex = 0; carIndex < m_carsToFix.Count; carIndex++)
         {
-            GameObject car = m_carsToFix[i];
+            GameObject car = m_carsToFix[carIndex];
             HighlightEveryInteractive(car, true);
             FocusCameraOn(car);
             yield return new WaitForSeconds(2f);
@@ -46,45 +53,95 @@ public abstract class GenericLevelSequencer : MonoBehaviour
         ResetCameraFocus();
     }
 
-    protected IEnumerator RemoveCurrentCar()
+    protected IEnumerator AdvanceQueueToWorkshop()
     {
-        if (m_currentCar != null)
+        int availableSpotCount = maxCarsInWorkshop - m_activeCars.Count;
+        int carsToAdvance = Mathf.Min(availableSpotCount, m_carsToFix.Count - m_currentCarIndex);
+
+        for (int carOffset = 0; carOffset < carsToAdvance; carOffset++)
         {
-            DisableAllColliders(m_currentCar);
-            StartCoroutine(LerpObjectToPosition(m_currentCar, exitPosition.position, 2f));
-            m_currentCar = null;
-            yield return new WaitForSeconds(0.5f);
+            GameObject car = m_carsToFix[m_currentCarIndex];
+            int spotIndex = m_activeCars.Count;
+            m_activeCars.Add(car);
+            m_currentCar = m_activeCars[0];
+            m_currentCarIndex++;
+            yield return MoveAndActivateCar(car, GetWorkshopSpotPosition(spotIndex), 1f);
         }
+
+        StartCoroutine(MoveCarsInQueue());
     }
 
-    protected IEnumerator AdvanceQueue()
+    protected Vector3 GetWorkshopSpotPosition(int spotIndex)
     {
-        if (m_currentCarIndex < m_carsToFix.Count)
-        {
-            m_currentCar = m_carsToFix[m_currentCarIndex];
-            StartCoroutine(MoveAndActivateCar(m_currentCar, workshopPosition.position, 1f));
-            yield return new WaitForSeconds(0.2f);
-            StartCoroutine(MoveCarsInQueue());
-        }
-        m_currentCarIndex++;
+        float offset = (spotIndex == 0) ? -workshopSpotSeparation * 0.5f : workshopSpotSeparation * 0.5f;
+        return workshopPosition.position + WorkshopRightDirection * offset;
     }
 
-    private IEnumerator MoveAndActivateCar(GameObject car, Vector3 targetPosition, float duration)
+    protected IEnumerator MoveAndActivateCar(GameObject car, Vector3 targetPosition, float duration)
     {
-        yield return LerpObjectToPosition(car, targetPosition, duration);
+        Quaternion targetRotation = Quaternion.LookRotation(WorkshopForwardDirection, Vector3.up);
+        Vector3 startPosition = car.transform.position;
+        Vector3 controlPoint = startPosition + (targetPosition - startPosition) * 0.5f + WorkshopForwardDirection * 2f;
+        yield return LerpObjectToPosition(car, targetPosition, duration, targetRotation, controlPoint);
         MakeTaskManagerActive(car);
     }
 
     protected IEnumerator MoveCarsInQueue()
     {
-        int nextCarIndex = m_currentCarIndex + 1;
-        for (int i = nextCarIndex; i < m_carsToFix.Count; i++)
+        for (int queueIndex = m_currentCarIndex; queueIndex < m_carsToFix.Count; queueIndex++)
         {
-            GameObject car = m_carsToFix[i];
-            Vector3 targetPosition = carQueueOrigin.position - carQueueOrigin.forward * distanceBetweenCars * (i - nextCarIndex + 0.5f);
+            GameObject car = m_carsToFix[queueIndex];
+            int queuePositionIndex = queueIndex - m_currentCarIndex;
+            Vector3 targetPosition = carQueueOrigin.position - carQueueOrigin.forward * distanceBetweenCars * (queuePositionIndex + 0.5f);
             StartCoroutine(LerpObjectToPosition(car, targetPosition, 1f));
             yield return new WaitForSeconds(0.2f);
         }
+    }
+
+    protected bool AreAllActiveCarsFixed()
+    {
+        if (m_activeCars.Count == 0)
+            return false;
+        foreach (GameObject car in m_activeCars)
+        {
+            if (!IsCarFixed(car))
+                return false;
+        }
+        return true;
+    }
+
+    protected IEnumerator RemoveAllActiveCars()
+    {
+        List<GameObject> carsToRemove = new List<GameObject>(m_activeCars);
+        m_activeCars.Clear();
+        m_currentCar = null;
+
+        List<Coroutine> exitCoroutines = new List<Coroutine>();
+        foreach (GameObject car in carsToRemove)
+        {
+            exitCoroutines.Add(StartCoroutine(RemoveCarFromWorkshop(car)));
+            yield return new WaitForSeconds(1f);
+        }
+
+        foreach (Coroutine exitCoroutine in exitCoroutines)
+        {
+            yield return exitCoroutine;
+        }
+    }
+
+    protected IEnumerator RemoveCarFromWorkshop(GameObject car)
+    {
+        if (car == null)
+            yield break;
+        DisableAllColliders(car);
+        
+        Vector3 startPosition = car.transform.position;
+        Vector3 gatePosition = exitGatePosition.position;
+        Quaternion gateRotation = exitGatePosition.rotation;
+        Vector3 controlPoint = startPosition + (gatePosition - startPosition) * 0.5f;// + WorkshopForwardDirection * 2f;
+
+        yield return LerpObjectToPosition(car, gatePosition, 1f, gateRotation, controlPoint);
+        yield return LerpObjectToPosition(car, exitPosition.position, 2f, exitPosition.rotation);
     }
 
     protected IEnumerator SpawnConfetti()
@@ -135,10 +192,10 @@ public abstract class GenericLevelSequencer : MonoBehaviour
     {
         foreach (Interactable interactable in car.GetComponentsInChildren<Interactable>(true))
         {
-            if(highlight)
+            if (highlight)
                 interactable.SetActive(true);
             interactable.SetHighlight(highlight);
-            if(!highlight)
+            if (!highlight)
                 interactable.SetActive(false);
         }
     }
@@ -173,19 +230,19 @@ public abstract class GenericLevelSequencer : MonoBehaviour
     {
         Debug.Log($"Waiting for input: {keyName}");
 
-        bool prevKeyState = Input.GetKeyDown(keyName);
+        bool previousKeyState = Input.GetKeyDown(keyName);
 
-        float elapsed = 0f;
-        while (elapsed < promptDelay)
+        float elapsedTime = 0f;
+        while (elapsedTime < promptDelay)
         {
-            bool keyState = Input.GetKeyDown(keyName);
-            if (keyState && !prevKeyState)
+            bool currentKeyState = Input.GetKeyDown(keyName);
+            if (currentKeyState && !previousKeyState)
             {
                 ShowMessage("ActionPrompt", "", false);
                 yield break;
             }
-            prevKeyState = keyState;
-            elapsed += Time.unscaledDeltaTime;
+            previousKeyState = currentKeyState;
+            elapsedTime += Time.unscaledDeltaTime;
             yield return null;
         }
 
@@ -196,35 +253,48 @@ public abstract class GenericLevelSequencer : MonoBehaviour
         ShowMessage("ActionPrompt", "", false);
     }
 
-    private float EaseInOut(float t)
+    private float EaseInOut(float progress)
     {
-        return t * t * t * (t * (t * 6f - 15f) + 10f);
+        return progress * progress * progress * (progress * (progress * 6f - 15f) + 10f);
     }
 
-    protected IEnumerator LerpObjectToPosition(GameObject gameObject, Vector3 targetPosition, float duration)
+    protected IEnumerator LerpObjectToPosition(GameObject gameObject, Vector3 targetPosition, float duration, Quaternion? finalRotation = null, Vector3? controlPoint = null)
     {
         Vector3 startPosition = gameObject.transform.position;
-        Vector3 overallDirection = (targetPosition - startPosition).normalized; // fallback
+        Quaternion startRotation = gameObject.transform.rotation;
         float elapsedTime = 0f;
         Vector3 previousPosition = startPosition;
 
         while (elapsedTime < duration)
         {
-            float t = elapsedTime / duration;
-            float easedT = EaseInOut(t);
+            float progress = elapsedTime / duration;
+            float easedProgress = EaseInOut(progress);
 
-            Vector3 newPosition = Vector3.Lerp(startPosition, targetPosition, easedT);
+            Vector3 newPosition;
+            if (controlPoint.HasValue)
+            {
+                float oneMinusProgress = 1f - easedProgress;
+                newPosition = oneMinusProgress * oneMinusProgress * startPosition + 2f * oneMinusProgress * easedProgress * controlPoint.Value + easedProgress * easedProgress * targetPosition;
+            }
+            else
+            {
+                newPosition = Vector3.Lerp(startPosition, targetPosition, easedProgress);
+            }
+
             gameObject.transform.position = newPosition;
 
-            Vector3 moveDir = newPosition - previousPosition;
-            if (moveDir.sqrMagnitude > 1e-8f)
+            Vector3 moveDirection = newPosition - previousPosition;
+            if (moveDirection.sqrMagnitude > 1e-8f)
             {
-                Vector3 flatDir = moveDir;
-
-                if (flatDir.sqrMagnitude > 1e-8f)
+                Quaternion lookRotation = Quaternion.LookRotation(moveDirection.normalized, Vector3.up);
+                if (finalRotation.HasValue)
                 {
-                    gameObject.transform.rotation =
-                        Quaternion.LookRotation(flatDir.normalized, Vector3.up);
+                    float rotationBlend = Mathf.Clamp01((progress - 0.7f) / 0.3f);
+                    gameObject.transform.rotation = Quaternion.Slerp(lookRotation, finalRotation.Value, rotationBlend);
+                }
+                else
+                {
+                    gameObject.transform.rotation = lookRotation;
                 }
             }
 
@@ -235,14 +305,9 @@ public abstract class GenericLevelSequencer : MonoBehaviour
 
         gameObject.transform.position = targetPosition;
 
-        if (overallDirection.sqrMagnitude > 1e-8f)
+        if (finalRotation.HasValue)
         {
-            Vector3 flatDir = overallDirection;
-            if (flatDir.sqrMagnitude > 1e-8f)
-            {
-                gameObject.transform.rotation =
-                    Quaternion.LookRotation(flatDir.normalized, Vector3.up);
-            }
+            gameObject.transform.rotation = finalRotation.Value;
         }
     }
 
@@ -297,16 +362,15 @@ public abstract class GenericLevelSequencer : MonoBehaviour
 
     private void SpawnCarsInQueue()
     {
-        for (int i = 0; i < carPrefabs.Count; i++)
+        for (int carIndex = 0; carIndex < carPrefabs.Count; carIndex++)
         {
-            GameObject carPrefab = carPrefabs[i];
-            Vector3 position = carQueueOrigin.position - carQueueOrigin.forward * distanceBetweenCars * (i + 0.5f);
+            GameObject carPrefab = carPrefabs[carIndex];
+            Vector3 position = carQueueOrigin.position - carQueueOrigin.forward * distanceBetweenCars * (carIndex + 0.5f);
             GameObject car = Instantiate(carPrefab, position, carQueueOrigin.rotation);
             m_carsToFix.Add(car);
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         if (cameraRig == null)
@@ -321,9 +385,8 @@ public abstract class GenericLevelSequencer : MonoBehaviour
         StartCoroutine(LevelSequence());
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
