@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System;
+using TMPro;
 
 public class Task : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Task : MonoBehaviour
     [SerializeField] public GameObject returnItem;
     [SerializeField] public float interactDuration;
     [SerializeField] public List<Task> adoptedRequiredTasks = new List<Task>(); // Tasks that cannot come from the prefab tree because they are children of another branch.
+    [SerializeField] public TextMeshProUGUI labelToChange;
 
     private List<Task> reqTasks = new List<Task>();
     public List<Task> ReqTasks { get { return reqTasks; } }
