@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7913810383179480563}
   - component: {fileID: 1011495357584098055}
   - component: {fileID: 3803611195541625187}
+  - component: {fileID: 8857945588629910467}
   m_Layer: 0
   m_Name: car-normal-red.003
   m_TagString: Untagged
@@ -86,6 +87,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!208 &8857945588629910467
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74807015108922526}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.003, y: 0.001, z: 0.003}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0.003, y: 0, z: 0.001}
+  m_TimeToStationary: 0
 --- !u!1 &97744801312089658
 GameObject:
   m_ObjectHideFlags: 0
@@ -861,6 +878,55 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1237636882798930776
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 44386841588266363}
+  - component: {fileID: 1372045932870842771}
+  m_Layer: 0
+  m_Name: RightDoorInteractionPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &44386841588266363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237636882798930776}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.58433783, y: -0.39818257, z: -0.39818257, w: 0.58433783}
+  m_LocalPosition: {x: -3.191, y: 1.3838353, z: 1.068}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2286123544035935696}
+  m_Father: {fileID: 8045024778013272421}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1372045932870842771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237636882798930776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9a14130a33db304bba15bfababf23f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progressBar: {fileID: 3919044836505827197}
+  uiCanvas: {fileID: 5367051510885984340}
+  tryCombineChildMeshes: 1
+  splitOutline: 0
 --- !u!1 &1435544314622265331
 GameObject:
   m_ObjectHideFlags: 0
@@ -1113,7 +1179,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7913810383179480563}
-  - {fileID: 8787370601154395851}
+  - {fileID: 934983748470020559}
   - {fileID: 1049466315288219752}
   m_Father: {fileID: 7080194476090933547}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1214,6 +1280,7 @@ GameObject:
   - component: {fileID: 5924707770857847694}
   - component: {fileID: 826159598982363853}
   - component: {fileID: 425849890215946294}
+  - component: {fileID: 1091516645299724823}
   m_Layer: 0
   m_Name: car-normal-red
   m_TagString: Untagged
@@ -1315,6 +1382,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.018168753, y: 0.008305134, z: 0.011570362}
   m_Center: {x: -0.0008582118, y: -0.0000000013175031, z: 0.0027648215}
+--- !u!208 &1091516645299724823
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3207561909814448895}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.0075, y: 0.0035, z: 0.003}
+  m_MoveThreshold: 0.05
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.001, y: 0, z: 0.0050000004}
+  m_TimeToStationary: 0
 --- !u!1 &3997322748548784350
 GameObject:
   m_ObjectHideFlags: 0
@@ -1345,7 +1428,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3457811058064330412}
-  - {fileID: 2286123544035935696}
+  - {fileID: 44386841588266363}
   - {fileID: 324969124913067888}
   m_Father: {fileID: 7080194476090933547}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1360,7 +1443,7 @@ GameObject:
   - component: {fileID: 8787370601154395851}
   - component: {fileID: 5285912630368011686}
   - component: {fileID: 1489322489435973539}
-  - component: {fileID: 7872115247051122967}
+  - component: {fileID: 785162948554447751}
   m_Layer: 0
   m_Name: car-normal-red.005
   m_TagString: Untagged
@@ -1376,12 +1459,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4317023636388261757}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: -0.00000020861623, z: -0.00000017881392, w: 0.70710677}
-  m_LocalPosition: {x: -3.293001, y: 1.3838353, z: 0.8099003}
-  m_LocalScale: {x: 100, y: 100, z: 99.999985}
+  m_LocalRotation: {x: -0.7071069, y: -0.00000020861623, z: -0.0000001490116, w: 0.70710677}
+  m_LocalPosition: {x: -0.27500224, y: 0, z: 0}
+  m_LocalScale: {x: 100, y: 99.999985, z: 99.99997}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 860038243165524347}
+  m_Father: {fileID: 934983748470020559}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5285912630368011686
 MeshFilter:
@@ -1436,22 +1519,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7872115247051122967
-MonoBehaviour:
+--- !u!208 &785162948554447751
+NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4317023636388261757}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9a14130a33db304bba15bfababf23f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  progressBar: {fileID: 1722805329732982610}
-  uiCanvas: {fileID: 6500160652057215520}
-  tryCombineChildMeshes: 0
-  splitOutline: 0
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.003, y: 0.001, z: 0.003}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0.003, y: 0, z: 0.001}
+  m_TimeToStationary: 0
 --- !u!1 &4398050975609919800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1537,6 +1620,55 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4686963160452984901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 934983748470020559}
+  - component: {fileID: 7836603189320930961}
+  m_Layer: 0
+  m_Name: RightDoorInteractionPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &934983748470020559
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686963160452984901}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.018, y: 1.3838353, z: 0.8099003}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8787370601154395851}
+  m_Father: {fileID: 860038243165524347}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7836603189320930961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686963160452984901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9a14130a33db304bba15bfababf23f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progressBar: {fileID: 1722805329732982610}
+  uiCanvas: {fileID: 6500160652057215520}
+  tryCombineChildMeshes: 1
+  splitOutline: 0
 --- !u!1 &5240909431468195249
 GameObject:
   m_ObjectHideFlags: 0
@@ -1914,7 +2046,6 @@ GameObject:
   - component: {fileID: 2286123544035935696}
   - component: {fileID: 7055821987065151522}
   - component: {fileID: 1264133525652510874}
-  - component: {fileID: 2888780370385818686}
   - component: {fileID: 6679511651936740044}
   m_Layer: 0
   m_Name: car-normal-red.005
@@ -1931,12 +2062,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6742127727842365206}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5843379, y: -0.39818245, z: -0.39818245, w: 0.5843379}
-  m_LocalPosition: {x: -3.293001, y: 1.3838353, z: 0.8099003}
-  m_LocalScale: {x: 100, y: 100, z: 99.999985}
+  m_LocalRotation: {x: -0, y: -0, z: 0.00000017881389, w: 1}
+  m_LocalPosition: {x: -0.27752388, y: -0.00051917136, z: 0}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8045024778013272421}
+  m_Father: {fileID: 44386841588266363}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: -68.543}
 --- !u!33 &7055821987065151522
 MeshFilter:
@@ -1991,22 +2122,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2888780370385818686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6742127727842365206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9a14130a33db304bba15bfababf23f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  progressBar: {fileID: 3919044836505827197}
-  uiCanvas: {fileID: 5367051510885984340}
-  tryCombineChildMeshes: 0
-  splitOutline: 0
 --- !u!65 &6679511651936740044
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2742,7 +2857,7 @@ PrefabInstance:
     - target: {fileID: 1468097211125395612, guid: 29e4019d9da4c964d8dc2f2795eeb66a, type: 3}
       propertyPath: interactable
       value: 
-      objectReference: {fileID: 2888780370385818686}
+      objectReference: {fileID: 1372045932870842771}
     - target: {fileID: 1468097211125395612, guid: 29e4019d9da4c964d8dc2f2795eeb66a, type: 3}
       propertyPath: interactDuration
       value: 2
@@ -2762,7 +2877,7 @@ PrefabInstance:
     - target: {fileID: 2838916598701227147, guid: 29e4019d9da4c964d8dc2f2795eeb66a, type: 3}
       propertyPath: interactable
       value: 
-      objectReference: {fileID: 7872115247051122967}
+      objectReference: {fileID: 7836603189320930961}
     - target: {fileID: 2838916598701227147, guid: 29e4019d9da4c964d8dc2f2795eeb66a, type: 3}
       propertyPath: interactDuration
       value: 2
