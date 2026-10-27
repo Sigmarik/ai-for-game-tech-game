@@ -80,9 +80,7 @@ public abstract class GenericLevelSequencer : MonoBehaviour
     protected IEnumerator MoveAndActivateCar(GameObject car, Vector3 targetPosition, float duration)
     {
         Quaternion targetRotation = Quaternion.LookRotation(WorkshopForwardDirection, Vector3.up);
-        Vector3 startPosition = car.transform.position;
-        Vector3 controlPoint = startPosition + (targetPosition - startPosition) * 0.5f + WorkshopForwardDirection * 2f;
-        yield return LerpObjectToPosition(car, targetPosition, duration, targetRotation, controlPoint);
+        yield return MoveAlongSpline(car, targetPosition, targetRotation, duration);
         MakeTaskManagerActive(car);
     }
 
@@ -93,7 +91,7 @@ public abstract class GenericLevelSequencer : MonoBehaviour
             GameObject car = m_carsToFix[queueIndex];
             int queuePositionIndex = queueIndex - m_currentCarIndex;
             Vector3 targetPosition = carQueueOrigin.position - carQueueOrigin.forward * distanceBetweenCars * (queuePositionIndex + 0.5f);
-            StartCoroutine(LerpObjectToPosition(car, targetPosition, 1f));
+            StartCoroutine(MoveAlongSpline(car, targetPosition, carQueueOrigin.rotation, 1f));
             yield return new WaitForSeconds(0.2f);
         }
     }
@@ -135,13 +133,11 @@ public abstract class GenericLevelSequencer : MonoBehaviour
             yield break;
         DisableAllColliders(car);
         
-        Vector3 startPosition = car.transform.position;
         Vector3 gatePosition = exitGatePosition.position;
         Quaternion gateRotation = exitGatePosition.rotation;
-        Vector3 controlPoint = startPosition + (gatePosition - startPosition) * 0.5f;// + WorkshopForwardDirection * 2f;
 
-        yield return LerpObjectToPosition(car, gatePosition, 1f, gateRotation, controlPoint);
-        yield return LerpObjectToPosition(car, exitPosition.position, 2f, exitPosition.rotation);
+        yield return MoveAlongSpline(car, gatePosition, gateRotation, 1f);
+        yield return MoveAlongSpline(car, exitPosition.position, exitPosition.rotation, 2f);
     }
 
     protected IEnumerator SpawnConfetti()
@@ -258,57 +254,53 @@ public abstract class GenericLevelSequencer : MonoBehaviour
         return progress * progress * progress * (progress * (progress * 6f - 15f) + 10f);
     }
 
-    protected IEnumerator LerpObjectToPosition(GameObject gameObject, Vector3 targetPosition, float duration, Quaternion? finalRotation = null, Vector3? controlPoint = null)
+    protected IEnumerator MoveAlongSpline(GameObject gameObject, Vector3 targetPosition, Quaternion targetRotation, float duration)
     {
+        const float SplineTangentScale = 3f;
+
         Vector3 startPosition = gameObject.transform.position;
         Quaternion startRotation = gameObject.transform.rotation;
+
+        Vector3 pointZero = startPosition;
+        Vector3 pointOne = startPosition + startRotation * Vector3.forward * SplineTangentScale;
+        Vector3 pointTwo = targetPosition - targetRotation * Vector3.forward * SplineTangentScale;
+        Vector3 pointThree = targetPosition;
+
         float elapsedTime = 0f;
-        Vector3 previousPosition = startPosition;
 
         while (elapsedTime < duration)
         {
             float progress = elapsedTime / duration;
             float easedProgress = EaseInOut(progress);
 
-            Vector3 newPosition;
-            if (controlPoint.HasValue)
-            {
-                float oneMinusProgress = 1f - easedProgress;
-                newPosition = oneMinusProgress * oneMinusProgress * startPosition + 2f * oneMinusProgress * easedProgress * controlPoint.Value + easedProgress * easedProgress * targetPosition;
-            }
-            else
-            {
-                newPosition = Vector3.Lerp(startPosition, targetPosition, easedProgress);
-            }
+            float inverseProgress = 1f - easedProgress;
+            float inverseProgressSquared = inverseProgress * inverseProgress;
+            float progressSquared = easedProgress * easedProgress;
+            float inverseProgressCubed = inverseProgressSquared * inverseProgress;
+            float progressCubed = progressSquared * easedProgress;
 
+            Vector3 newPosition = inverseProgressCubed * pointZero 
+                + 3f * inverseProgressSquared * easedProgress * pointOne 
+                + 3f * inverseProgress * progressSquared * pointTwo 
+                + progressCubed * pointThree;
+            
             gameObject.transform.position = newPosition;
 
-            Vector3 moveDirection = newPosition - previousPosition;
-            if (moveDirection.sqrMagnitude > 1e-8f)
+            Vector3 tangent = 3f * inverseProgressSquared * (pointOne - pointZero) 
+                + 6f * inverseProgress * easedProgress * (pointTwo - pointOne) 
+                + 3f * progressSquared * (pointThree - pointTwo);
+
+            if (tangent.sqrMagnitude > 1e-8f)
             {
-                Quaternion lookRotation = Quaternion.LookRotation(moveDirection.normalized, Vector3.up);
-                if (finalRotation.HasValue)
-                {
-                    float rotationBlend = Mathf.Clamp01((progress - 0.7f) / 0.3f);
-                    gameObject.transform.rotation = Quaternion.Slerp(lookRotation, finalRotation.Value, rotationBlend);
-                }
-                else
-                {
-                    gameObject.transform.rotation = lookRotation;
-                }
+                gameObject.transform.rotation = Quaternion.LookRotation(tangent.normalized, Vector3.up);
             }
 
-            previousPosition = newPosition;
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         gameObject.transform.position = targetPosition;
-
-        if (finalRotation.HasValue)
-        {
-            gameObject.transform.rotation = finalRotation.Value;
-        }
+        gameObject.transform.rotation = targetRotation;
     }
 
     protected void ShowMessage(string channel, string message, bool pulse = false)
