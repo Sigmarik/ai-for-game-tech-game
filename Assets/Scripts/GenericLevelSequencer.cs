@@ -202,6 +202,11 @@ public abstract class GenericLevelSequencer : MonoBehaviour
         {
             collider.enabled = false;
         }
+
+        foreach (UnityEngine.AI.NavMeshObstacle obstacle in car.GetComponentsInChildren<UnityEngine.AI.NavMeshObstacle>(true))
+        {
+            obstacle.enabled = false;
+        }
     }
 
     protected void MakeTaskManagerActive(GameObject car)
