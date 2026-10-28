@@ -5,17 +5,26 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/main_menu.unity
     guid: c77f3bc57e6654e31923fe09d76e86d4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Garage.unity
     guid: 681051a5ee9e73b4691de513285c7f1d
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TaskTestScene.unity
     guid: 2749fa4b280111b4a87db3a7c88e9c79
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LevelDirectorPlayground.unity
     guid: e965492188e418d42ae930a516a82162
+  - enabled: 0
+    path: Assets/Scenes/AITestClose.unity
+    guid: 4969d5d1381f3e748a2e6a31ed69a723
+  - enabled: 0
+    path: Assets/Scenes/Tutorial.unity
+    guid: d71515c601753ca4baedebe04f1d3168
+  - enabled: 1
+    path: Assets/Scenes/AITestDistant.unity
+    guid: a3b106f9703539044b122a984b2ae891
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
