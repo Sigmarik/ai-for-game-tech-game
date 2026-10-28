@@ -28,7 +28,7 @@ public class AIBrain
         }
 
         Task playerLastTask = PlayerTaskTracker.LastPlayerTask;
-        if (playerLastTask != null && !IsTaskValid(playerLastTask))
+        if (playerLastTask != null && !IsReferenceTaskValid(playerLastTask))
         {
             playerLastTask = null;
             PlayerTaskTracker.LastPlayerTask = null;
@@ -70,6 +70,16 @@ public class AIBrain
             }
         }
         controller.StateMachine.ChangeState(controller.IdleState);
+    }
+
+    private bool IsReferenceTaskValid(Task task)
+    {
+        if (task == null) return false;
+        var manager = task.GetComponentInParent<TaskManager>();
+        if (manager == null) return false;
+        if (manager.Finished) return false;
+        if (!manager.gameObject.activeInHierarchy) return false;
+        return true;
     }
 
     public bool IsTaskValid(Task task)
