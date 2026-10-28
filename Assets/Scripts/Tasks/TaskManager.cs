@@ -14,25 +14,27 @@ public class TaskManager : MonoBehaviour
 
     [SerializeField] private bool activateOnStart = false;
 
+    private HashSet<Task> processedTasks = new HashSet<Task>();
+    private bool isInitialized = false;
+
     private void Awake()
     {
-
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         if (activateOnStart) MakeActive();
     }
 
-    // Update is called once per frame
     void Update()
     {
-
     }
 
     public void MakeActive()
     {
+        if (isInitialized) return;
+        isInitialized = true;
+
         foreach (Transform child in transform)
         {
             Task childTask = child.GetComponent<Task>();
@@ -48,6 +50,9 @@ public class TaskManager : MonoBehaviour
 
     public void MakeTasksActive(Task task)
     {
+        if (processedTasks.Contains(task)) return;
+        processedTasks.Add(task);
+
         task.MakeActive();
         task.OnTaskComplete += TaskCompletes;
         foreach (Task childTask in task.ReqTasks)
@@ -75,14 +80,24 @@ public class TaskManager : MonoBehaviour
 
     public void GetCompletableTasks()
     {
-        
         List<Task> _completableTasks = new List<Task>();
         foreach (Task task in endTasks)
             _completableTasks = _completableTasks.Concat(CompletableOrChildren(task)).ToList();
+        
+        if (completableTasks != null)
+        {
+            foreach (Task task in completableTasks)
+            {
+                if (!_completableTasks.Contains(task))
+                {
+                    task.interactable.SetActive(false);
+                }
+            }
+        }
+
         completableTasks = _completableTasks;
         foreach (Task task in completableTasks)
         {
-            Debug.Log(task.name);
             task.interactable.SetActive(true);
             task.interactable.ForceUpdate();
         }

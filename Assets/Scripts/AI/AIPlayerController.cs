@@ -30,12 +30,28 @@ public class AIPlayerController : GenericController
 
     [SerializeField] public Transform testTarget;
 
+    private float m_idleCheckTimer = 0f;
+    private const float IdleCheckInterval = 1f;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         
         agent.speed = moveSpeed;
+
+        Rigidbody body = GetComponent<Rigidbody>();
+        if (body != null)
+        {
+            body.isKinematic = true;
+            body.useGravity = false;
+        }
+
+        CharacterMovement characterMovement = GetComponent<CharacterMovement>();
+        if (characterMovement != null)
+        {
+            characterMovement.enabled = false;
+        }
 
         StateMachine = new AIStateMachine();
 
@@ -67,6 +83,31 @@ public class AIPlayerController : GenericController
         UpdateAnimator();
 
         currentStateName = StateMachine.CurrentState?.GetType().Name;
+
+        if (StateMachine.CurrentState == InteractState && Brain.currentTask != null)
+        {
+            if (Brain.currentTask.interactable.Interacter != m_interact && !Brain.currentTask.IsComplete)
+            {
+                Brain.AbandonCurrentTask();
+            }
+        }
+        else if (Brain.currentTask != null && !Brain.currentTask.IsComplete && !Brain.IsTaskValid(Brain.currentTask))
+        {
+            Brain.AbandonCurrentTask();
+        }
+        else if (StateMachine.CurrentState == IdleState)
+        {
+            m_idleCheckTimer += Time.deltaTime;
+            if (m_idleCheckTimer >= IdleCheckInterval)
+            {
+                m_idleCheckTimer = 0f;
+                Brain.RequestWork();
+            }
+        }
+        else
+        {
+            m_idleCheckTimer = 0f;
+        }
     }
 
     private void FixedUpdate()
@@ -80,6 +121,7 @@ public class AIPlayerController : GenericController
         agent.isStopped = true;
         agent.ResetPath();
     }
+    
     public void MoveTo(Vector3 position)
     {
         agent.isStopped = false;
@@ -90,6 +132,7 @@ public class AIPlayerController : GenericController
     {
         return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
     }
+    
     public void SetMoveTarget(Vector3 position)
     {
         moveTarget = position;

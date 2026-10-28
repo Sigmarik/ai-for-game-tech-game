@@ -72,13 +72,13 @@ public class AIBrain
         controller.StateMachine.ChangeState(controller.IdleState);
     }
 
-    private bool IsTaskValid(Task task)
+    public bool IsTaskValid(Task task)
     {
         if (task == null) return false;
         if (!task.gameObject.activeInHierarchy) return false;
         var manager = task.GetComponentInParent<TaskManager>();
         if (manager == null || manager.CompletableTasks == null || manager.Finished) return false;
-        return true;
+        return manager.CompletableTasks.Contains(task);
     }
 
     public void OnMoveComplete()
@@ -98,18 +98,30 @@ public class AIBrain
 
     public void StartInteraction()
     {
+        if (currentTask == null) return;
+
+        if (!IsTaskValid(currentTask))
+        {
+            AbandonCurrentTask();
+            return;
+        }
+
         currentTask.interactable.ShowUI(); 
-        currentTask.interactable.StartInteraction(controller.m_interact);
+        if (!currentTask.interactable.StartInteraction(controller.m_interact))
+        {
+            AbandonCurrentTask();
+        }
     }
 
     public bool IsStepDone()
     {
-        if (currentTask.IsComplete)
+        if (currentTask != null && currentTask.IsComplete)
         {
             return true;
         }
         return false;
     }
+
     public bool IsCurrentTaskClaimedByPlayer()
     {
         return currentTask != null && AITaskCoordinator.IsClaimByOthers(currentTask, this);
@@ -119,12 +131,14 @@ public class AIBrain
     {
         if (currentTask != null)
         {
-            if (currentTask.interactable.ActiveTask == currentTask)
+            if (currentTask.interactable.Interacter == controller.m_interact)
                 currentTask.interactable.StopInteraction();
 
             AITaskCoordinator.ReleaseTask(currentTask, this);
             currentTask = null;
         }
+        
+        controller.StopMoving();
         RequestWork();
     }
 }

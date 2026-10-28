@@ -834,7 +834,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.06666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 73ef929e89a06414597791248a4e658f, type: 2}
   m_BuildHeightMesh: 0
@@ -7864,7 +7864,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5355309965419459006, guid: e6e1b6a4e5874324184f2be35f124fc0, type: 3}
       propertyPath: spawnChannel
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7413095503153745621, guid: e6e1b6a4e5874324184f2be35f124fc0, type: 3}
       propertyPath: m_Name
@@ -11699,7 +11699,7 @@ PrefabInstance:
     - target: {fileID: 954306849481248976, guid: 0e3b36ea1ba9c0443a65fb2b98beb23b, type: 3}
       propertyPath: 'carPrefabs.Array.data[0]'
       value: 
-      objectReference: {fileID: 420623664966357701, guid: 0f6ca3d2c8aa7364999edb5ef690fbdb, type: 3}
+      objectReference: {fileID: 420623664966357701, guid: 4be1a1678534510458e451f7026d33c6, type: 3}
     - target: {fileID: 954306849481248976, guid: 0e3b36ea1ba9c0443a65fb2b98beb23b, type: 3}
       propertyPath: 'carPrefabs.Array.data[1]'
       value: 
@@ -11707,15 +11707,15 @@ PrefabInstance:
     - target: {fileID: 954306849481248976, guid: 0e3b36ea1ba9c0443a65fb2b98beb23b, type: 3}
       propertyPath: 'carPrefabs.Array.data[2]'
       value: 
-      objectReference: {fileID: 420623664966357701, guid: 450fe554d69eb824dbd2188d7f96b04d, type: 3}
+      objectReference: {fileID: 420623664966357701, guid: 0f6ca3d2c8aa7364999edb5ef690fbdb, type: 3}
     - target: {fileID: 954306849481248976, guid: 0e3b36ea1ba9c0443a65fb2b98beb23b, type: 3}
       propertyPath: 'carPrefabs.Array.data[3]'
       value: 
-      objectReference: {fileID: 420623664966357701, guid: 37ed1de586370de49a35e9d868352f24, type: 3}
+      objectReference: {fileID: 420623664966357701, guid: 450fe554d69eb824dbd2188d7f96b04d, type: 3}
     - target: {fileID: 954306849481248976, guid: 0e3b36ea1ba9c0443a65fb2b98beb23b, type: 3}
       propertyPath: 'carPrefabs.Array.data[4]'
       value: 
-      objectReference: {fileID: 420623664966357701, guid: 4be1a1678534510458e451f7026d33c6, type: 3}
+      objectReference: {fileID: 420623664966357701, guid: 37ed1de586370de49a35e9d868352f24, type: 3}
     - target: {fileID: 1054642740476871822, guid: 0e3b36ea1ba9c0443a65fb2b98beb23b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4

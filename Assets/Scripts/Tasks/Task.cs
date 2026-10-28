@@ -18,6 +18,7 @@ public class Task : MonoBehaviour
     private bool isComplete = false;
     public bool IsComplete { get { return isComplete; } }
     private Coroutine activeTask;
+    private bool isActive = false;
 
     public event Action<Task> OnTaskComplete;
 
@@ -26,13 +27,52 @@ public class Task : MonoBehaviour
         OnTaskComplete += OnTaskEnd;
     }
 
+    void Update()
+    {
+        if (!isActive || isComplete || interactable == null || !interactable.IsActive) return;
+
+        bool isBeingInteractedWith = interactable.Interacter != null;
+
+        if (isBeingInteractedWith)
+        {
+            if (interactable.ActiveTask == null && AllRequirements())
+            {
+                interactable.SetActiveTask(this);
+            }
+
+            if (interactable.ActiveTask == this)
+            {
+                if (activeTask == null && AllRequirements())
+                {
+                    activeTask = StartCoroutine(ActivateTask());
+                }
+            }
+        }
+        else
+        {
+            if (interactable.ActiveTask == this)
+            {
+                interactable.ClearActiveTask(this);
+            }
+
+            if (activeTask != null)
+            {
+                StopCoroutine(activeTask);
+                interactable.StopProgressBar();
+                activeTask = null;
+            }
+        }
+    }
+
     public virtual void OnTaskEnd(Task task)
     {
-
     }
 
     public void MakeActive()
     {
+        if (isActive) return;
+        isActive = true;
+
         foreach (Transform child in transform)
         {
             Task childTask = child.GetComponent<Task>();
@@ -40,28 +80,7 @@ public class Task : MonoBehaviour
         }
         foreach (Task adoptedTask in adoptedRequiredTasks)
             reqTasks.Add(adoptedTask);
-        interactable.OnInteractionStart += Activate;
-        interactable.OnInteractionEnd += Deactivate;
         interactable.TaskSubscribed();
-    }
-
-    public void Activate()
-    {
-        if (isComplete || !AllRequirements())
-            return;
-        interactable.SetActiveTask(this);
-        activeTask = StartCoroutine(this.ActivateTask());
-    }
-
-    public void Deactivate()
-    {
-        if (activeTask != null)
-        {
-            interactable.ClearActiveTask(this);
-            StopCoroutine(activeTask);
-            interactable.StopProgressBar();
-            activeTask = null;
-        }
     }
 
     public bool AllRequirements()
@@ -75,26 +94,32 @@ public class Task : MonoBehaviour
     {
         interactable.StartProgressBar(interactDuration);
         yield return new WaitForSeconds(interactDuration);
-        interactable.StopProgressBar();
-        interactable.NextState();
-        interactable.OnInteractionStart -= Activate;
-        interactable.OnInteractionEnd -= Deactivate;
-        interactable.TaskUnsubscribed();
-        interactable.ClearActiveTask(this);
-
-        var interacter = interactable.CurrentInteracter;
-        if (interacter != null)
+        
+        if (interactable.ActiveTask == this && interactable.Interacter != null)
         {
-            var aiController = interacter.GetComponent<AIPlayerController>();
-            if (aiController == null)
+            interactable.StopProgressBar();
+            interactable.NextState();
+            
+            var interacter = interactable.Interacter;
+            if (interacter != null && interacter.GetComponent<AIPlayerController>() == null)
             {
                 PlayerTaskTracker.LastPlayerTask = this;
             }
-        }
 
-        interactable.StopInteraction();
-        isComplete = true;
-        if (OnTaskComplete != null)
-            OnTaskComplete.Invoke(this);
+            isComplete = true;
+            interactable.StopInteraction();
+            interactable.ClearActiveTask(this);
+            interactable.TaskUnsubscribed();
+            
+            activeTask = null;
+            if (OnTaskComplete != null)
+                OnTaskComplete.Invoke(this);
+        }
+        else
+        {
+            interactable.StopProgressBar();
+            interactable.ClearActiveTask(this);
+            activeTask = null;
+        }
     }
 }

@@ -529,6 +529,7 @@ GameObject:
   - component: {fileID: 4240898781860924277}
   - component: {fileID: 5072245230115420327}
   - component: {fileID: 2845985243218803340}
+  - component: {fileID: 6324678807162980225}
   m_Layer: 0
   m_Name: car-normal-red.003
   m_TagString: Untagged
@@ -625,6 +626,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0051679057, y: 0.0010346195, z: 0.005917917}
   m_Center: {x: 0.0025839591, y: -0.00046972945, z: 0.0013926735}
+--- !u!208 &6324678807162980225
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968241028902026785}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.003, y: 0.001, z: 0.003}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.003, y: 0, z: 0.001}
+  m_TimeToStationary: 0.5
 --- !u!1 &1124093094587453261
 GameObject:
   m_ObjectHideFlags: 0
@@ -1392,12 +1409,12 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.0075, y: 0.0035, z: 0.003}
-  m_MoveThreshold: 0.05
-  m_Carve: 1
+  m_Extents: {x: 0.009000001, y: 0.004, z: 0.003}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
   m_CarveOnlyStationary: 1
   m_Center: {x: -0.001, y: 0, z: 0.0050000004}
-  m_TimeToStationary: 0
+  m_TimeToStationary: 0.5
 --- !u!1 &3997322748548784350
 GameObject:
   m_ObjectHideFlags: 0
@@ -2047,6 +2064,7 @@ GameObject:
   - component: {fileID: 7055821987065151522}
   - component: {fileID: 1264133525652510874}
   - component: {fileID: 6679511651936740044}
+  - component: {fileID: 6405830687450229547}
   m_Layer: 0
   m_Name: car-normal-red.005
   m_TagString: Untagged
@@ -2143,6 +2161,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.005167906, y: 0.0010346187, z: 0.0059179175}
   m_Center: {x: 0.0025839615, y: 0.0004697294, z: 0.001392673}
+--- !u!208 &6405830687450229547
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6742127727842365206}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.003, y: 0.001, z: 0.003}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.003, y: 0, z: 0.001}
+  m_TimeToStationary: 0.5
 --- !u!1 &7144163296604170090
 GameObject:
   m_ObjectHideFlags: 0

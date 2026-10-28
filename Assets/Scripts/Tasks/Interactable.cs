@@ -19,13 +19,13 @@ public class Interactable : MonoBehaviour
     private int taskCount = 0;
 
     public Task ActiveTask {get; private set;} 
-    public void SetActiveTask(Task task) {ActiveTask = task;}
-    public void ClearActiveTask(Task task) {if(ActiveTask == task) ActiveTask  = null; }
+    public void SetActiveTask(Task task) {if (ActiveTask == null) ActiveTask = task;}
+    public void ClearActiveTask(Task task) {if(ActiveTask == task) ActiveTask = null; }
 
     private MeshRenderer outline;
 
     private Interact interacter = null;
-    public Interact CurrentInteracter => interacter;
+    public Interact Interacter => interacter;
 
     private bool active = false;
     public bool IsActive => active;
@@ -81,20 +81,22 @@ public class Interactable : MonoBehaviour
 
     public bool StartInteraction(Interact p_interacter)
     {
-        if (!active || interacter != null) return false;
-        interacter = p_interacter;
-        OnInteractionStart?.Invoke();
-        if (ActiveTask == null)
+        if (!active) return false;
+        
+        if (interacter != null)
         {
-            interacter = null;
+            if (interacter == p_interacter) return true;
             return false;
         }
+
+        interacter = p_interacter;
+        OnInteractionStart?.Invoke();
         return true;
     }
 
     public void StopInteraction()
     {
-        if (!active) return;
+        if (interacter == null) return;
         Interact oldInteracter = interacter;
         interacter = null;
         if (OnInteractionEnd != null)
@@ -161,6 +163,13 @@ public class Interactable : MonoBehaviour
 
     public void SetActive(bool p_active)
     {
+        if (active == p_active) return;
+
+        if (!p_active)
+        {
+            StopInteraction();
+        }
+
         active = p_active;
         if(splitOutline)
             outline.gameObject.SetActive(p_active);
