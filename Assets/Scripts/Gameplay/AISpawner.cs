@@ -6,12 +6,17 @@ public class AISpawner : MonoBehaviour
 {
     [SerializeField] public int spawnChannel = 1;
     [SerializeField] private GameObject aiPrefab;
+    [SerializeField] private AITaskSchedulingMode taskSchedulingModeOverride = AITaskSchedulingMode.Closest;
 
     private GameObject visuals;
 
     public void SpawnAI()
     {
-        Instantiate(aiPrefab, transform.position, transform.rotation);
+        GameObject instantiated = Instantiate(aiPrefab, transform.position, transform.rotation);
+        foreach (AIPlayerController ai in instantiated.GetComponentsInChildren<AIPlayerController>())
+        {
+            ai.TaskSchedulingMode = taskSchedulingModeOverride;
+        }
     }
 
     public void SetParticlesActive(bool active)
