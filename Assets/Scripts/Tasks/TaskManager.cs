@@ -46,6 +46,10 @@ public class TaskManager : MonoBehaviour
             }
         }
         GetCompletableTasks();
+
+        ExperimentLogger.LogEvent("TASK_MANAGER", "activated",
+            "object", gameObject.name,
+            "endTaskCount", endTasks.Count.ToString());
     }
 
     public void MakeTasksActive(Task task)
@@ -69,13 +73,18 @@ public class TaskManager : MonoBehaviour
 
     public void SubToEndTaskCompletion(Task task)
     {
-        task.OnTaskComplete += EndTaskCompletes;   
+        task.OnTaskComplete += EndTaskCompletes;
     }
 
     public void EndTaskCompletes(Task task)
     {
-        if (endTasks.All(task => task.IsComplete))
+        if (endTasks.All(endTask => endTask.IsComplete))
+        {
             finished = true;
+            ExperimentLogger.LogEvent("TASK_MANAGER", "all tasks finished",
+                "object", gameObject.name,
+                "car", transform.root.name);
+        }
     }
 
     public void GetCompletableTasks()
@@ -83,7 +92,7 @@ public class TaskManager : MonoBehaviour
         List<Task> _completableTasks = new List<Task>();
         foreach (Task task in endTasks)
             _completableTasks = _completableTasks.Concat(CompletableOrChildren(task)).ToList();
-        
+
         if (completableTasks != null)
         {
             foreach (Task task in completableTasks)

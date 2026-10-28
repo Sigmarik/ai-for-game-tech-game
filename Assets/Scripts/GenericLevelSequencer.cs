@@ -42,15 +42,22 @@ public abstract class GenericLevelSequencer : MonoBehaviour
 
     protected IEnumerator PreviewCars()
     {
+        ExperimentLogger.LogEvent("PREVIEW", "starting car preview",
+            "carCount", m_carsToFix.Count.ToString());
+
         for (int carIndex = 0; carIndex < m_carsToFix.Count; carIndex++)
         {
             GameObject car = m_carsToFix[carIndex];
+            ExperimentLogger.LogEvent("PREVIEW", "focusing car",
+                "index", carIndex.ToString(),
+                "name", car.name);
             HighlightEveryInteractive(car, true);
             FocusCameraOn(car);
             yield return new WaitForSeconds(2f);
             HighlightEveryInteractive(car, false);
         }
         ResetCameraFocus();
+        ExperimentLogger.Log("PREVIEW", "preview finished");
     }
 
     protected IEnumerator AdvanceQueueToWorkshop()
@@ -79,8 +86,18 @@ public abstract class GenericLevelSequencer : MonoBehaviour
 
     protected IEnumerator MoveAndActivateCar(GameObject car, Vector3 targetPosition, float duration)
     {
+        ExperimentLogger.LogEvent("CAR", "moving to workshop",
+            "name", car.name,
+            "target", targetPosition.ToString("F2"),
+            "duration", duration.ToString("F2"));
+
         Quaternion targetRotation = Quaternion.LookRotation(WorkshopForwardDirection, Vector3.up);
         yield return MoveAlongSpline(car, targetPosition, targetRotation, duration);
+
+        ExperimentLogger.LogEvent("CAR", "arrived at workshop and activating",
+            "name", car.name,
+            "position", car.transform.position.ToString("F2"));
+
         MakeTaskManagerActive(car);
     }
 
@@ -111,6 +128,11 @@ public abstract class GenericLevelSequencer : MonoBehaviour
     protected IEnumerator RemoveAllActiveCars()
     {
         List<GameObject> carsToRemove = new List<GameObject>(m_activeCars);
+
+        ExperimentLogger.LogEvent("CAR", "removing all active cars",
+            "count", carsToRemove.Count.ToString(),
+            "names", string.Join(",", carsToRemove.ConvertAll(car => car.name).ToArray()));
+
         m_activeCars.Clear();
         m_currentCar = null;
 
@@ -131,23 +153,30 @@ public abstract class GenericLevelSequencer : MonoBehaviour
     {
         if (car == null)
             yield break;
+
+        ExperimentLogger.LogEvent("CAR", "deactivating", "name", car.name);
         DisableAllColliders(car);
-        
+
         Vector3 gatePosition = exitGatePosition.position;
         Quaternion gateRotation = exitGatePosition.rotation;
 
         yield return MoveAlongSpline(car, gatePosition, gateRotation, 1f);
         yield return MoveAlongSpline(car, exitPosition.position, exitPosition.rotation, 2f);
+
+        ExperimentLogger.LogEvent("CAR", "left workshop",
+            "name", car.name,
+            "position", car.transform.position.ToString("F2"));
     }
 
     protected IEnumerator SpawnConfetti()
     {
         if (confettiPrefabs.Count == 0)
         {
-            Debug.LogWarning("No confetti prefabs assigned to LevelSequencer.");
+            ExperimentLogger.Log("CONFETTI", "no confetti prefabs assigned");
             yield break;
         }
 
+        ExperimentLogger.Log("CONFETTI", "confetti loop started");
         Camera mainCamera = Camera.main;
 
         while (true)
@@ -176,8 +205,9 @@ public abstract class GenericLevelSequencer : MonoBehaviour
 
     protected static void SetFreezeControls(bool freeze)
     {
-        GenericController[] controllers = FindObjectsByType<GenericController>(FindObjectsSortMode.None);
+        ExperimentLogger.LogEvent("CONTROL", "freeze state set", "frozen", freeze.ToString());
 
+        GenericController[] controllers = FindObjectsByType<GenericController>(FindObjectsSortMode.None);
         foreach (GenericController controller in controllers)
         {
             controller.controlsFrozen = freeze;
@@ -213,6 +243,9 @@ public abstract class GenericLevelSequencer : MonoBehaviour
     {
         foreach (TaskManager manager in car.GetComponentsInChildren<TaskManager>(true))
         {
+            ExperimentLogger.LogEvent("TASK_MANAGER", "activating on car",
+                "car", car.name,
+                "manager", manager.gameObject.name);
             manager.MakeActive();
         }
     }
@@ -229,7 +262,9 @@ public abstract class GenericLevelSequencer : MonoBehaviour
 
     protected IEnumerator WaitForInput(string keyName, float promptDelay = 3f)
     {
-        Debug.Log($"Waiting for input: {keyName}");
+        ExperimentLogger.LogEvent("INPUT", "waiting for input",
+            "key", keyName,
+            "promptDelay", promptDelay.ToString("F2"));
 
         bool previousKeyState = Input.GetKeyDown(keyName);
 
@@ -239,6 +274,10 @@ public abstract class GenericLevelSequencer : MonoBehaviour
             bool currentKeyState = Input.GetKeyDown(keyName);
             if (currentKeyState && !previousKeyState)
             {
+                ExperimentLogger.LogEvent("INPUT", "received input",
+                    "key", keyName,
+                    "promptShown", "false",
+                    "after", elapsedTime.ToString("F2"));
                 ShowMessage("ActionPrompt", "", false);
                 yield break;
             }
@@ -251,6 +290,9 @@ public abstract class GenericLevelSequencer : MonoBehaviour
 
         yield return new WaitUntil(() => Input.GetKeyDown(keyName));
 
+        ExperimentLogger.LogEvent("INPUT", "received input",
+            "key", keyName,
+            "promptShown", "true");
         ShowMessage("ActionPrompt", "", false);
     }
 
@@ -284,15 +326,15 @@ public abstract class GenericLevelSequencer : MonoBehaviour
             float inverseProgressCubed = inverseProgressSquared * inverseProgress;
             float progressCubed = progressSquared * easedProgress;
 
-            Vector3 newPosition = inverseProgressCubed * pointZero 
-                + 3f * inverseProgressSquared * easedProgress * pointOne 
-                + 3f * inverseProgress * progressSquared * pointTwo 
+            Vector3 newPosition = inverseProgressCubed * pointZero
+                + 3f * inverseProgressSquared * easedProgress * pointOne
+                + 3f * inverseProgress * progressSquared * pointTwo
                 + progressCubed * pointThree;
-            
+
             gameObject.transform.position = newPosition;
 
-            Vector3 tangent = 3f * inverseProgressSquared * (pointOne - pointZero) 
-                + 6f * inverseProgress * easedProgress * (pointTwo - pointOne) 
+            Vector3 tangent = 3f * inverseProgressSquared * (pointOne - pointZero)
+                + 6f * inverseProgress * easedProgress * (pointTwo - pointOne)
                 + 3f * progressSquared * (pointThree - pointTwo);
 
             if (tangent.sqrMagnitude > 1e-8f)
@@ -310,6 +352,14 @@ public abstract class GenericLevelSequencer : MonoBehaviour
 
     protected void ShowMessage(string channel, string message, bool pulse = false)
     {
+        if (!string.IsNullOrEmpty(message))
+        {
+            ExperimentLogger.LogEvent("MESSAGE", "displayed",
+                "channel", channel,
+                "text", message,
+                "pulse", pulse.ToString());
+        }
+
         MessageBox[] messageBoxes = FindObjectsByType<MessageBox>(FindObjectsSortMode.None);
 
         foreach (MessageBox messageBox in messageBoxes)
@@ -327,6 +377,8 @@ public abstract class GenericLevelSequencer : MonoBehaviour
     {
         if (cameraRig != null && target != null)
         {
+            ExperimentLogger.LogEvent("CAMERA", "focusing on", "target", target.name);
+
             Cinemachine.CinemachineVirtualCamera virtualCamera = cameraRig.GetComponentInChildren<Cinemachine.CinemachineVirtualCamera>();
             if (m_playerTransform == null)
             {
@@ -346,6 +398,8 @@ public abstract class GenericLevelSequencer : MonoBehaviour
     {
         if (cameraRig != null && m_playerTransform != null)
         {
+            ExperimentLogger.Log("CAMERA", "resetting focus to player");
+
             Cinemachine.CinemachineVirtualCamera virtualCamera = cameraRig.GetComponentInChildren<Cinemachine.CinemachineVirtualCamera>();
             virtualCamera.Follow = m_playerTransform;
 
@@ -359,17 +413,28 @@ public abstract class GenericLevelSequencer : MonoBehaviour
 
     private void SpawnCarsInQueue()
     {
+        ExperimentLogger.LogEvent("CAR", "spawning queue",
+            "carCount", carPrefabs.Count.ToString());
+
         for (int carIndex = 0; carIndex < carPrefabs.Count; carIndex++)
         {
             GameObject carPrefab = carPrefabs[carIndex];
             Vector3 position = carQueueOrigin.position - carQueueOrigin.forward * distanceBetweenCars * (carIndex + 0.5f);
             GameObject car = Instantiate(carPrefab, position, carQueueOrigin.rotation);
             m_carsToFix.Add(car);
+
+            ExperimentLogger.LogEvent("CAR", "spawned in queue",
+                "name", car.name,
+                "prefab", carPrefab.name,
+                "index", carIndex.ToString(),
+                "position", position.ToString("F2"));
         }
     }
 
     void Start()
     {
+        ExperimentLogger.Log("SESSION", $"level sequencer started on \"{gameObject.name}\"");
+
         if (cameraRig == null)
         {
             Cinemachine.CinemachineVirtualCamera virtualCamera = FindFirstObjectByType<Cinemachine.CinemachineVirtualCamera>();
@@ -382,8 +447,8 @@ public abstract class GenericLevelSequencer : MonoBehaviour
         StartCoroutine(LevelSequence());
     }
 
-    void Update()
+    void OnApplicationQuit()
     {
-
+        ExperimentLogger.Log("SESSION", "game quitting");
     }
 }

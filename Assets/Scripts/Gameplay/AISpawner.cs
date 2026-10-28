@@ -13,9 +13,24 @@ public class AISpawner : MonoBehaviour
     public void SpawnAI()
     {
         GameObject instantiated = Instantiate(aiPrefab, transform.position, transform.rotation);
+
+        string aiKind = taskSchedulingModeOverride == AITaskSchedulingMode.Closest ? "close" : "distant";
+
+        ExperimentLogger.LogEvent("AI_SPAWN", "spawning AI",
+            "prefab", aiPrefab.name,
+            "kind", aiKind,
+            "schedulingMode", taskSchedulingModeOverride.ToString(),
+            "channel", spawnChannel.ToString(),
+            "position", transform.position.ToString("F2"));
+
         foreach (AIPlayerController ai in instantiated.GetComponentsInChildren<AIPlayerController>())
         {
             ai.TaskSchedulingMode = taskSchedulingModeOverride;
+
+            ExperimentLogger.LogEvent("AI_SPAWN", "AI controller configured",
+                "name", ai.gameObject.name,
+                "kind", aiKind,
+                "schedulingMode", taskSchedulingModeOverride.ToString());
         }
     }
 
@@ -27,7 +42,6 @@ public class AISpawner : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         if (transform.childCount > 0)
@@ -37,7 +51,6 @@ public class AISpawner : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         

@@ -18,7 +18,7 @@ public class Interactable : MonoBehaviour
 
     private int taskCount = 0;
 
-    public Task ActiveTask {get; private set;} 
+    public Task ActiveTask {get; private set;}
     public void SetActiveTask(Task task) {if (ActiveTask == null) ActiveTask = task;}
     public void ClearActiveTask(Task task) {if(ActiveTask == task) ActiveTask = null; }
 
@@ -46,7 +46,7 @@ public class Interactable : MonoBehaviour
             MeshFilter filter = obj.AddComponent<MeshFilter>();
             filter.mesh = Instantiate(GetComponent<MeshFilter>().sharedMesh);
             obj.transform.SetParent(transform, false);
-            obj.transform.localRotation = Quaternion.Euler(0, 0, 0); 
+            obj.transform.localRotation = Quaternion.Euler(0, 0, 0);
             obj.transform.localPosition = Vector3.zero;
             obj.transform.localScale = Vector3.one;
         }
@@ -82,7 +82,7 @@ public class Interactable : MonoBehaviour
     public bool StartInteraction(Interact p_interacter)
     {
         if (!active) return false;
-        
+
         if (interacter != null)
         {
             if (interacter == p_interacter) return true;
@@ -90,6 +90,17 @@ public class Interactable : MonoBehaviour
         }
 
         interacter = p_interacter;
+
+        GenericController controller = p_interacter != null ? p_interacter.GetComponent<GenericController>() : null;
+        string interacterType = controller is AIPlayerController ? "ai"
+            : controller != null ? "player" : "unknown";
+
+        ExperimentLogger.LogEvent("INTERACTION", "started",
+            "interactable", gameObject.name,
+            "by", p_interacter != null ? p_interacter.gameObject.name : "null",
+            "type", interacterType,
+            "parent", transform.root.name);
+
         OnInteractionStart?.Invoke();
         return true;
     }
@@ -99,9 +110,20 @@ public class Interactable : MonoBehaviour
         if (interacter == null) return;
         Interact oldInteracter = interacter;
         interacter = null;
+
+        GenericController controller = oldInteracter != null ? oldInteracter.GetComponent<GenericController>() : null;
+        string interacterType = controller is AIPlayerController ? "ai"
+            : controller != null ? "player" : "unknown";
+
+        ExperimentLogger.LogEvent("INTERACTION", "stopped",
+            "interactable", gameObject.name,
+            "by", oldInteracter != null ? oldInteracter.gameObject.name : "null",
+            "type", interacterType,
+            "parent", transform.root.name);
+
         if (OnInteractionEnd != null)
             OnInteractionEnd.Invoke();
-        
+
         if (oldInteracter != null)
             oldInteracter.OnInteractionStoppedExternally();
     }
@@ -178,37 +200,26 @@ public class Interactable : MonoBehaviour
 
     public void Combine()
     {
-        MeshFilter[] meshFilters =
-            GetComponentsInChildren<MeshFilter>();
+        MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
 
-        Dictionary<Material, List<CombineInstance>> groups =
-            new Dictionary<Material, List<CombineInstance>>();
+        Dictionary<Material, List<CombineInstance>> groups = new Dictionary<Material, List<CombineInstance>>();
 
         foreach (MeshFilter mf in meshFilters)
         {
-            if (mf.gameObject == gameObject)
-                continue;
-
-            if (mf.sharedMesh == null)
-                continue;
+            if (mf.gameObject == gameObject) continue;
+            if (mf.sharedMesh == null) continue;
 
             MeshRenderer mr = mf.GetComponent<MeshRenderer>();
-
-            if (mr == null)
-                continue;
+            if (mr == null) continue;
 
             Material[] materials = mr.sharedMaterials;
             Mesh mesh = mf.sharedMesh;
 
-            Matrix4x4 matrix =
-                transform.worldToLocalMatrix *
-                mf.transform.localToWorldMatrix;
+            Matrix4x4 matrix = transform.worldToLocalMatrix * mf.transform.localToWorldMatrix;
 
             for (int sub = 0; sub < mesh.subMeshCount; sub++)
             {
-                if (sub >= materials.Length ||
-                    materials[sub] == null)
-                    continue;
+                if (sub >= materials.Length || materials[sub] == null) continue;
 
                 Material material = materials[sub];
 
@@ -224,32 +235,21 @@ public class Interactable : MonoBehaviour
             }
         }
 
-        if (groups.Count == 0)
-        {
-            return;
-        }
+        if (groups.Count == 0) return;
 
         Mesh combinedMesh = new Mesh();
         combinedMesh.name = gameObject.name + "_CombinedMesh";
-
         combinedMesh.indexFormat = IndexFormat.UInt32;
 
-        List<Material> combinedMaterials =
-            new List<Material>();
-
-        List<CombineInstance> materialMeshes =
-            new List<CombineInstance>();
+        List<Material> combinedMaterials = new List<Material>();
+        List<CombineInstance> materialMeshes = new List<CombineInstance>();
 
         foreach (var group in groups)
         {
             Mesh materialMesh = new Mesh();
             materialMesh.indexFormat = IndexFormat.UInt32;
 
-            materialMesh.CombineMeshes(
-                group.Value.ToArray(),
-                true,
-                true
-            );
+            materialMesh.CombineMeshes(group.Value.ToArray(), true, true);
 
             CombineInstance ci = new CombineInstance();
             ci.mesh = materialMesh;
@@ -260,21 +260,13 @@ public class Interactable : MonoBehaviour
             combinedMaterials.Add(group.Key);
         }
 
-        combinedMesh.CombineMeshes(
-            materialMeshes.ToArray(),
-            false,
-            false
-        );
+        combinedMesh.CombineMeshes(materialMeshes.ToArray(), false, false);
 
         MeshFilter parentFilter = GetComponent<MeshFilter>();
-
-        if (parentFilter == null)
-            parentFilter = gameObject.AddComponent<MeshFilter>();
+        if (parentFilter == null) parentFilter = gameObject.AddComponent<MeshFilter>();
 
         MeshRenderer parentRenderer = GetComponent<MeshRenderer>();
-
-        if (parentRenderer == null)
-            parentRenderer = gameObject.AddComponent<MeshRenderer>();
+        if (parentRenderer == null) parentRenderer = gameObject.AddComponent<MeshRenderer>();
 
         parentFilter.sharedMesh = combinedMesh;
         parentRenderer.sharedMaterials = combinedMaterials.ToArray();

@@ -6,6 +6,9 @@ public class AIBrain
     AIPlayerController controller;
     public Task currentTask;
 
+    private enum AIWorkOutcome { Unknown, ChoseTask, IdleNoTasks, IdleAllClaimed }
+    private AIWorkOutcome m_lastLoggedOutcome = AIWorkOutcome.Unknown;
+
     public AIBrain(AIPlayerController controller)
     {
         this.controller = controller;
@@ -23,6 +26,13 @@ public class AIBrain
 
         if (tasks.Count == 0)
         {
+            if (m_lastLoggedOutcome != AIWorkOutcome.IdleNoTasks)
+            {
+                ExperimentLogger.LogEvent("AI_DECISION", "no completable tasks, going idle",
+                    "ai", controller.name,
+                    "mode", controller.TaskSchedulingMode.ToString());
+                m_lastLoggedOutcome = AIWorkOutcome.IdleNoTasks;
+            }
             controller.StateMachine.ChangeState(controller.IdleState);
             return;
         }
@@ -30,13 +40,17 @@ public class AIBrain
         Task playerLastTask = PlayerTaskTracker.LastPlayerTask;
         if (playerLastTask != null && !IsReferenceTaskValid(playerLastTask))
         {
+            ExperimentLogger.LogEvent("AI_DECISION", "reference task invalidated",
+                "ai", controller.name,
+                "refTask", playerLastTask.name);
             playerLastTask = null;
             PlayerTaskTracker.LastPlayerTask = null;
         }
 
+        string sortReason;
         if (playerLastTask == null)
         {
-            Debug.Log("No valid reference task found. Sorting tasks by distance from AI.");
+            sortReason = "distance_from_ai";
             Vector3 aiPos = controller.transform.position;
             tasks.Sort((a, b) =>
             {
@@ -47,7 +61,9 @@ public class AIBrain
         }
         else
         {
-            Debug.Log("Sorting tasks based on distance from player's last task: " + playerLastTask.name);
+            sortReason = controller.TaskSchedulingMode == AITaskSchedulingMode.Furthest
+                ? "distance_from_player_furthest"
+                : "distance_from_player_closest";
             var distances = TaskGraph.GetDistancesFrom(playerLastTask);
             bool furthest = controller.TaskSchedulingMode == AITaskSchedulingMode.Furthest;
             tasks.Sort((a, b) =>
@@ -60,16 +76,43 @@ public class AIBrain
             });
         }
 
+        int skippedCount = 0;
         foreach (Task task in tasks)
         {
             if (!AITaskCoordinator.IsClaimByOthers(task, this))
             {
                 AITaskCoordinator.TryClaimTask(task, this);
                 currentTask = task;
+
+                float distanceToTask = Vector3.Distance(controller.transform.position, currentTask.interactable.transform.position);
+
+                ExperimentLogger.LogEvent("AI_DECISION", "chose task",
+                    "ai", controller.name,
+                    "task", task.name,
+                    "interactable", task.interactable.name,
+                    "mode", controller.TaskSchedulingMode.ToString(),
+                    "reason", sortReason,
+                    "refTask", playerLastTask == null ? "none" : playerLastTask.name,
+                    "distance", distanceToTask.ToString("F2"),
+                    "candidateCount", tasks.Count.ToString(),
+                    "skipped", skippedCount.ToString());
+
+                m_lastLoggedOutcome = AIWorkOutcome.ChoseTask;
                 controller.SetMoveTarget(currentTask.interactable.transform.position);
                 controller.StateMachine.ChangeState(controller.MoveState);
                 return;
             }
+            skippedCount++;
+        }
+
+        if (m_lastLoggedOutcome != AIWorkOutcome.IdleAllClaimed)
+        {
+            ExperimentLogger.LogEvent("AI_DECISION", "all tasks claimed by others, going idle",
+                "ai", controller.name,
+                "mode", controller.TaskSchedulingMode.ToString(),
+                "candidateCount", tasks.Count.ToString(),
+                "skipped", skippedCount.ToString());
+            m_lastLoggedOutcome = AIWorkOutcome.IdleAllClaimed;
         }
         controller.StateMachine.ChangeState(controller.IdleState);
     }
@@ -114,13 +157,21 @@ public class AIBrain
 
         if (!IsTaskValid(currentTask))
         {
+            ExperimentLogger.LogEvent("AI_ABORT", "task became invalid before interact",
+                "ai", controller.name,
+                "task", currentTask.name,
+                "interactable", currentTask.interactable.name);
             AbandonCurrentTask();
             return;
         }
 
-        currentTask.interactable.ShowUI(); 
+        currentTask.interactable.ShowUI();
         if (!currentTask.interactable.StartInteraction(controller.m_interact))
         {
+            ExperimentLogger.LogEvent("AI_ABORT", "interaction refused",
+                "ai", controller.name,
+                "task", currentTask.name,
+                "interactable", currentTask.interactable.name);
             AbandonCurrentTask();
         }
     }
@@ -143,13 +194,19 @@ public class AIBrain
     {
         if (currentTask != null)
         {
+            ExperimentLogger.LogEvent("AI_ABORT", "abandoning task",
+                "ai", controller.name,
+                "task", currentTask.name,
+                "interactable", currentTask.interactable.name,
+                "mode", controller.TaskSchedulingMode.ToString());
+
             if (currentTask.interactable.Interacter == controller.m_interact)
                 currentTask.interactable.StopInteraction();
 
             AITaskCoordinator.ReleaseTask(currentTask, this);
             currentTask = null;
         }
-        
+
         controller.StopMoving();
         RequestWork();
     }

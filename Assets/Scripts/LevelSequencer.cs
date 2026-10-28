@@ -6,6 +6,9 @@ public class LevelSequencer : GenericLevelSequencer
 {
     override protected IEnumerator LevelSequence()
     {
+        ExperimentLogger.LogEvent("SEQUENCE", "main level sequence started",
+            "carsToFix", m_carsToFix.Count.ToString());
+
         SetFreezeControls(true);
         ShowMessage("Instruction", "This game is about fixing cars!");
 
@@ -25,21 +28,38 @@ public class LevelSequencer : GenericLevelSequencer
 
         while (m_currentCarIndex < m_carsToFix.Count)
         {
-            yield return AdvanceQueueToWorkshop();
             int helperChannel = m_currentCarIndex - m_activeCars.Count + 1;
+
+            ExperimentLogger.LogEvent("SEQUENCE", "advancing queue",
+                "currentCarIndex", m_currentCarIndex.ToString(),
+                "activeCars", m_activeCars.Count.ToString(),
+                "helperChannel", helperChannel.ToString());
+
+            yield return AdvanceQueueToWorkshop();
+
             yield return MaybeSpawnHelpers(helperChannel);
             yield return new WaitUntil(AreAllActiveCarsFixed);
+
+            ExperimentLogger.LogEvent("SEQUENCE", "all active cars fixed",
+                "activeCarNames", string.Join(",", m_activeCars.ConvertAll(car => car.name).ToArray()));
+
             yield return WaitForInput("space", 0.5f);
             yield return RemoveAllActiveCars();
         }
 
         ShowMessage("Instruction", "Congratulations! You fixed all the cars!");
+        ExperimentLogger.Log("SEQUENCE", "all cars processed, level complete");
         yield return SpawnConfetti();
     }
 
     private IEnumerator MaybeSpawnHelpers(int spawnChannel)
     {
         List<AISpawner> spawners = GetSpawnersAtChannel(spawnChannel);
+
+        ExperimentLogger.LogEvent("AI", "checking helper spawns",
+            "channel", spawnChannel.ToString(),
+            "spawnerCount", spawners.Count.ToString());
+
         if (spawners.Count > 0)
         {
             yield return new WaitForSeconds(1.0f);
