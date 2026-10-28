@@ -9,6 +9,7 @@ public class Interact : MonoBehaviour
     private Interactable interactable;
     public Interactable CurrentInteractable => interactable;
     private Interactable oldInteractable;
+    private Interactable selectedInteractable;
     private bool started = false;
     public bool IsInteracting => started;
     private bool uiOpen = false;
@@ -21,11 +22,11 @@ public class Interact : MonoBehaviour
     {
         wantsToInteract = interacting;
     }
-    
+
     public bool IsInteractable(Interactable other)
     {
         return interactable == other;
-    } 
+    }
 
     void Update()
     {
@@ -33,42 +34,67 @@ public class Interact : MonoBehaviour
 
         if (closestInteractable != interactable)
         {
-            oldInteractable = interactable;
-            interactable = closestInteractable;
-            if (uiOpen && oldInteractable != null)
+            if (interactable != null)
             {
-                oldInteractable.HideUI();
-                uiOpen = false;
+                if (started)
+                {
+                    interactable.StopInteraction();
+                    started = false;
+                }
+                if (uiOpen)
+                {
+                    interactable.HideUI();
+                    uiOpen = false;
+                }
             }
 
-            if (started && oldInteractable != null)
+            oldInteractable = interactable;
+            interactable = closestInteractable;
+        }
+
+        Interactable desiredSelection = (interactable != null && interactable.IsActive) ? interactable : null;
+        if (desiredSelection != selectedInteractable)
+        {
+            if (selectedInteractable != null)
             {
-                oldInteractable.StopInteraction();
-                started = false;
+                selectedInteractable.RemoveSelector();
+            }
+            selectedInteractable = desiredSelection;
+            if (selectedInteractable != null)
+            {
+                selectedInteractable.AddSelector();
             }
         }
 
-        if (interactable != null && interactable.IsActive)
+        bool shouldShowUI = interactable != null && interactable.IsActive && showUI;
+        if (shouldShowUI && !uiOpen)
         {
-            if (showUI) interactable.ShowUI();
+            interactable.ShowUI();
             uiOpen = true;
+        }
+        else if (!shouldShowUI && uiOpen)
+        {
+            if (interactable != null)
+            {
+                interactable.HideUI();
+            }
+            uiOpen = false;
         }
 
         if (interactable != null && wantsToInteract && !started)
         {
             started = interactable.StartInteraction(this);
         }
-        else if (interactable == null && started)
+        else if (started && (!wantsToInteract || interactable == null || !interactable.IsActive))
         {
-            if (oldInteractable != null)
+            if (interactable != null)
+            {
+                interactable.StopInteraction();
+            }
+            else if (oldInteractable != null)
             {
                 oldInteractable.StopInteraction();
             }
-            started = false;
-        }
-        else if (interactable != null && !wantsToInteract && started)
-        {
-            interactable.StopInteraction();
             started = false;
         }
     }
@@ -126,10 +152,13 @@ public class Interact : MonoBehaviour
 
         return bestInteractable;
     }
+
     public Task GetCurrentTask()
     {
-        if (interactable == null)
+        if (interactable == null || !started)
+        {
             return null;
+        }
         return interactable.ActiveTask;
     }
 

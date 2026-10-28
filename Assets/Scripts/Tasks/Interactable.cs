@@ -17,10 +17,12 @@ public class Interactable : MonoBehaviour
     [SerializeField] private GameObject uiCanvas;
 
     private int taskCount = 0;
+    private int uiPresenterCount = 0;
+    private int selectorCount = 0;
 
-    public Task ActiveTask {get; private set;}
-    public void SetActiveTask(Task task) {if (ActiveTask == null) ActiveTask = task;}
-    public void ClearActiveTask(Task task) {if(ActiveTask == task) ActiveTask = null; }
+    public Task ActiveTask { get; private set; }
+    public void SetActiveTask(Task task) { if (ActiveTask == null) ActiveTask = task; }
+    public void ClearActiveTask(Task task) { if (ActiveTask == task) ActiveTask = null; }
 
     private MeshRenderer outline;
 
@@ -38,17 +40,17 @@ public class Interactable : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Interactable");
         if (!GetComponent<MeshFilter>() && tryCombineChildMeshes)
             Combine();
-        if(splitOutline)
+        if (splitOutline)
         {
-            GameObject obj = new GameObject("outline");
-            outline = obj.AddComponent<MeshRenderer>();
+            GameObject outlineObject = new GameObject("outline");
+            outline = outlineObject.AddComponent<MeshRenderer>();
             outline.materials = GetComponent<MeshRenderer>().materials;
-            MeshFilter filter = obj.AddComponent<MeshFilter>();
-            filter.mesh = Instantiate(GetComponent<MeshFilter>().sharedMesh);
-            obj.transform.SetParent(transform, false);
-            obj.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            obj.transform.localPosition = Vector3.zero;
-            obj.transform.localScale = Vector3.one;
+            MeshFilter outlineFilter = outlineObject.AddComponent<MeshFilter>();
+            outlineFilter.mesh = Instantiate(GetComponent<MeshFilter>().sharedMesh);
+            outlineObject.transform.SetParent(transform, false);
+            outlineObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            outlineObject.transform.localPosition = Vector3.zero;
+            outlineObject.transform.localScale = Vector3.one;
         }
         else
         {
@@ -56,27 +58,29 @@ public class Interactable : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (!active) return;
-        if (taskCount <= 0)
-            uiCanvas.SetActive(false);
-    }
-
     public void TaskSubscribed()
     {
         taskCount++;
+        ApplyDisplayState();
     }
 
     public void TaskUnsubscribed()
     {
         if (!active) return;
         taskCount--;
-        if (taskCount <= 0)
-        {
-            uiCanvas.SetActive(false);
-            SetHighlight(false);
-        }
+        ApplyDisplayState();
+    }
+
+    public void AddSelector()
+    {
+        selectorCount++;
+        ApplyDisplayState();
+    }
+
+    public void RemoveSelector()
+    {
+        selectorCount = Mathf.Max(0, selectorCount - 1);
+        ApplyDisplayState();
     }
 
     public bool StartInteraction(Interact p_interacter)
@@ -100,6 +104,8 @@ public class Interactable : MonoBehaviour
             "by", p_interacter != null ? p_interacter.gameObject.name : "null",
             "type", interacterType,
             "parent", transform.root.name);
+
+        ApplyDisplayState();
 
         OnInteractionStart?.Invoke();
         return true;
@@ -126,30 +132,21 @@ public class Interactable : MonoBehaviour
 
         if (oldInteracter != null)
             oldInteracter.OnInteractionStoppedExternally();
+
+        ApplyDisplayState();
     }
 
     public void NextState()
     {
-        if (!active)
-            return;
+        if (!active) return;
     }
 
     static Color HINT_COLOR = new Color(251f / 255f, 126f / 255f, 43f / 255f);
 
     public void ForceUpdate()
     {
-        if (!active)
-            return;
-        if (interacter != null && interacter.IsInteractable(this))
-        {
-            SetHighlight(true, Color.white, 5f);
-            ShowUI();
-        }
-        else
-        {
-            SetHighlight(true, HINT_COLOR, 3f);
-            HideUI();
-        }
+        if (!active) return;
+        ApplyDisplayState();
     }
 
     public void StartProgressBar(float time)
@@ -157,30 +154,59 @@ public class Interactable : MonoBehaviour
         if (!active) return;
         progressBar.StartProgressBar(time);
     }
+
     public void StopProgressBar()
     {
         if (!active) return;
         progressBar.StopProgressBar();
     }
+
     public void ShowUI()
     {
-        if (!active) return;
-        if (taskCount <= 0)
-            return;
-        uiCanvas.SetActive(true);
-        SetHighlight(true, Color.white, 5f);
-    }
-    public void HideUI()
-    {
-        if (!active) return;
-        uiCanvas.SetActive(false);
-        SetHighlight(true, HINT_COLOR, 3f);
+        uiPresenterCount++;
+        ApplyDisplayState();
     }
 
-    public void SetHighlight(bool on,  Color? color = null, float? thickness = null)
+    public void HideUI()
+    {
+        uiPresenterCount = Mathf.Max(0, uiPresenterCount - 1);
+        ApplyDisplayState();
+    }
+
+    private void ApplyDisplayState()
+    {
+        if (!active)
+        {
+            uiCanvas.SetActive(false);
+            SetHighlight(false);
+            return;
+        }
+
+        bool hasTasks = taskCount > 0;
+        bool interactionActive = interacter != null;
+        bool selected = hasTasks && (selectorCount > 0 || interactionActive);
+        bool available = hasTasks && interacter == null;
+
+        if (selected)
+        {
+            SetHighlight(true, Color.white, 5f);
+        }
+        else if (available)
+        {
+            SetHighlight(true, HINT_COLOR, 3f);
+        }
+        else
+        {
+            SetHighlight(false);
+        }
+
+        uiCanvas.SetActive(hasTasks && (interactionActive || uiPresenterCount > 0));
+    }
+
+    public void SetHighlight(bool on, Color? color = null, float? thickness = null)
     {
         if (!active || !gameObject.active) return;
-            outline.gameObject.SetHighlight(on, color, thickness);
+        outline.gameObject.SetHighlight(on, color, thickness);
     }
 
     public void SetActive(bool p_active)
@@ -190,12 +216,21 @@ public class Interactable : MonoBehaviour
         if (!p_active)
         {
             StopInteraction();
+            uiPresenterCount = 0;
+            selectorCount = 0;
+            uiCanvas.SetActive(false);
+            SetHighlight(false);
         }
 
         active = p_active;
-        if(splitOutline)
+
+        if (splitOutline)
             outline.gameObject.SetActive(p_active);
-        SetHighlight(active, HINT_COLOR, 3f);
+
+        if (active)
+        {
+            ApplyDisplayState();
+        }
     }
 
     public void Combine()
@@ -204,34 +239,34 @@ public class Interactable : MonoBehaviour
 
         Dictionary<Material, List<CombineInstance>> groups = new Dictionary<Material, List<CombineInstance>>();
 
-        foreach (MeshFilter mf in meshFilters)
+        foreach (MeshFilter meshFilter in meshFilters)
         {
-            if (mf.gameObject == gameObject) continue;
-            if (mf.sharedMesh == null) continue;
+            if (meshFilter.gameObject == gameObject) continue;
+            if (meshFilter.sharedMesh == null) continue;
 
-            MeshRenderer mr = mf.GetComponent<MeshRenderer>();
-            if (mr == null) continue;
+            MeshRenderer meshRenderer = meshFilter.GetComponent<MeshRenderer>();
+            if (meshRenderer == null) continue;
 
-            Material[] materials = mr.sharedMaterials;
-            Mesh mesh = mf.sharedMesh;
+            Material[] materials = meshRenderer.sharedMaterials;
+            Mesh mesh = meshFilter.sharedMesh;
 
-            Matrix4x4 matrix = transform.worldToLocalMatrix * mf.transform.localToWorldMatrix;
+            Matrix4x4 matrix = transform.worldToLocalMatrix * meshFilter.transform.localToWorldMatrix;
 
-            for (int sub = 0; sub < mesh.subMeshCount; sub++)
+            for (int subMeshIndex = 0; subMeshIndex < mesh.subMeshCount; subMeshIndex++)
             {
-                if (sub >= materials.Length || materials[sub] == null) continue;
+                if (subMeshIndex >= materials.Length || materials[subMeshIndex] == null) continue;
 
-                Material material = materials[sub];
+                Material material = materials[subMeshIndex];
 
                 if (!groups.ContainsKey(material))
                     groups[material] = new List<CombineInstance>();
 
-                CombineInstance ci = new CombineInstance();
-                ci.mesh = mesh;
-                ci.subMeshIndex = sub;
-                ci.transform = matrix;
+                CombineInstance combineInstance = new CombineInstance();
+                combineInstance.mesh = mesh;
+                combineInstance.subMeshIndex = subMeshIndex;
+                combineInstance.transform = matrix;
 
-                groups[material].Add(ci);
+                groups[material].Add(combineInstance);
             }
         }
 
@@ -251,12 +286,12 @@ public class Interactable : MonoBehaviour
 
             materialMesh.CombineMeshes(group.Value.ToArray(), true, true);
 
-            CombineInstance ci = new CombineInstance();
-            ci.mesh = materialMesh;
-            ci.subMeshIndex = 0;
-            ci.transform = Matrix4x4.identity;
+            CombineInstance combineInstance = new CombineInstance();
+            combineInstance.mesh = materialMesh;
+            combineInstance.subMeshIndex = 0;
+            combineInstance.transform = Matrix4x4.identity;
 
-            materialMeshes.Add(ci);
+            materialMeshes.Add(combineInstance);
             combinedMaterials.Add(group.Key);
         }
 
