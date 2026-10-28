@@ -36,6 +36,7 @@ public class AIBrain
 
         if (playerLastTask == null)
         {
+            Debug.Log("No valid reference task found. Sorting tasks by distance from AI.");
             Vector3 aiPos = controller.transform.position;
             tasks.Sort((a, b) =>
             {
@@ -46,6 +47,7 @@ public class AIBrain
         }
         else
         {
+            Debug.Log("Sorting tasks based on distance from player's last task: " + playerLastTask.name);
             var distances = TaskGraph.GetDistancesFrom(playerLastTask);
             bool furthest = controller.TaskSchedulingMode == AITaskSchedulingMode.Furthest;
             tasks.Sort((a, b) =>

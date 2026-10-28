@@ -72,6 +72,20 @@ public static class TaskGraph
             }
         }
 
+        TaskManager referenceManager = from.GetComponentInParent<TaskManager>();
+        if (referenceManager != null)
+        {
+            var keys = new List<Task>(result.Keys);
+            foreach (var task in keys)
+            {
+                TaskManager taskManager = task.GetComponentInParent<TaskManager>();
+                if (taskManager != referenceManager)
+                {
+                    result[task] += 2;
+                }
+            }
+        }
+
         return result;
     }
 }

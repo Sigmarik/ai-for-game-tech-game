@@ -92,6 +92,12 @@ public class Task : MonoBehaviour
 
     public IEnumerator ActivateTask()
     {
+        var interacter = interactable.Interacter;
+        if (interacter != null && interacter.GetComponent<PlayerController>() != null)
+        {
+            PlayerTaskTracker.LastPlayerTask = this;
+        }
+
         interactable.StartProgressBar(interactDuration);
         yield return new WaitForSeconds(interactDuration);
         
@@ -99,12 +105,6 @@ public class Task : MonoBehaviour
         {
             interactable.StopProgressBar();
             interactable.NextState();
-            
-            var interacter = interactable.Interacter;
-            if (interacter != null && interacter.GetComponent<AIPlayerController>() == null)
-            {
-                PlayerTaskTracker.LastPlayerTask = this;
-            }
 
             isComplete = true;
             interactable.StopInteraction();
