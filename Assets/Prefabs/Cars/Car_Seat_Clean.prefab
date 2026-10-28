@@ -94,7 +94,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 74807015108922526}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 1
   m_Extents: {x: 0.003, y: 0.001, z: 0.003}
@@ -636,11 +636,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.003, y: 0.001, z: 0.003}
+  m_Extents: {x: 0.004, y: 0.001, z: 0.03}
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0.003, y: 0, z: 0.001}
+  m_Center: {x: 0.001, y: 0, z: 0.001}
   m_TimeToStationary: 0.5
 --- !u!1 &1124093094587453261
 GameObject:
@@ -1409,7 +1409,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.009000001, y: 0.004, z: 0.003}
+  m_Extents: {x: 0.009000001, y: 0.004, z: 0.02}
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1
@@ -1543,7 +1543,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4317023636388261757}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 1
   m_Extents: {x: 0.003, y: 0.001, z: 0.003}
@@ -2171,11 +2171,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.003, y: 0.001, z: 0.003}
+  m_Extents: {x: 0.004, y: 0.001, z: 0.03}
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0.003, y: 0, z: 0.001}
+  m_Center: {x: 0.001, y: 0, z: 0.001}
   m_TimeToStationary: 0.5
 --- !u!1 &7144163296604170090
 GameObject:
@@ -2455,9 +2455,9 @@ Transform:
   m_GameObject: {fileID: 7568923634302262161}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.70061, y: -1.84, z: -5.7201}
-  m_LocalScale: {x: 1.8807402, y: 1.8807402, z: 1.8807402}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -0.70061, y: -1.7, z: -5.2}
+  m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3550684412390781218}
   - {fileID: 1345672941379695786}
