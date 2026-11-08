@@ -905,6 +905,7 @@ GameObject:
   m_Component:
   - component: {fileID: 44386841588266363}
   - component: {fileID: 1372045932870842771}
+  - component: {fileID: 8291597192713503278}
   m_Layer: 0
   m_Name: RightDoorInteractionPoint
   m_TagString: Untagged
@@ -944,6 +945,27 @@ MonoBehaviour:
   uiCanvas: {fileID: 5367051510885984340}
   tryCombineChildMeshes: 1
   splitOutline: 0
+--- !u!65 &8291597192713503278
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237636882798930776}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5167907, y: 0.103462, z: 0.59179175}
+  m_Center: {x: -0.019127868, y: 0.046453584, z: 0.13926703}
 --- !u!1 &1435544314622265331
 GameObject:
   m_ObjectHideFlags: 0
@@ -1647,6 +1669,7 @@ GameObject:
   m_Component:
   - component: {fileID: 934983748470020559}
   - component: {fileID: 7836603189320930961}
+  - component: {fileID: 4233537208160972188}
   m_Layer: 0
   m_Name: RightDoorInteractionPoint
   m_TagString: Untagged
@@ -1686,6 +1709,27 @@ MonoBehaviour:
   uiCanvas: {fileID: 6500160652057215520}
   tryCombineChildMeshes: 1
   splitOutline: 0
+--- !u!65 &4233537208160972188
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686963160452984901}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5167906, y: 0.59179157, z: 0.10346225}
+  m_Center: {x: -0.016606793, y: 0.139267, z: -0.046973296}
 --- !u!1 &5240909431468195249
 GameObject:
   m_ObjectHideFlags: 0

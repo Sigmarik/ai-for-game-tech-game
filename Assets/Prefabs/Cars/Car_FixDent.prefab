@@ -594,6 +594,7 @@ MonoBehaviour:
   returnItem: {fileID: 0}
   interactDuration: 3
   adoptedRequiredTasks: []
+  labelToChange: {fileID: 0}
   brokenModel: {fileID: 6034627580118288321}
   repairedModel: {fileID: 7119870167697960896}
 --- !u!4 &6409921218887654779 stripped

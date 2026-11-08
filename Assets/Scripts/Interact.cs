@@ -99,27 +99,36 @@ public class Interact : MonoBehaviour
         }
     }
 
+    private float GetDistanceToInteractable(Interactable target)
+    {
+        if (target == null) return float.MaxValue;
+
+        Vector3 origin = rayOrigin.transform.position;
+        
+        Vector3 closestPoint = target.FindClosestPoint(origin);
+        float dist = Vector3.Distance(origin, closestPoint);
+        if (dist <= distance)
+        {
+            Debug.DrawLine(origin, closestPoint, Color.red);
+        }
+        return dist;
+    }
+
     public List<Interactable> FindAllInteractables()
     {
         Interactable[] allInteractables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
         List<Interactable> interactablesInRange = new List<Interactable>();
-
         Vector3 originPosition = rayOrigin.transform.position;
 
         foreach (Interactable currentInteractable in allInteractables)
         {
-            if (currentInteractable == null)
-            {
-                continue;
-            }
-
-            float currentDistance = Vector3.Distance(originPosition, currentInteractable.transform.position);
+            if (currentInteractable == null) continue;
+            float currentDistance = GetDistanceToInteractable(currentInteractable);
             if (currentDistance <= distance)
             {
                 interactablesInRange.Add(currentInteractable);
             }
         }
-
         return interactablesInRange;
     }
 
@@ -128,37 +137,26 @@ public class Interact : MonoBehaviour
         Interactable[] allInteractables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
         Interactable bestInteractable = null;
         float bestDistance = distance;
-        Vector3 originPosition = transform.position;
 
         foreach (Interactable currentInteractable in allInteractables)
         {
-            if (currentInteractable == null)
-            {
-                continue;
-            }
-
-            float currentDistance = Vector3.Distance(originPosition, currentInteractable.transform.position);
-            if (currentDistance <= bestDistance)
+            if (currentInteractable == null) continue;
+            float currentDistance = GetDistanceToInteractable(currentInteractable);
+            
+            if (currentDistance < bestDistance)
             {
                 bestDistance = currentDistance;
                 bestInteractable = currentInteractable;
             }
         }
 
-        if (bestDistance > distance)
-        {
-            bestInteractable = null;
-        }
-
+        if (bestDistance > distance) bestInteractable = null;
         return bestInteractable;
     }
 
     public Task GetCurrentTask()
     {
-        if (interactable == null || !started)
-        {
-            return null;
-        }
+        if (interactable == null || !started) return null;
         return interactable.ActiveTask;
     }
 

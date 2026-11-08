@@ -581,6 +581,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   progressBar: {fileID: 2523266797840997118}
   uiCanvas: {fileID: 3860011880381812905}
+  tryCombineChildMeshes: 0
+  splitOutline: 0
 --- !u!1001 &7429209193467023452
 PrefabInstance:
   m_ObjectHideFlags: 0

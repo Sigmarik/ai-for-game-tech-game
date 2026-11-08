@@ -307,4 +307,32 @@ public class Interactable : MonoBehaviour
         parentFilter.sharedMesh = combinedMesh;
         parentRenderer.sharedMaterials = combinedMaterials.ToArray();
     }
+
+    public Vector3 FindClosestPoint(Vector3 origin)
+    {
+        float closestDistance = float.MaxValue;
+        Vector3 bestPoint = transform.position;
+        bool found = false;
+
+        BoxCollider[] colliders = GetComponentsInChildren<BoxCollider>(true);
+        foreach (BoxCollider col in colliders)
+        {
+            if (col == null || !col.enabled || !col.gameObject.activeInHierarchy) continue;
+
+            // If origin is inside the collider, ClosestPoint returns origin itself
+            // (distance 0), which is exactly the desired behaviour.
+            Vector3 closest = col.ClosestPoint(origin);
+
+            float currentDistance = Vector3.Distance(origin, closest);
+            if (currentDistance < closestDistance)
+            {
+                closestDistance = currentDistance;
+                bestPoint = closest;
+                found = true;
+            }
+        }
+
+        // Fallback to the pivot if no valid colliders were found
+        return found ? bestPoint : transform.position;
+    }
 }
