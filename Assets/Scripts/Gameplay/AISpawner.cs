@@ -6,7 +6,7 @@ public class AISpawner : MonoBehaviour
 {
     [SerializeField] public int spawnChannel = 1;
     [SerializeField] private GameObject aiPrefab;
-    [SerializeField] private AITaskSchedulingMode taskSchedulingModeOverride = AITaskSchedulingMode.Closest;
+    [SerializeField] public AITaskSchedulingMode taskSchedulingModeOverride = AITaskSchedulingMode.Closest;
 
     private GameObject visuals;
 
