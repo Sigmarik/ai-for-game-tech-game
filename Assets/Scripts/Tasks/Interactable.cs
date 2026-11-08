@@ -184,7 +184,8 @@ public class Interactable : MonoBehaviour
 
         bool hasTasks = taskCount > 0;
         bool interactionActive = interacter != null;
-        bool selected = hasTasks && (selectorCount > 0 || interactionActive);
+        
+        bool selected = hasTasks && (uiPresenterCount > 0 || interactionActive); 
         bool available = hasTasks && interacter == null;
 
         if (selected)

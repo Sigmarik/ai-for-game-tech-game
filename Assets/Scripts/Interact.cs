@@ -128,7 +128,7 @@ public class Interact : MonoBehaviour
         Interactable[] allInteractables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
         Interactable bestInteractable = null;
         float bestDistance = distance;
-        Vector3 originPosition = rayOrigin.transform.position;
+        Vector3 originPosition = transform.position;
 
         foreach (Interactable currentInteractable in allInteractables)
         {
